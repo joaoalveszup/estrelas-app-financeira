@@ -9,7 +9,6 @@ import javax.persistence.Id;
 @Entity
 public class Sugestao {
 
-
     @Column(name = "id_sugestao")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,8 +53,7 @@ public class Sugestao {
         return tipoSugestao;
     }
 
-    public void setTipoSugestao(TipoSugestao tipoSugestao) {
-        this.tipoSugestao = tipoSugestao;
+
     }
 
-}
+
