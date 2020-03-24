@@ -52,9 +52,4 @@ public class Sugestao {
         return tipoSugestao;
     }
 
-    public void setTipoSugestao(TipoSugestao tipoSugestao) {
-        this.tipoSugestao = tipoSugestao;
-    }
-
 }
-
