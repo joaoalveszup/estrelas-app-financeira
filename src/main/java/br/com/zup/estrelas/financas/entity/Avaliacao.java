@@ -18,7 +18,7 @@ public class Avaliacao {
     @Column
     private String comentario;
     
-    @Column
+    @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
 
     
