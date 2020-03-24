@@ -12,6 +12,7 @@ public class Despesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_despesa")
     private Long idDespesa;
     
     @Column(nullable = false)
