@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class Dependente {
     
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idDependente;
     
