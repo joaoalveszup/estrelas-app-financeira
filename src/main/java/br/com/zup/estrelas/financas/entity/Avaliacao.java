@@ -8,8 +8,9 @@ import javax.persistence.Id;
 
 @Entity
 public class Avaliacao {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avaliacao", nullable = false)
     private Long idAvaliacao;
 

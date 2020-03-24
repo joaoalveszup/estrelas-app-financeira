@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Dependente {
@@ -12,7 +13,7 @@ public class Dependente {
     @Id
     @Column(name = "id_dependente", nullable = false)
     private Long idDependente;
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     
     @Column(nullable = false)
     private String nome;
@@ -22,6 +23,9 @@ public class Dependente {
     
     @Column(nullable = false)
     private Float renda;
+    
+    @ManyToOne
+    private Usuario usuario;
 
     public Long getIdDependente() {
         return idDependente;

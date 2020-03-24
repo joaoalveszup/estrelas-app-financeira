@@ -6,26 +6,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Despesa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_despesa")
     private Long idDespesa;
-    
+
     @Column(nullable = false)
     private float valor;
-    
-   @Column(nullable = false, name = "tipo_de_despesa")
-   private String tipoDeDespesa; 
-    
+
+    @Column(nullable = false, name = "tipo_de_despesa")
+    private String tipoDeDespesa;
+
     @Column(nullable = false)
     private LocalDate vencimento;
 
-    //TODO: CRIAR ASSOCIAÇÕES
-    
+    @ManyToOne
+    private Usuario usuario;
+
     public Long getIdDespesa() {
         return idDespesa;
     }

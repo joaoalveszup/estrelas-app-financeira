@@ -12,7 +12,7 @@ public class Investimento {
 
     @Id
     @Column(name = "id_investimento")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idInvestimento;
 
     @Column(nullable = false)
@@ -38,7 +38,7 @@ public class Investimento {
     }
 
     public Long getId() {
-        return id;
+        return idInvestimento;
     }
 
 }
