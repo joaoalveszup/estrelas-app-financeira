@@ -13,11 +13,11 @@ public class Investimento {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    
+
     @Column(nullable = false)
     private Long valor;
-    
-    @Column(nullable = false)
+
+    @Column(nullable = false, name = "data_vencimento")
     private LocalDate dataVencimento;
 
     public Long getValor() {
@@ -39,5 +39,5 @@ public class Investimento {
     public Long getId() {
         return id;
     }
-    
+
 }
