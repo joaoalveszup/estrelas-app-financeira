@@ -6,7 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Despesa {
@@ -26,8 +28,13 @@ public class Despesa {
     private LocalDate vencimento;
 
     @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JsonIgnore
     private Usuario usuario;
 
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+    
     public Long getIdDespesa() {
         return idDespesa;
     }
@@ -59,4 +66,5 @@ public class Despesa {
     public void setVencimento(LocalDate vencimento) {
         this.vencimento = vencimento;
     }
+    
 }
