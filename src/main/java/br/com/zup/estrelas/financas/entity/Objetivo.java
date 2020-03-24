@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Objetivo {
 
     @Id
-    @Column
+    @Column(name = "id_objetivo")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idObjetivo;
 

@@ -11,8 +11,9 @@ import javax.persistence.Id;
 public class Investimento {
 
     @Id
+    @Column(name = "id_investimento")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long idInvestimento;
 
     @Column(nullable = false)
     private Long valor;
