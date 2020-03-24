@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class Usuario {
 
     @Id
+    @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idUsuario;
     
