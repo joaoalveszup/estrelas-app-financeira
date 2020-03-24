@@ -13,37 +13,33 @@ public class Usuario {
     @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idUsuario;
-    
+
     @Column(nullable = false)
     private String nome;
-    
+
     @Column(nullable = false)
     private String documento;
-    
+
     @Column(name = "tipo_documento", nullable = false)
     private String tipoDocumento;
-    
+
     @Column(name = "salario_bruto", nullable = false)
     private Float salarioBruto;
-    
+
     @Column(name = "salario_liquido", nullable = false)
     private Float salarioLiquido;
-    
+
     @Column(nullable = false)
     private String profissao;
-    
+
     @Column
     private String empresa;
 
-    //TODO: CRIAR ASSOCIAÇÕES
-    
-    
+    // TODO: CRIAR ASSOCIAÇÕES
+
+
     public Long getIdUsuario() {
         return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getNome() {
@@ -101,7 +97,7 @@ public class Usuario {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
-    
-    
-    
+
+
+
 }
