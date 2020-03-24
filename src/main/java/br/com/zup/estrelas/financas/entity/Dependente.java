@@ -10,9 +10,9 @@ import javax.persistence.Id;
 public class Dependente {
     
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_dependente", nullable = false)
     private Long idDependente;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     
     @Column(nullable = false)
     private String nome;
