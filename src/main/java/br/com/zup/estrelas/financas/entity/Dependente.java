@@ -26,6 +26,10 @@ public class Dependente {
         return idDependente;
     }
 
+    public void setIdDependente(Long idDependente) {
+        this.idDependente = idDependente;
+    }
+
     public String getNome() {
         return nome;
     }
