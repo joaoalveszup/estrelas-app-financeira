@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_avaliacao", nullable = false)
     private Long idAvaliacao;
 
     @Column(name = "nota_avaliacao", nullable = false)
