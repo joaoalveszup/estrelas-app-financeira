@@ -16,10 +16,10 @@ public class Dependente {
     @Column(nullable = false)
     private String nome;
     
-    @Column
+    @Column(nullable = false)
     private String parentesco;
     
-    @Column
+    @Column(nullable = false)
     private Float renda;
 
     public Long getIdDependente() {
