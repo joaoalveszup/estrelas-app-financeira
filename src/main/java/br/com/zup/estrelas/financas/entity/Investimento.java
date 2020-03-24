@@ -38,7 +38,7 @@ public class Investimento {
     }
 
     public Long getId() {
-        return id;
+        return idInvestimento;
     }
 
 }
