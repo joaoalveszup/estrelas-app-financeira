@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Despesa {
+public class DespesaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
