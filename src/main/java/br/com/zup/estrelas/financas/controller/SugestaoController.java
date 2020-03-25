@@ -26,9 +26,9 @@ public class SugestaoController {
         return this.service.save(sugestao);
     }
 
-    @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Iterable<Sugestao> buscaSugestao(@PathVariable Sugestao sugestao) {
-        return service.findAll();
+    @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Sugestao buscaSugestao(@PathVariable Long sugestao) {
+        return service.findById(sugestao).get();
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -43,8 +43,4 @@ public class SugestaoController {
 
 }
 
-
-
-
-       
 
