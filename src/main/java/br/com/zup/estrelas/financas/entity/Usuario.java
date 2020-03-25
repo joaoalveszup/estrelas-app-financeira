@@ -48,7 +48,7 @@ public class Usuario {
            mappedBy = "usuario",
            cascade = CascadeType.ALL
     )
-    private List<Despesa> despesas;
+    private List<DespesaEntity> despesas;
     
     
     @OneToMany(
