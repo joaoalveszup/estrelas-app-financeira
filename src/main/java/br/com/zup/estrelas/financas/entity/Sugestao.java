@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 public class Sugestao {
 
-    @Column
+    @Column(name = "id_sugestao")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idSugestao;
