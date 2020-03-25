@@ -12,6 +12,7 @@ public class Sugestao {
     @Column(name = "id_sugestao")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idSugestao;
 
     @Column
@@ -51,5 +52,11 @@ public class Sugestao {
     public TipoSugestao getTipoSugestao() {
         return tipoSugestao;
     }
+
+    public void setTipoSugestao(TipoSugestao tipoSugestao) {
+        this.tipoSugestao = tipoSugestao;
+    }
+
 }
+
 

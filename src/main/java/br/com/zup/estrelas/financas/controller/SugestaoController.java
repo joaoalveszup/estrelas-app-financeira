@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.zup.estrelas.financas.entity.Sugestao;
 
 
-import br.com.zup.estrelas.financas.repository.SugestaoService;
 
+import br.com.zup.estrelas.financas.repository.SugestaoService;
 
 @RequestMapping("/sugestao")
 public class SugestaoController {
@@ -44,3 +44,5 @@ public class SugestaoController {
 }
 
 
+   
+    
