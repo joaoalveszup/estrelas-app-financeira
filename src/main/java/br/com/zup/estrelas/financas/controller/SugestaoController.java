@@ -1,8 +1,6 @@
 package br.com.zup.estrelas.financas.controller;
 
 import java.util.List;
-import javax.persistence.Id;
-import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,4 +39,8 @@ public class SugestaoController {
         services.deleteById(null);
     }
 
+
+
 }
+
+
