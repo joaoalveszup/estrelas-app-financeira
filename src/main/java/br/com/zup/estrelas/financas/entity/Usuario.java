@@ -1,17 +1,20 @@
 package br.com.zup.estrelas.financas.entity;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario {
 
     @Id
     @Column(name = "id_usuario")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
     @Column(nullable = false)
@@ -35,8 +38,24 @@ public class Usuario {
     @Column
     private String empresa;
 
-    // TODO: CRIAR ASSOCIAÇÕES
-
+    @OneToMany (
+           mappedBy = "usuario",
+           cascade = CascadeType.ALL
+     )
+    private List<Dependente> dependentes;
+    
+    @OneToMany(
+           mappedBy = "usuario",
+           cascade = CascadeType.ALL
+    )
+    private List<Despesa> despesas;
+    
+    
+    @OneToMany(
+            mappedBy = "usuario",
+            cascade = CascadeType.ALL
+    )
+    private List<Objetivo> objetivos;
 
     public Long getIdUsuario() {
         return idUsuario;
