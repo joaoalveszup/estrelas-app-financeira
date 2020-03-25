@@ -11,38 +11,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.zup.estrelas.financas.entity.Sugestao;
 
+
 import br.com.zup.estrelas.financas.repository.SugestaoService;
 
-@RequestMapping("/sugestoes")
+
+@RequestMapping("/sugestao")
 public class SugestaoController {
 
     @Autowired
-    SugestaoService services;
+    SugestaoService service;
 
     @PostMapping
     public Sugestao insereSugestao(@RequestBody Sugestao sugestao) {
-        return this.services.save(sugestao);
+        return this.service.save(sugestao);
     }
 
-    @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Iterable<Sugestao> buscaSugestao(@PathVariable Sugestao sugestao) {
-        return services.findAll();
+        return service.findAll();
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Sugestao> buscaSugestao() {
-        return (List<Sugestao>) services.findAll();
-
+        return (List<Sugestao>) service.findAll();
     }
 
     @DeleteMapping("/idSugestao")
     public void delete(@PathVariable Long Sugestao) {
-        services.deleteById(null);
+        service.deleteById(null);
     }
-
-
 
 }
 
 
+
+
+       
 
