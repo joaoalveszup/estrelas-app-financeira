@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Investimento {
@@ -20,6 +21,9 @@ public class Investimento {
 
     @Column(nullable = false, name = "data_vencimento")
     private LocalDate dataVencimento;
+
+    @OneToMany
+    private Objetivo objetivo;
 
     public Long getValor() {
         return valor;

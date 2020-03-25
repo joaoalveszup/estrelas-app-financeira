@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.entity;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ public class Objetivo {
     @Column(nullable = false)
     private String nome;
 
+
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
     @JsonIgnore
@@ -28,6 +31,10 @@ public class Objetivo {
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
     
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private List<Investimento> investimento;
+
     public String getNome() {
         return nome;
     }
@@ -46,6 +53,14 @@ public class Objetivo {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public List<Investimento> getInvestimento() {
+        return investimento;
+    }
+
+    public void setInvestimento(List<Investimento> investimento) {
+        this.investimento = investimento;
     }
 
     public Long getIdUsuario() {
