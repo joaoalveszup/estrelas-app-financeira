@@ -24,8 +24,8 @@ public class DependenteController {
     DependenteRepository repository;
     
     @PostMapping
-    public Dependente insereDependente(@RequestBody Dependente dependente) {
-        return this.repository.save(dependente);
+    public List<Dependente> insereDependente(@RequestBody List<Dependente> dependentes) {
+        return (List<Dependente>) this.repository.saveAll(dependentes);
     }
     
     @GetMapping(path = "/id_dependente", produces = {MediaType.APPLICATION_JSON_VALUE})
