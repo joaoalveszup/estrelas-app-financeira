@@ -11,7 +11,6 @@ import javax.persistence.Id;
 public class Sugestao {
 
 
-
     @Column(name = "id_sugestao")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
