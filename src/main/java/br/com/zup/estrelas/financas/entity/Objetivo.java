@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -32,7 +33,7 @@ public class Objetivo {
     private Long idUsuario;
     
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
     private List<Investimento> investimento;
 
     public String getNome() {
@@ -70,5 +71,6 @@ public class Objetivo {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
+    
     
 }

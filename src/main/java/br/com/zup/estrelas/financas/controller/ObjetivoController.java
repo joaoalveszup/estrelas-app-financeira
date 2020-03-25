@@ -11,42 +11,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.Objetivo;
-import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
+import br.com.zup.estrelas.financas.service.ObjetivoService;
 
 @RestController
-@RequestMapping("/objetivo")
+@RequestMapping("/objetivos")
 public class ObjetivoController {
 
     @Autowired
-    ObjetivoRepository objetivoRepository;
+    ObjetivoService objetivoService;
 
     @PostMapping
     public Objetivo insere(@RequestBody Objetivo objetivo) {
-        return this.objetivoRepository.save(objetivo);
+        return this.objetivoService.criaObjetivo(objetivo);
     }
 
     @GetMapping(path = "/{idObjetivo}")
     public Objetivo buscaObjetivo(@PathVariable Long idObjetivo) {
-        return this.objetivoRepository.findById(idObjetivo).get();
+        return buscaObjetivo(idObjetivo);
     }
-    
+
     @GetMapping
     public List<Objetivo> buscaObjetivo() {
-        return this.objetivoRepository.findAll();
+        return objetivoService.buscaObjetivos();
     }
 
     @PutMapping("/{idObjetivo}")
-    public Objetivo atualizarObjetivo(@PathVariable(value = "idObjetivo") Long idObjetivo, @RequestBody Objetivo objetivo) {
-        Objetivo objetivoAtualizado = objetivoRepository.findById(idObjetivo).get();
-
-        objetivoAtualizado.setNome(objetivo.getNome());
-
-        return this.objetivoRepository.save(objetivoAtualizado);
+    public Objetivo atualizarObjetivo(@PathVariable(value = "idObjetivo") Long idObjetivo,
+            @RequestBody Objetivo objetivo) {
+        return this.objetivoService.atualizarObjetivo(idObjetivo, objetivo);
     }
-    
+
     @DeleteMapping("/{idObjetivo}")
     public void deletaObjetivo(@PathVariable Long idObjetivo) {
-        this.objetivoRepository.deleteById(idObjetivo);
+        this.objetivoService.deletaObjetivo(idObjetivo);
     }
 
 }
