@@ -8,33 +8,54 @@ import javax.persistence.Id;
 
 @Entity
 public class Sugestao {
+
+    @Column
     @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE)
-    private long idSugestao;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long idSugestao;
+
+    @Column
+    private String titulo;
+
     @Column
     private String descricao;
+
     @Column
     private TipoSugestao tipoSugestao;
-    public long getIdSugestao() {
+
+
+    public Long getIdSugestao() {
         return idSugestao;
     }
-    public void setIdSugestao(long idSugestao) {
+
+    public void setIdSugestao(Long idSugestao) {
         this.idSugestao = idSugestao;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
     public TipoSugestao getTipoSugestao() {
         return tipoSugestao;
     }
+
     public void setTipoSugestao(TipoSugestao tipoSugestao) {
         this.tipoSugestao = tipoSugestao;
     }
 
-   
 
 
 }
