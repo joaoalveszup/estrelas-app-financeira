@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.financas.entity.DespesaEntity;
+import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 
 
@@ -24,30 +24,30 @@ public class DespesaController {
     DespesaRepository repository;
 
     @PostMapping
-    public DespesaEntity insereDespesa(@RequestBody DespesaEntity despesa) {
+    public Despesa insereDespesa(@RequestBody Despesa despesa) {
         return this.repository.save(despesa);
     }
 
-    @GetMapping(path = "/{id_despesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DespesaEntity buscaPorDespesa(@PathVariable Long idDespesa) {
+    @GetMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Despesa buscaPorDespesa(@PathVariable Long idDespesa) {
         return repository.findById(idDespesa).get();
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<DespesaEntity> buscaDespesas() {
-        return (List<DespesaEntity>) repository.findAll();
+    public List<Despesa> buscaDespesas() {
+        return (List<Despesa>) repository.findAll();
     }
 
-    @DeleteMapping(path = "/{id_despesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaDespesa(@PathVariable Long idDespesa) {
         this.repository.deleteById(idDespesa);
     }
 
-    @PutMapping(path = "/{id_despesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DespesaEntity atualizaDespesa(@PathVariable Long idDespesa,
-            @RequestBody DespesaEntity despesa) {
+    @PutMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Despesa atualizaDespesa(@PathVariable Long idDespesa,
+            @RequestBody Despesa despesa) {
 
-        DespesaEntity despesaBanco = repository.findById(idDespesa).get();
+        Despesa despesaBanco = repository.findById(idDespesa).get();
 
         despesaBanco.setTipoDeDespesa(despesa.getTipoDeDespesa());
         despesaBanco.setValor(despesa.getValor());
