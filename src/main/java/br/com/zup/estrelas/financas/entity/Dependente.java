@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Dependente {
-    
+
     @Id
     @Column(name = "id_dependente", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class Dependente {
     
     @Column(nullable = false)
     private String nome;
-    
+
     @Column(nullable = false)
     private String parentesco;
-    
+
     @Column(nullable = false)
     private Float renda;
     
@@ -82,4 +82,5 @@ public class Dependente {
         this.idUsuario = idUsuario;
     }
     
+
 }
