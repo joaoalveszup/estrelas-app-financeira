@@ -6,20 +6,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.ExampleEntity;
-import br.com.zup.estrelas.financas.repository.ExampleRepository;
+import br.com.zup.estrelas.financas.service.ExampleService;
 
 @RestController
 @RequestMapping("/examples")
 public class ExampleController {
 
-
     @Autowired
-    ExampleRepository repository;
-
-
+    ExampleService service;
+    
     @PostMapping
-    public ExampleEntity saveExample(@RequestBody ExampleEntity example) {
-        return this.repository.save(example);
+    public ExampleEntity insert(@RequestBody ExampleEntity entity) {
+        return service.insereExample(entity);
     }
 
 }
