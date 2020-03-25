@@ -29,6 +29,11 @@ public class DependenteController {
     }
     
     @GetMapping(path = "/{id_dependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Dependente insereDependente(@RequestBody Dependente dependente) {
+        return this.repository.save(dependente);
+    }
+    
+    @GetMapping(path = "/id_dependente", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Optional<Dependente> buscaDependente(@PathVariable Long idDependente) {
         return repository.findById(idDependente);
     }
