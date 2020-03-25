@@ -26,7 +26,7 @@ public class AvaliacaoController {
 
     }
 
-    @GetMapping(path = "/{id_avaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao buscaAvaliacao(@PathVariable Long idAvaliacao) {
         return this.repository.findById(idAvaliacao).get();
     }
@@ -37,18 +37,18 @@ public class AvaliacaoController {
 
     }
 
-    @DeleteMapping(path = "/{id_avaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaAvaliacao(@PathVariable Long idAvaliacao) {
         this.repository.deleteById(idAvaliacao);
     }
 
-    @PutMapping(path = "/{id_avaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
             @RequestBody Avaliacao avaliacao) {
         Avaliacao avaliacaoBanco = repository.findById(idAvaliacao).get();
-        avaliacao.setComentario(avaliacao.getComentario());
-        avaliacao.setIdUsuario(avaliacao.getIdUsuario());
-        avaliacao.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+        avaliacaoBanco.setComentario(avaliacao.getComentario());
+        avaliacaoBanco.setIdUsuario(avaliacao.getIdUsuario());
+        avaliacaoBanco.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
         return this.repository.save(avaliacaoBanco);
 
     }
