@@ -11,43 +11,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.Investimento;
-import br.com.zup.estrelas.financas.repository.InvestimentoRepository;
+import br.com.zup.estrelas.financas.service.InvestimentoService;
 
 @RestController
-@RequestMapping("/investimento")
+@RequestMapping("/investimentos")
 public class InvestimentoController {
-    
+
     @Autowired
-    InvestimentoRepository investimentoRepository;
-    
+    InvestimentoService investimentoService;
+
     @PostMapping
     public Investimento insere(@RequestBody Investimento investimento) {
-        return this.investimentoRepository.save(investimento);
+        return this.investimentoService.insereInvestimento(investimento);
     }
-    
+
     @GetMapping(path = "/{idInvestimento}")
     public Investimento buscaInvestimento(@PathVariable Long idInvestimento) {
-        return this.investimentoRepository.findById(idInvestimento).get();
+        return this.investimentoService.buscaInvestimento(idInvestimento);
     }
-    
+
     @GetMapping()
     public List<Investimento> buscaInvestimento() {
-        return this.investimentoRepository.findAll();
+        return this.investimentoService.buscaInvestimentos();
     }
-    
+
     @PutMapping("/{idInvestimento}")
-    public Investimento alteraInvestimento(@PathVariable Long idInvestimento, @RequestBody Investimento investimento) {
-        Investimento investimentos = investimentoRepository.findById(idInvestimento).get();
-        
-        investimentos.setDataVencimento(investimento.getDataVencimento());
-        investimentos.setValor(investimento.getValor());
-        
-        return this.investimentoRepository.save(investimentos);
+    public Investimento alteraInvestimento(@PathVariable Long idInvestimento,
+            @RequestBody Investimento investimento) {
+        return this.investimentoService.atualiza(idInvestimento, investimento);
     }
-    
+
     @DeleteMapping("/{idInvestimento}")
     public void deletaInvestimento(@PathVariable Long idInvestimento) {
-        this.investimentoRepository.deleteById(idInvestimento);
+        this.investimentoService.deleteInvestimento(idInvestimento);;
     }
 
 }
