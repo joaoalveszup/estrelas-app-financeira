@@ -55,16 +55,16 @@ public class Objetivo {
         this.usuario = usuario;
     }
 
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
     public List<Investimento> getInvestimento() {
         return investimento;
     }
 
     public void setInvestimento(List<Investimento> investimento) {
         this.investimento = investimento;
-    }
-
-    public Long getIdUsuario() {
-        return idUsuario;
     }
 
     public void setIdUsuario(Long idUsuario) {
