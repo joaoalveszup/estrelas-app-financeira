@@ -8,18 +8,18 @@ import javax.persistence.Id;
 
 @Entity
 public class Dependente {
-    
+
     @Id
     @Column(name = "id_dependente", nullable = false)
     private Long idDependente;
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    
+
     @Column(nullable = false)
     private String nome;
-    
+
     @Column(nullable = false)
     private String parentesco;
-    
+
     @Column(nullable = false)
     private Float renda;
 
@@ -54,6 +54,6 @@ public class Dependente {
     public void setRenda(Float renda) {
         this.renda = renda;
     }
-    
-    
+
+
 }
