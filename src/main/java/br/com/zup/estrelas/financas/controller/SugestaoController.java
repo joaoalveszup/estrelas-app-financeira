@@ -10,43 +10,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.zup.estrelas.financas.entity.Sugestao;
-
-
-
 import br.com.zup.estrelas.financas.repository.SugestaoService;
 
-@RequestMapping("/sugestao")
+
+
+@RequestMapping("/sugestoes")
 public class SugestaoController {
 
     @Autowired
-    SugestaoService service;
+    SugestaoService services;
 
     @PostMapping
     public Sugestao insereSugestao(@RequestBody Sugestao sugestao) {
-        return this.service.save(sugestao);
+        return this.services.save(sugestao);
     }
 
-
-    @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Sugestao buscaSugestao(@PathVariable Long sugestao) {
-        return service.findById(sugestao).get();
-    }
-   
+        return services.findById(sugestao).get();
 
-    @GetMapping(produces =  {MediaType.APPLICATION_JSON_VALUE})
+    }
+
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Sugestao> buscaSugestao() {
-        return (List<Sugestao>) service.findAll();
-    }
+        return (List<Sugestao>) services.findAll();
 
+    }
 
     @DeleteMapping("/idSugestao")
     public void delete(@PathVariable Long Sugestao) {
-        service.deleteById(null);
-
+        services.deleteById(null);
     }
+
+
 
 }
 
 
-   
-    

@@ -25,7 +25,10 @@ public class Sugestao {
     @Column
     private TipoSugestao tipoSugestao;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5f958be4d0370dd72a2bd98e2d2be7592caf20d7
     public Long getIdSugestao() {
         return idSugestao;
     }
@@ -58,6 +61,11 @@ public class Sugestao {
         this.tipoSugestao = tipoSugestao;
     }
 
+<<<<<<< HEAD
 }
 
+=======
+
+}
+>>>>>>> 5f958be4d0370dd72a2bd98e2d2be7592caf20d7
 
