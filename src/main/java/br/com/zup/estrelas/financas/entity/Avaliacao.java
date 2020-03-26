@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Avaliacao {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avaliacao", nullable = false)
@@ -19,19 +19,20 @@ public class Avaliacao {
 
     @Column(name = "nota_avaliacao", nullable = false)
     private int notaAvaliacao;
-    
+
     @Column
     private String comentario;
-    
+
     @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    
+
     public Long getIdAvaliacao() {
         return idAvaliacao;
     }
