@@ -26,11 +26,11 @@ public class ObjetivoService {
     }
 
     public Objetivo atualizarObjetivo(Long idObjetivo, Objetivo objetivo) {
-        Objetivo objetivoAtualizado = objetivoRepository.findById(idObjetivo).get();
+        Objetivo objetivoAtual = objetivoRepository.findById(idObjetivo).get();
 
-        objetivoAtualizado.setNome(objetivo.getNome());
+        objetivoAtual.setNome(objetivo.getNome());
 
-        return this.objetivoRepository.save(objetivoAtualizado);
+        return this.objetivoRepository.save(objetivoAtual);
     }
 
     public void deletaObjetivo(@PathVariable Long idObjetivo) {

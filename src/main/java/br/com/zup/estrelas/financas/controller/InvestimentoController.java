@@ -21,7 +21,7 @@ public class InvestimentoController {
     InvestimentoService investimentoService;
 
     @PostMapping
-    public Investimento insere(@RequestBody Investimento investimento) {
+    public Investimento insereInvestimento(@RequestBody Investimento investimento) {
         return this.investimentoService.insereInvestimento(investimento);
     }
 
@@ -38,12 +38,12 @@ public class InvestimentoController {
     @PutMapping("/{idInvestimento}")
     public Investimento alteraInvestimento(@PathVariable Long idInvestimento,
             @RequestBody Investimento investimento) {
-        return this.investimentoService.atualiza(idInvestimento, investimento);
+        return this.investimentoService.atualizaInvestimento(idInvestimento, investimento);
     }
 
     @DeleteMapping("/{idInvestimento}")
     public void deletaInvestimento(@PathVariable Long idInvestimento) {
-        this.investimentoService.deleteInvestimento(idInvestimento);;
+        this.investimentoService.deleteInvestimento(idInvestimento);
     }
 
 }

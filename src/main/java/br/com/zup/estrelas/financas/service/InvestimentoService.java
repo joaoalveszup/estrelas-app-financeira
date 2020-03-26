@@ -25,10 +25,10 @@ public class InvestimentoService {
     }
 
     public Investimento atualizaInvestimento(Long idInvestimento, Investimento investimento) {
-        Investimento investimentoRecebido = investimentoRepository.findById(idInvestimento).get();
-        investimentoRecebido.setDataVencimento(investimentoRecebido.getDataVencimento());
-        investimentoRecebido.setValor(investimentoRecebido.getValor());
-        return this.investimentoRepository.save(investimentoRecebido);
+        Investimento investimentoAtual = investimentoRepository.findById(idInvestimento).get();
+        investimentoAtual.setDataVencimento(investimentoAtual.getDataVencimento());
+        investimentoAtual.setValor(investimentoAtual.getValor());
+        return this.investimentoRepository.save(investimentoAtual);
     }
 
     public void deleteInvestimento(Long idInvestimento) {
