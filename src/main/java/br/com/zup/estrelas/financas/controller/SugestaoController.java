@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.zup.estrelas.financas.entity.Sugestao;
 
+
 import br.com.zup.estrelas.financas.repository.SugestaoService;
 
 @RequestMapping("/sugestoes")
@@ -24,9 +25,10 @@ public class SugestaoController {
         return this.services.save(sugestao);
     }
 
-    @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Iterable<Sugestao> buscaSugestao(@PathVariable Sugestao sugestao) {
-        return services.findAll();
+    @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Sugestao buscaSugestao(@PathVariable Long sugestao) {
+        return services.findById(sugestao).get();
+
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -43,6 +45,5 @@ public class SugestaoController {
 
 
 }
-
 
 

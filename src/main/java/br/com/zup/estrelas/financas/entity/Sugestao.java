@@ -56,5 +56,6 @@ public class Sugestao {
         this.tipoSugestao = tipoSugestao;
     }
 
+
 }
 
