@@ -42,8 +42,4 @@ public class SugestaoController {
         services.deleteById(null);
     }
 
-
-
 }
-
-
