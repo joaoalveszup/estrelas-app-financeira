@@ -12,7 +12,6 @@ public class DependenteService {
     @Autowired
     DependenteRepository dependenteRepository;
 
-
     public Dependente insereDependente(Dependente dependente) {
         return this.dependenteRepository.save(dependente);
     }
@@ -39,7 +38,6 @@ public class DependenteService {
     public void deletaDependente(Long idDependente) {
         this.dependenteRepository.deleteById(idDependente);
     }
-
 
 }
 
