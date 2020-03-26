@@ -21,8 +21,8 @@ public class ObjetivoController {
     ObjetivoService objetivoService;
 
     @PostMapping
-    public Objetivo insere(@RequestBody Objetivo objetivo) {
-        return this.objetivoService.criaObjetivo(objetivo);
+    public Objetivo insereObjetivo(@RequestBody Objetivo objetivo) {
+        return this.objetivoService.insereObjetivo(objetivo);
     }
 
     @GetMapping(path = "/{idObjetivo}")
@@ -31,12 +31,12 @@ public class ObjetivoController {
     }
 
     @GetMapping
-    public List<Objetivo> buscaObjetivo() {
-        return objetivoService.buscaObjetivos();
+    public List<Objetivo> listaObjetivos() {
+        return objetivoService.listaObjetivos();
     }
 
     @PutMapping("/{idObjetivo}")
-    public Objetivo atualizarObjetivo(@PathVariable(value = "idObjetivo") Long idObjetivo,
+    public Objetivo atualizaObjetivo(@PathVariable(value = "idObjetivo") Long idObjetivo,
             @RequestBody Objetivo objetivo) {
         return this.objetivoService.atualizarObjetivo(idObjetivo, objetivo);
     }
