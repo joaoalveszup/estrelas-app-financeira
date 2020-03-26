@@ -26,19 +26,23 @@ public class SugestaoController {
         return this.service.save(sugestao);
     }
 
+
     @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Sugestao buscaSugestao(@PathVariable Long sugestao) {
         return service.findById(sugestao).get();
     }
+   
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces =  {MediaType.APPLICATION_JSON_VALUE})
     public List<Sugestao> buscaSugestao() {
         return (List<Sugestao>) service.findAll();
     }
 
+
     @DeleteMapping("/idSugestao")
     public void delete(@PathVariable Long Sugestao) {
         service.deleteById(null);
+
     }
 
 }
