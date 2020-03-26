@@ -16,7 +16,7 @@ public class Dependente {
     @Column(name = "id_dependente", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDependente;
-    
+
     @Column(nullable = false)
     private String nome;
     
