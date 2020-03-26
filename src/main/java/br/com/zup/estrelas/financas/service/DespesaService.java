@@ -19,12 +19,12 @@ public class DespesaService {
         return repository.save(despesa);
     }
 
-    public Despesa buscaPorDespesa(Long idDespesa) {
+    public Despesa buscaDespesa(Long idDespesa) {
 
         return repository.findById(idDespesa).get();
     }
 
-    public List<Despesa> buscaDespesas() {
+    public List<Despesa> listaDespesas() {
 
         return (List<Despesa>) this.repository.findAll();
     }
