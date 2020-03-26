@@ -39,6 +39,22 @@ public class Despesa {
         return idDespesa;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public void setIdDespesa(Long idDespesa) {
         this.idDespesa = idDespesa;
     }
