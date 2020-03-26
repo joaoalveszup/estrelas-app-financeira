@@ -46,7 +46,7 @@ public class AvaliacaoController {
     @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
             @RequestBody Avaliacao avaliacao) {
-        return this.service.alteraAvaliacao();
+        return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
 
     }
 
