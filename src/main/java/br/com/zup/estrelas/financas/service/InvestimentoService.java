@@ -24,11 +24,11 @@ public class InvestimentoService {
         return this.investimentoRepository.findAll();
     }
 
-    public Investimento atualiza(Long idInvestimento, Investimento investimento) {
-        Investimento investimento1 = investimentoRepository.findById(idInvestimento).get();
-        investimento1.setDataVencimento(investimento.getDataVencimento());
-        investimento1.setValor(investimento.getValor());
-        return this.investimentoRepository.save(investimento1);
+    public Investimento atualizaInvestimento(Long idInvestimento, Investimento investimento) {
+        Investimento investimentoRecebido = investimentoRepository.findById(idInvestimento).get();
+        investimentoRecebido.setDataVencimento(investimentoRecebido.getDataVencimento());
+        investimentoRecebido.setValor(investimentoRecebido.getValor());
+        return this.investimentoRepository.save(investimentoRecebido);
     }
 
     public void deleteInvestimento(Long idInvestimento) {

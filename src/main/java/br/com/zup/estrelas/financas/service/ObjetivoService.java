@@ -13,7 +13,7 @@ public class ObjetivoService {
     @Autowired
     ObjetivoRepository objetivoRepository;
 
-    public Objetivo criaObjetivo(Objetivo objetivo) {
+    public Objetivo insereObjetivo(Objetivo objetivo) {
         return this.objetivoRepository.save(objetivo);
     }
 
@@ -21,7 +21,7 @@ public class ObjetivoService {
         return this.objetivoRepository.findById(idObjetivo).get();
     }
 
-    public List<Objetivo> buscaObjetivos() {
+    public List<Objetivo> listaObjetivos() {
         return this.objetivoRepository.findAll();
     }
 
