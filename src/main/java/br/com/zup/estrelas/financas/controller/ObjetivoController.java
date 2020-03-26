@@ -27,7 +27,7 @@ public class ObjetivoController {
 
     @GetMapping(path = "/{idObjetivo}")
     public Objetivo buscaObjetivo(@PathVariable Long idObjetivo) {
-        return buscaObjetivo(idObjetivo);
+        return objetivoService.buscaObjetivo(idObjetivo);
     }
 
     @GetMapping
