@@ -24,8 +24,8 @@ public class SugestaoController {
     }
 
     @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Iterable<Sugestao> buscaSugestao(@PathVariable Sugestao sugestao) {
-        return repository.findAll();
+    public Sugestao buscaSugestao(@PathVariable Long sugestao) {
+        return repository.findById(sugestao).get();
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -35,8 +35,8 @@ public class SugestaoController {
     }
 
     @DeleteMapping("/sugestao")
-    public void delete(@PathVariable Long Sugestao) {
-        repository.delete(null);
+    public void delete(@PathVariable Long sugestao) {
+        repository.deleteById(sugestao);
     }
-    
+
 }
