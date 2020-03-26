@@ -12,44 +12,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
-import br.com.zup.estrelas.financas.repository.AvaliacaoRepository;
+import br.com.zup.estrelas.financas.service.AvaliacaoService;
 
 @RestController
 @RequestMapping("/avaliacao")
 public class AvaliacaoController {
     @Autowired
-    AvaliacaoRepository repository;
+
+    AvaliacaoService service;
 
     @PostMapping
     public Avaliacao insereAvaliacao(@RequestBody Avaliacao avaliacao) {
-        return this.repository.save(avaliacao);
+        return this.service.insereAvaliacao(avaliacao);
 
     }
 
     @GetMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao buscaAvaliacao(@PathVariable Long idAvaliacao) {
-        return this.repository.findById(idAvaliacao).get();
+        return this.service.buscaAvaliacao(idAvaliacao);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Avaliacao> buscaAvaliacoes() {
-        return (List<Avaliacao>) repository.findAll();
+        return (List<Avaliacao>) service.buscaAvaliacoes();
 
     }
 
     @DeleteMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaAvaliacao(@PathVariable Long idAvaliacao) {
-        this.repository.deleteById(idAvaliacao);
+        this.service.deletaAvaliacao(idAvaliacao);
     }
 
     @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
             @RequestBody Avaliacao avaliacao) {
-        Avaliacao avaliacaoBanco = repository.findById(idAvaliacao).get();
+        Avaliacao avaliacaoBanco = service.alteraAvaliacao();
         avaliacaoBanco.setComentario(avaliacao.getComentario());
         avaliacaoBanco.setIdUsuario(avaliacao.getIdUsuario());
         avaliacaoBanco.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-        return this.repository.save(avaliacaoBanco);
+        return this.service.alteraAvaliacao();
 
     }
 

@@ -12,22 +12,17 @@ public class AvaliacaoService {
     @Autowired
     AvaliacaoRepository repository;
 
-
     public Avaliacao insereAvaliacao(Avaliacao avaliacao) {
-
         return repository.save(avaliacao);
 
     }
 
-
-    public Avaliacao buscaAvaliacao() {
-        return null;
+    public Avaliacao buscaAvaliacao(Long idAvaliacao) {
+        return repository.findById(idAvaliacao).get();
     }
-
 
     public List<Avaliacao> buscaAvaliacoes() {
         return (List<Avaliacao>) repository.findAll();
-
     }
 
     public void deletaAvaliacao(Long idAvaliacao) {
