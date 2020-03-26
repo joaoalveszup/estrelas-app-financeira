@@ -17,8 +17,8 @@ import br.com.zup.estrelas.financas.service.AvaliacaoService;
 @RestController
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
-    @Autowired
 
+    @Autowired
     AvaliacaoService service;
 
     @PostMapping
@@ -34,7 +34,7 @@ public class AvaliacaoController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Avaliacao> buscaAvaliacoes() {
-        return (List<Avaliacao>) service.buscaAvaliacoes();
+        return (List<Avaliacao>) this.service.buscaAvaliacoes();
 
     }
 
