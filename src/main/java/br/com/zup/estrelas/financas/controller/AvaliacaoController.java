@@ -15,7 +15,7 @@ import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.service.AvaliacaoService;
 
 @RestController
-@RequestMapping("/avaliacao")
+@RequestMapping("/avaliacoes")
 public class AvaliacaoController {
     @Autowired
 
@@ -46,10 +46,6 @@ public class AvaliacaoController {
     @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
             @RequestBody Avaliacao avaliacao) {
-        Avaliacao avaliacaoBanco = service.alteraAvaliacao();
-        avaliacaoBanco.setComentario(avaliacao.getComentario());
-        avaliacaoBanco.setIdUsuario(avaliacao.getIdUsuario());
-        avaliacaoBanco.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
         return this.service.alteraAvaliacao();
 
     }

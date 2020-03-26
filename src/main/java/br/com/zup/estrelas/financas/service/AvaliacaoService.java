@@ -3,6 +3,7 @@ package br.com.zup.estrelas.financas.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.repository.AvaliacaoRepository;
 
@@ -29,7 +30,11 @@ public class AvaliacaoService {
         this.repository.deleteById(idAvaliacao);
     }
 
-    public Avaliacao alteraAvaliacao() {
+    public Avaliacao alteraAvaliacao(Long idAvaliacao, Avaliacao avaliacao) {
+        Avaliacao avaliacaoBanco = repository.findById(idAvaliacao).get();
+        avaliacaoBanco.setComentario(avaliacao.getComentario());
+        avaliacaoBanco.setIdUsuario(avaliacao.getIdUsuario());
+        avaliacaoBanco.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
         return null;
 
     }
