@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import br.com.zup.estrelas.financas.entity.Sugestao;
 
 @Repository
-public interface SugestaoRepository extends CrudRepository <Sugestao, Long> {
+public interface SugestaoService extends CrudRepository <Sugestao, Long> {
     
 
 }
