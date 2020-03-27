@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.zup.estrelas.financas.entity.Sugestao;
@@ -27,7 +28,7 @@ public class SugestaoController {
 
     @GetMapping(path = "/{sugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Sugestao buscaSugestao(@PathVariable Long sugestao) {
-        return services.findById(sugestao).get();
+        return this.services.findById(sugestao).get();
 
     }
 
@@ -37,9 +38,14 @@ public class SugestaoController {
 
     }
 
-    @DeleteMapping("/idSugestao")
-    public void delete(@PathVariable Long Sugestao) {
-        services.deleteById(null);
+    @DeleteMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_PROBLEM_JSON_VALUE})
+    public void deleteSugestao(@PathVariable Long idSugestao) {
+        this.services.deleteById(idSugestao);
+    }
+
+    @PutMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Sugestao alteraAvaliacao(@PathVariable Long idSugestao, @RequestBody Sugestao sugestao) {
+        return this.alteraAvaliacao(idSugestao, sugestao);
     }
 
 }

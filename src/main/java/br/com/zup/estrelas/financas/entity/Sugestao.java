@@ -16,13 +16,13 @@ public class Sugestao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSugestao;
 
-    @Column
+    @Column(name = "id_titulo")
     private String titulo;
 
-    @Column
+    @Column(name = "id_descricao")
     private String descricao;
 
-    @Column
+    @Column(name = "id_tiposugestao")
     private TipoSugestao tipoSugestao;
 
     public Long getIdSugestao() {
@@ -53,8 +53,5 @@ public class Sugestao {
         return tipoSugestao;
     }
 
-    public void setTipoSugestao(TipoSugestao tipoSugestao) {
-        this.tipoSugestao = tipoSugestao;
-    }
 
 }
