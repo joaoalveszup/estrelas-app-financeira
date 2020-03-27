@@ -1,9 +1,12 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 
@@ -17,8 +20,19 @@ public class ObjetivoService {
 
     public Objetivo insereObjetivo(Objetivo objetivo) {
 
-        Objetivo objetivoAtual = objetivoRepository.findById(objetivo.getIdObjetivo()).get();
-        investimentoService.criaInvestimentos(objetivo, objetivoAtual);// em teste
+        // O objetivo atual não existe na criação
+        //Objetivo objetivoAtual = objetivoRepository.findById(objetivo.getIdObjetivo()).get();
+        
+        List<Investimento> investimentos = new ArrayList<Investimento>();
+        Investimento investimento = new Investimento();
+        investimento.setDataVencimento(LocalDate.now());
+        investimento.setValor(1000F);
+        investimento.setPago(false);
+        investimento.setObjetivo(objetivo);
+        investimentos.add(investimento);
+        
+        objetivo.setInvestimentos(investimentos);
+        //investimentoService.criaInvestimentos(objetivo, objetivoAtual);// em teste
         return this.objetivoRepository.save(objetivo);
     }
 

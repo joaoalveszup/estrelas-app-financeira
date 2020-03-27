@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,8 @@ public class Objetivo {
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
 
-    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // PESQUISE SOBRE O FETCH
+    @JoinColumn(name = "id_objetivo") // USEI JOIN COLUMN PRA REFERENCIAR
     private List<Investimento> investimentos;
 
     @Column
