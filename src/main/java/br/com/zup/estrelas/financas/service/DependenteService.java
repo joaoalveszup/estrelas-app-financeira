@@ -17,7 +17,7 @@ public class DependenteService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-    
+
     // fazer um método para alterar salario do user passando como parametro o dependente
 
     public Dependente insereDependente(Dependente dependente) {
@@ -25,15 +25,16 @@ public class DependenteService {
         Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
 
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
-            
-            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE) && dependente.getParentesco().equals(Parentesco.CONJUGE)) {
+
+            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)
+                    && dependente.getParentesco().equals(Parentesco.CONJUGE)) {
                 return null;
             }
         }
-        
+
         if (dependente.getRenda() >= 1) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + dependente.getRenda());
-        this.usuarioRepository.save(usuario);
+            this.usuarioRepository.save(usuario);
         }
         return this.dependenteRepository.save(dependente);
 
