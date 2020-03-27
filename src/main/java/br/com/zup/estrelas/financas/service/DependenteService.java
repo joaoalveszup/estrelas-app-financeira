@@ -17,17 +17,14 @@ public class DependenteService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-
-    // fazer um método para alterar salario do user passando como parametro o dependente
-
+    
     public Dependente insereDependente(Dependente dependente) {
 
         Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
 
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
-            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)
-                    && dependente.getParentesco().equals(Parentesco.CONJUGE)) {
+            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
                 return null;
             }
         }
@@ -37,15 +34,6 @@ public class DependenteService {
             this.usuarioRepository.save(usuario);
         }
         return this.dependenteRepository.save(dependente);
-
-    }
-
-    public Dependente buscaDependente(Long idDependente) {
-        return this.dependenteRepository.findById(idDependente).get();
-    }
-
-    public List<Dependente> buscaDependentes() {
-        return (List<Dependente>) dependenteRepository.findAll();
     }
 
     public Dependente modificaDependente(Long idDependente, Dependente dependente) {
@@ -57,6 +45,15 @@ public class DependenteService {
 
         return this.dependenteRepository.save(dependenteBanco);
     }
+
+    public Dependente buscaDependente(Long idDependente) {
+        return this.dependenteRepository.findById(idDependente).get();
+    }
+
+    public List<Dependente> buscaDependentes() {
+        return (List<Dependente>) dependenteRepository.findAll();
+    }
+
 
     public void deletaDependente(Long idDependente) {
         this.dependenteRepository.deleteById(idDependente);
