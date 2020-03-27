@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
+import br.com.zup.estrelas.financas.enums.TipoDespesa;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -16,12 +17,13 @@ public class DespesaService {
     DespesaRepository repository;
     @Autowired
     UsuarioRepository usuarioRepository;
-    
+
 
     public Despesa insereDespesa(Despesa despesa) {
         Usuario usuario = usuarioRepository.findById(despesa.getIdUsuario()).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
-            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa())) {
+            despesaUsuario.getTipoDeDespesa();
+            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa()) &&! (despesa.getTipoDeDespesa().equals(TipoDespesa.OUTRO))) {
                 return null;
             }
         }
