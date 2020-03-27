@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Usuario {
 
+
     @Id
     @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,23 +39,14 @@ public class Usuario {
     @Column
     private String empresa;
 
-    @OneToMany (
-           mappedBy = "usuario",
-           cascade = CascadeType.ALL
-     )
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Dependente> dependentes;
-    
-    @OneToMany(
-           mappedBy = "usuario",
-           cascade = CascadeType.ALL
-    )
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Despesa> despesas;
-    
-    
-    @OneToMany(
-            mappedBy = "usuario",
-            cascade = CascadeType.ALL
-    )
+
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Objetivo> objetivos;
 
     public Long getIdUsuario() {
@@ -117,6 +109,13 @@ public class Usuario {
         this.empresa = empresa;
     }
 
+    public List<Despesa> getDespesas() {
+        return despesas;
+    }
+
+    public void setDespesas(List<Despesa> despesas) {
+        this.despesas = despesas;
+    }
 
 
 }

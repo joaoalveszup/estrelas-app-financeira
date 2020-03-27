@@ -4,7 +4,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.entity.Despesa;
+import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
+import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
 
 @Service
@@ -12,11 +14,18 @@ public class DespesaService {
 
     @Autowired
     DespesaRepository repository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
+    
 
     public Despesa insereDespesa(Despesa despesa) {
-
-
-        return repository.save(despesa);
+        Usuario usuario = usuarioRepository.findById(despesa.getIdUsuario()).get();
+        for (Despesa despesaUsuario : usuario.getDespesas()) {
+            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa())) {
+                return null;
+            }
+        }
+        return this.repository.save(despesa);
     }
 
     public Despesa buscaDespesa(Long idDespesa) {
@@ -38,10 +47,10 @@ public class DespesaService {
 
         Despesa despesaBanco = repository.findById(idDespesa).get();
 
-        despesaBanco.setTipoDeDespesa(despesa.getTipoDeDespesa());
         despesaBanco.setValor(despesa.getValor());
         despesaBanco.setVencimento(despesa.getVencimento());
 
         return this.repository.save(despesaBanco);
     }
+
 }
