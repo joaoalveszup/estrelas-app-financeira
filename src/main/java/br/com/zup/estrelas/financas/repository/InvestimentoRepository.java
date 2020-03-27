@@ -7,4 +7,5 @@ import br.com.zup.estrelas.financas.entity.Investimento;
 @Repository
 public interface InvestimentoRepository extends JpaRepository<Investimento, Long>{
 
+    long countByPagoAndIdObjetivo(Boolean pago, Long idObjetivo);
 }

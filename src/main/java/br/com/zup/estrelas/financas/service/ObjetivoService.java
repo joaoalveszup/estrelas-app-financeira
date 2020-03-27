@@ -12,8 +12,13 @@ public class ObjetivoService {
 
     @Autowired
     ObjetivoRepository objetivoRepository;
+    @Autowired
+    InvestimentoService investimentoService;
 
     public Objetivo insereObjetivo(Objetivo objetivo) {
+
+        Objetivo objetivoAtual = objetivoRepository.findById(objetivo.getIdObjetivo()).get();
+        investimentoService.criaInvestimentos(objetivo, objetivoAtual);// em teste
         return this.objetivoRepository.save(objetivo);
     }
 
@@ -29,11 +34,25 @@ public class ObjetivoService {
         Objetivo objetivoAtual = objetivoRepository.findById(idObjetivo).get();
 
         objetivoAtual.setNome(objetivo.getNome());
+        if (garanteNumeroInvestimentoValido(objetivo)) {
+            objetivoAtual.setNumeroInvestimento(objetivo.getNumeroInvestimento());
+        }
+
+        objetivoAtual.setValorTotal(objetivo.getValorTotal());
+        objetivoAtual.setInvestimentos(investimentoService.criaInvestimentos(objetivo, objetivo));
 
         return this.objetivoRepository.save(objetivoAtual);
     }
 
     public void deletaObjetivo(@PathVariable Long idObjetivo) {
         this.objetivoRepository.deleteById(idObjetivo);
+    }
+
+
+    private boolean garanteNumeroInvestimentoValido(Objetivo objetivo) {
+        if (objetivo.getNumeroInvestimento() <= 0) {
+            return false;
+        }
+        return true;
     }
 }

@@ -19,7 +19,7 @@ public class Investimento {
     private Long idInvestimento;
 
     @Column(nullable = false)
-    private Long valor;
+    private Float valor;
 
     @Column(nullable = false, name = "data_vencimento")
     private LocalDate dataVencimento;
@@ -30,14 +30,17 @@ public class Investimento {
     @JsonIgnore
     private Objetivo objetivo;
 
-    @Column(name = "id_objetivo", nullable = false)
+    @Column(name = "id_objetivo")
     private Long idObjetivo;
 
-    public Long getValor() {
+    @Column
+    private boolean pago;
+
+    public Float getValor() {
         return valor;
     }
 
-    public void setValor(Long valor) {
+    public void setValor(float valor) {
         this.valor = valor;
     }
 
@@ -73,5 +76,12 @@ public class Investimento {
         this.idObjetivo = idObjetivo;
     }
 
+    public boolean isPago() {
+        return pago;
+    }
+
+    public void setPago(boolean pago) {
+        this.pago = pago;
+    }
 
 }

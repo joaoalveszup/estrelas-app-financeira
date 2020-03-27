@@ -23,18 +23,23 @@ public class Objetivo {
     @Column(nullable = false)
     private String nome;
 
-
     @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
-    
 
     @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
-    private List<Investimento> investimento;
+    private List<Investimento> investimentos;
+
+    @Column
+    private float valorTotal;
+
+    @Column(name = "numero_investimento")
+    private int numeroInvestimentos;
 
     public String getNome() {
         return nome;
@@ -47,7 +52,7 @@ public class Objetivo {
     public Long getIdObjetivo() {
         return idObjetivo;
     }
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -60,17 +65,37 @@ public class Objetivo {
         return idUsuario;
     }
 
-    public List<Investimento> getInvestimento() {
-        return investimento;
+    public List<Investimento> getInvestimentos() {
+        return investimentos;
     }
 
-    public void setInvestimento(List<Investimento> investimento) {
-        this.investimento = investimento;
+    public void setInvestimentos(List<Investimento> investimentos) {
+        this.investimentos = investimentos;
     }
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
-    
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public int getNumeroInvestimento() {
+        return numeroInvestimentos;
+    }
+
+    public void setNumeroInvestimento(int numeroInvestimentos) {
+        this.numeroInvestimentos = numeroInvestimentos;
+    }
+
+    public void setIdObjetivo(Long idObjetivo) {
+        this.idObjetivo = idObjetivo;
+    }
+
+
 }
