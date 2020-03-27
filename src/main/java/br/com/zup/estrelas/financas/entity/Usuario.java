@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Usuario {
@@ -38,24 +39,17 @@ public class Usuario {
     @Column
     private String empresa;
 
-    @OneToMany (
-           mappedBy = "usuario",
-           cascade = CascadeType.ALL
-     )
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Dependente> dependentes;
-    
-    @OneToMany(
-           mappedBy = "usuario",
-           cascade = CascadeType.ALL
-    )
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Despesa> despesas;
-    
-    
-    @OneToMany(
-            mappedBy = "usuario",
-            cascade = CascadeType.ALL
-    )
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Objetivo> objetivos;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Avaliacao avaliacao;
 
     public Long getIdUsuario() {
         return idUsuario;
