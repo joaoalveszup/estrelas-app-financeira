@@ -21,8 +21,6 @@ public class DependenteService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    // fazer um método genérico para o salário
-
     public Dependente insereDependente(Dependente dependente) {
 
         Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
@@ -32,7 +30,6 @@ public class DependenteService {
             if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
                 return null;
             }
-
         }
 
         if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
@@ -65,7 +62,6 @@ public class DependenteService {
     public List<Dependente> buscaDependentes() {
         return (List<Dependente>) dependenteRepository.findAll();
     }
-
 
     public void deletaDependente(Long idDependente) {
 
