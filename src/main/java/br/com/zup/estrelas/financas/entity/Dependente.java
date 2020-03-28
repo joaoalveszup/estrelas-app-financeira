@@ -14,7 +14,7 @@ import br.com.zup.estrelas.financas.enuns.Parentesco;
 
 @Entity
 public class Dependente {
-   
+
     @Id
     @Column(name = "id_dependente", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,22 +22,23 @@ public class Dependente {
 
     @Column(name = "nome", nullable = false)
     private String nome;
-    
+
     @Column(name = "parentesco", nullable = false)
-    @Enumerated(EnumType.STRING) 
+    @Enumerated(EnumType.STRING)
     private Parentesco parentesco;
-    
+
     @Column(name = "renda", nullable = false)
     private Float renda;
-    
+
     @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
-    
+
     public Long getIdDependente() {
         return idDependente;
     }
@@ -58,8 +59,9 @@ public class Dependente {
         return renda;
     }
 
-    public void setRenda(Float renda) {
+    public boolean setRenda(Float renda) {
         this.renda = renda;
+        return true;
     }
 
     public Usuario getUsuario() {
@@ -81,5 +83,5 @@ public class Dependente {
     public Parentesco getParentesco() {
         return parentesco;
     }
-      
+
 }
