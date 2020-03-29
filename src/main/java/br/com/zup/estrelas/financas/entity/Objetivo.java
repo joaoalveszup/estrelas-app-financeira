@@ -40,7 +40,7 @@ public class Objetivo {
     @Column
     private float valorTotal;
 
-    @Column(name = "numero_investimento")
+    @Column(name = "numero_investimentos")
     private int numeroInvestimentos;
 
     public String getNome() {
@@ -87,11 +87,11 @@ public class Objetivo {
         this.valorTotal = valorTotal;
     }
 
-    public int getNumeroInvestimento() {
+    public int getNumeroInvestimentos() {
         return numeroInvestimentos;
     }
 
-    public void setNumeroInvestimento(int numeroInvestimentos) {
+    public void setNumeroInvestimentos(int numeroInvestimentos) {
         this.numeroInvestimentos = numeroInvestimentos;
     }
 

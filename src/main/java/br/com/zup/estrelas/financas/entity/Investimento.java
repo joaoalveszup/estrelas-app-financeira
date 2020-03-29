@@ -86,4 +86,9 @@ public class Investimento {
         this.pago = pago;
     }
 
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    
 }

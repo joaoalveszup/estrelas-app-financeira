@@ -1,12 +1,9 @@
 package br.com.zup.estrelas.financas.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 
@@ -18,22 +15,18 @@ public class ObjetivoService {
     @Autowired
     InvestimentoService investimentoService;
 
-    public Objetivo insereObjetivo(Objetivo objetivo) {
+    public Objetivo insereObjetivo(Objetivo objetivoRecebido) {
 
-        // O objetivo atual não existe na criação
-        //Objetivo objetivoAtual = objetivoRepository.findById(objetivo.getIdObjetivo()).get();
-        
-        List<Investimento> investimentos = new ArrayList<Investimento>();
-        Investimento investimento = new Investimento();
-        investimento.setDataVencimento(LocalDate.now());
-        investimento.setValor(1000F);
-        investimento.setPago(false);
-        investimento.setObjetivo(objetivo);
-        investimentos.add(investimento);
-        
-        objetivo.setInvestimentos(investimentos);
-        //investimentoService.criaInvestimentos(objetivo, objetivoAtual);// em teste
-        return this.objetivoRepository.save(objetivo);
+        Objetivo objetivoAtual;
+        try {
+            objetivoAtual = objetivoRepository.findById(objetivoRecebido.getIdObjetivo()).get();
+        } catch (Exception e) {
+            objetivoAtual = null;
+        }
+
+        objetivoRecebido.setInvestimentos(
+                investimentoService.criaInvestimentos(objetivoRecebido, objetivoAtual));// em teste
+        return this.objetivoRepository.save(objetivoRecebido);
     }
 
     public Objetivo buscaObjetivo(Long idObjetivo) {
@@ -49,11 +42,12 @@ public class ObjetivoService {
 
         objetivoAtual.setNome(objetivo.getNome());
         if (garanteNumeroInvestimentoValido(objetivo)) {
-            objetivoAtual.setNumeroInvestimento(objetivo.getNumeroInvestimento());
+            objetivoAtual.setNumeroInvestimentos(objetivo.getNumeroInvestimentos());
         }
 
         objetivoAtual.setValorTotal(objetivo.getValorTotal());
-        objetivoAtual.setInvestimentos(investimentoService.criaInvestimentos(objetivo, objetivo));
+        objetivoAtual
+                .setInvestimentos(investimentoService.criaInvestimentos(objetivo, objetivoAtual));
 
         return this.objetivoRepository.save(objetivoAtual);
     }
@@ -64,9 +58,9 @@ public class ObjetivoService {
 
 
     private boolean garanteNumeroInvestimentoValido(Objetivo objetivo) {
-        if (objetivo.getNumeroInvestimento() <= 0) {
-            return false;
+        if (objetivo.getNumeroInvestimentos() > 0) {
+            return true;
         }
-        return true;
+        return false;
     }
 }

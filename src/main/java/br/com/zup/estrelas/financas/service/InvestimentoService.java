@@ -30,9 +30,11 @@ public class InvestimentoService {
 
     // método provavelmente não será mais utilizado
     public Investimento atualizaInvestimento(Long idInvestimento, Investimento investimento) {
+
         Investimento investimentoAtual = investimentoRepository.findById(idInvestimento).get();
         investimentoAtual.setDataVencimento(investimentoAtual.getDataVencimento());
         investimentoAtual.setValor(investimentoAtual.getValor());
+
         return this.investimentoRepository.save(investimentoAtual);
     }
 
@@ -43,30 +45,36 @@ public class InvestimentoService {
 
     public List<Investimento> criaInvestimentos(Objetivo objetivoRecebido, Objetivo objetivoAtual) {
 
-        Investimento investimentoAtual = new Investimento();
-        float valorParcela = gerarValorASerPago(objetivoRecebido, objetivoAtual)
-                / objetivoRecebido.getNumeroInvestimento(); // anterior
-        investimentoAtual.setValor(valorParcela);
-
         List<Investimento> listaInvestimentos = new ArrayList<Investimento>();
 
-        for (int i = 1; i <= objetivoRecebido.getNumeroInvestimento(); i++) {
-            investimentoAtual.setDataVencimento(LocalDate.now().plusMonths(i));
-            listaInvestimentos.add(investimentoAtual);
+        LocalDate dataAtual = LocalDate.now();
+        for (int i = 1; i <= objetivoRecebido.getNumeroInvestimentos(); i++) {
+            Investimento investimento = new Investimento();
+            investimento.setValor(gerarValorASerPago(objetivoRecebido, objetivoAtual));
+            investimento.setDataVencimento(dataAtual.plusMonths(i));
+            listaInvestimentos.add(investimento);
         }
+
         return listaInvestimentos;
     }
 
-    public float gerarValorASerPago(Objetivo objetivo, Objetivo objetivoAtual) {
+    public float gerarValorASerPago(Objetivo objetivoRecebido, Objetivo objetivoAtual) {
 
-        float valorASerPago = objetivo.getValorTotal();
-        List<Investimento> investimentos = objetivo.getInvestimentos();
-        if (investimentos.get(1) == null) {
-            valorASerPago = objetivo.getValorTotal() - (investimentos.get(1).getValor()
-                    * investimentoRepository.countByPagoAndIdObjetivo(investimentos.get(1).isPago(),
-                            objetivo.getIdObjetivo()));
+        float valortotalASerPago = objetivoRecebido.getValorTotal();
+        List<Investimento> investimentos;
+        try {
+            investimentos = objetivoAtual.getInvestimentos();
+            float valorCadaInvestimento = investimentos.get(0).getValor();
+            long quantidadeParcelasPagas = investimentoRepository.countByPagoAndIdObjetivo(true,
+                    objetivoRecebido.getIdObjetivo());
+            valortotalASerPago -= (valorCadaInvestimento * quantidadeParcelasPagas);
+
+
+        } catch (Exception e) {
+            investimentos = null;
         }
 
-        return valorASerPago;
+        float valorParcela = valortotalASerPago / objetivoRecebido.getNumeroInvestimentos(); // anterior
+        return valorParcela;
     }
 }
