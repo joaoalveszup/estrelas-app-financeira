@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,8 @@ public class DespesaService {
         Usuario usuario = usuarioRepository.findById(despesa.getIdUsuario()).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
-            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa()) &&! (despesa.getTipoDeDespesa().equals(TipoDespesa.OUTRO))) {
+            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa())
+                    && !(despesa.getTipoDeDespesa().equals(TipoDespesa.OUTRO))) {
                 return null;
             }
         }
@@ -55,4 +58,12 @@ public class DespesaService {
         return this.repository.save(despesaBanco);
     }
 
+    public List<Despesa> despesasAVencer(LocalDate data) {
+        
+        YearMonth month = YearMonth.from(data);
+        LocalDate inicioData = month.atDay(1);
+        LocalDate fimData = month.atEndOfMonth();
+        
+        return this.repository.findAllByVencimentoBetween(inicioData, fimData);
+    }
 }
