@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -48,8 +49,17 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Objetivo> objetivos;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn (name = "id_avaliacao", referencedColumnName = "id_avaliacao")
     private Avaliacao avaliacao;
+
+    public Avaliacao getAvaliacao() {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(Avaliacao avaliacao) {
+        this.avaliacao = avaliacao;
+    }
 
     public Long getIdUsuario() {
         return idUsuario;

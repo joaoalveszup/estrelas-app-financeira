@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,12 +25,12 @@ public class Avaliacao {
     private String comentario;
 
     @OneToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @JsonIgnore
     private Usuario usuario;
 
-    @Column(name = "id_usuario")
+    // @Column(name = "id_usuario")
+    @Transient
     private Long idUsuario;
 
 
