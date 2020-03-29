@@ -58,12 +58,12 @@ public class DespesaService {
         return this.repository.save(despesaBanco);
     }
 
-    public List<Despesa> despesasAVencer(LocalDate data) {
-        
+    private List<Despesa> despesasAVencer(LocalDate data) {
+
         YearMonth month = YearMonth.from(data);
         LocalDate inicioData = month.atDay(1);
         LocalDate fimData = month.atEndOfMonth();
-        
+
         return this.repository.findAllByVencimentoBetween(inicioData, fimData);
     }
 }
