@@ -14,37 +14,36 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.service.DependenteService;
 
-
 @RestController
-@RequestMapping("/dependentes")
+@RequestMapping (value = {"/usuarios" , "{idUsuario}" , "/dependentes" , ""})
 public class DependenteController {
 
     @Autowired
     DependenteService dependenteService;
 
-    @PostMapping
+    @PostMapping(path = "/usuarios/{idUsuario}/dependentes")
     public Dependente insereDependente(@RequestBody Dependente dependente) {
         return this.dependenteService.insereDependente(dependente);
     }
 
-    @GetMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Dependente buscaDependente(@PathVariable Long idDependente) {
         return this.dependenteService.buscaDependente(idDependente);
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Dependente> buscaDependentes() {
         return this.dependenteService.buscaDependentes();
     }
 
-    @PutMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Dependente modificaDependente(@PathVariable Long idDependente,
             @RequestBody Dependente dependente) {
 
         return this.dependenteService.modificaDependente(idDependente, dependente);
     }
 
-    @DeleteMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaDependente(@PathVariable Long idDependente) {
         this.dependenteService.deletaDependente(idDependente);
     }
