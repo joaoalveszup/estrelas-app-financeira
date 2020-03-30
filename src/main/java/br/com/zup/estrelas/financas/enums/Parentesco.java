@@ -1,4 +1,4 @@
-package br.com.zup.estrelas.financas.enuns;
+package br.com.zup.estrelas.financas.enums;
 
 public enum Parentesco {
     

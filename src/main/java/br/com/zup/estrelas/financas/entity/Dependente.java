@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import br.com.zup.estrelas.financas.enuns.Parentesco;
+import br.com.zup.estrelas.financas.enums.Parentesco;
 
 @Entity
 public class Dependente {

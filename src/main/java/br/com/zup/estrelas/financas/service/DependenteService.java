@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.entity.Usuario;
-import br.com.zup.estrelas.financas.enuns.Parentesco;
+import br.com.zup.estrelas.financas.enums.Parentesco;
 import br.com.zup.estrelas.financas.repository.DependenteRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
