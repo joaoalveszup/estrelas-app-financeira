@@ -116,6 +116,14 @@ public class Usuario {
     public void setDespesas(List<Despesa> despesas) {
         this.despesas = despesas;
     }
+  
+    public List<Dependente> getDependentes() {
+        return dependentes;
+    }
+
+    public void setDependentes(List<Dependente> dependentes) {
+        this.dependentes = dependentes;
+    }
 
 
 }
