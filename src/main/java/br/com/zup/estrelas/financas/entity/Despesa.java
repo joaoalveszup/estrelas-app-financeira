@@ -3,12 +3,15 @@ package br.com.zup.estrelas.financas.entity;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.estrelas.financas.enums.TipoDespesa;
 
 @Entity
 public class Despesa {
@@ -22,7 +25,8 @@ public class Despesa {
     private float valor;
 
     @Column(nullable = false, name = "tipo_de_despesa")
-    private String tipoDeDespesa;
+    @Enumerated(EnumType.STRING)
+    private TipoDespesa tipoDeDespesa;
 
     @Column(nullable = false)
     private LocalDate vencimento;
@@ -39,6 +43,22 @@ public class Despesa {
         return idDespesa;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public void setIdDespesa(Long idDespesa) {
         this.idDespesa = idDespesa;
     }
@@ -51,11 +71,11 @@ public class Despesa {
         this.valor = valor;
     }
 
-    public String getTipoDeDespesa() {
+    public TipoDespesa getTipoDeDespesa() {
         return tipoDeDespesa;
     }
 
-    public void setTipoDeDespesa(String tipoDeDespesa) {
+    public void setTipoDeDespesa(TipoDespesa tipoDeDespesa) {
         this.tipoDeDespesa = tipoDeDespesa;
     }
 
