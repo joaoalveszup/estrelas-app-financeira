@@ -16,13 +16,13 @@ public class Sugestao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSugestao;
 
-    @Column(name = "id_titulo")
+    @Column( nullable = false)
     private String titulo;
 
-    @Column(name = "id_descricao")
+    @Column(nullable = false)
     private String descricao;
 
-    @Column(name = "id_tiposugestao")
+    @Column(name = "tipo_sugestao", nullable = false)
     private String tipoSugestao;
 
     public Long getIdSugestao() {

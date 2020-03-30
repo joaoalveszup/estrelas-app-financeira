@@ -37,7 +37,7 @@ public class SugestaoController {
         return this.sugestaoService.buscaSugestoes();
     }
 
-    @DeleteMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_PROBLEM_JSON_VALUE})
+    @DeleteMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteSugestao(@PathVariable Long idSugestao) {
         this.sugestaoService.deleteSugestao(idSugestao);
     }
