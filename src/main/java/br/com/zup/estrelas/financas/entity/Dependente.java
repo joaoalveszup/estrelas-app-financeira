@@ -20,14 +20,14 @@ public class Dependente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDependente;
 
-    @Column(name = "nome", nullable = false)
+    @Column(nullable = false)
     private String nome;
 
-    @Column(name = "parentesco", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Parentesco parentesco;
 
-    @Column(name = "renda", nullable = false)
+    @Column(nullable = false)
     private Float renda;
 
     @ManyToOne
