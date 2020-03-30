@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -23,15 +23,10 @@ public class Avaliacao {
     @Column
     private String comentario;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
-            updatable = false)
+    @OneToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @JsonIgnore
     private Usuario usuario;
-
-    @Column(name = "id_usuario")
-    private Long idUsuario;
-
 
     public Long getIdAvaliacao() {
         return idAvaliacao;
@@ -63,14 +58,6 @@ public class Avaliacao {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
+import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.service.AvaliacaoService;
 
@@ -22,19 +24,19 @@ public class AvaliacaoController {
     AvaliacaoService service;
 
     @PostMapping
-    public Avaliacao insereAvaliacao(@RequestBody Avaliacao avaliacao) {
+    public Avaliacao insereAvaliacao(@RequestBody CriaAvaliacaoDto avaliacao) {
         return this.service.insereAvaliacao(avaliacao);
 
     }
 
     @GetMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Avaliacao buscaAvaliacao(@PathVariable Long idAvaliacao) {
+    public AvaliacaoDto buscaAvaliacao(@PathVariable Long idAvaliacao) {
         return this.service.buscaAvaliacao(idAvaliacao);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Avaliacao> buscaAvaliacoes() {
-        return (List<Avaliacao>) this.service.buscaAvaliacoes();
+    public List<AvaliacaoDto> buscaAvaliacoes() {
+        return this.service.buscaAvaliacoes();
 
     }
 
@@ -45,7 +47,7 @@ public class AvaliacaoController {
 
     @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
-            @RequestBody Avaliacao avaliacao) {
+            @RequestBody CriaAvaliacaoDto avaliacao) {
         return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
 
     }
