@@ -23,7 +23,7 @@ public class Sugestao {
     private String descricao;
 
     @Column(name = "id_tiposugestao")
-    private TipoSugestao tipoSugestao;
+    private String tipoSugestao;
 
     public Long getIdSugestao() {
         return idSugestao;
@@ -49,9 +49,14 @@ public class Sugestao {
         this.descricao = descricao;
     }
 
-    public TipoSugestao getTipoSugestao() {
+    public String getTipoSugestao() {
         return tipoSugestao;
     }
 
+    public void setTipoSugestao(String tipoSugestao) {
+        this.tipoSugestao = tipoSugestao;
+    }
+
+    
 
 }
