@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
-import br.com.zup.estrelas.financas.dto.CriarAvaliacaoDto;
+import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.repository.AvaliacaoRepository;
@@ -53,9 +53,10 @@ public class AvaliacaoService {
 
     public void deletaAvaliacao(Long idAvaliacao) {
         this.avaliacaoRepository.deleteById(idAvaliacao);
+        
     }
 
-    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriarAvaliacaoDto avaliacao) {
+    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto avaliacao) {
         if (this.validaAvaliacao(avaliacao)) {
             Avaliacao avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao).get();
             avaliacaoBanco.setComentario(avaliacao.getComentario());
@@ -66,7 +67,7 @@ public class AvaliacaoService {
         return null;
     }
 
-    public Avaliacao insereAvaliacao(CriarAvaliacaoDto avaliacao) {
+    public Avaliacao insereAvaliacao(CriaAvaliacaoDto avaliacao) {
         Usuario usuario = usuarioRepository.findById(avaliacao.getIdUsuario()).get();
         if (this.checaExistenciaAvaliacao(avaliacao)) {
             return null;
@@ -76,8 +77,7 @@ public class AvaliacaoService {
             Avaliacao avaliacaoPercistida = new Avaliacao();
             avaliacaoPercistida.setComentario(avaliacao.getComentario());
             avaliacaoPercistida.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-            avaliacaoPercistida.setUsuario(usuario);
-            usuario.setAvaliacao(avaliacaoPercistida);
+            avaliacaoPercistida.setUsuario(usuario);            
             return avaliacaoRepository.save(avaliacaoPercistida);
         }
 
@@ -85,7 +85,7 @@ public class AvaliacaoService {
 
     }
 
-    private boolean validaAvaliacao(CriarAvaliacaoDto avaliacao) {
+    private boolean validaAvaliacao(CriaAvaliacaoDto avaliacao) {
 
         if (avaliacao.getNotaAvaliacao() < NOTA_MIN || avaliacao.getNotaAvaliacao() > NOTA_MAX) {
             return false;
@@ -97,7 +97,7 @@ public class AvaliacaoService {
         return true;
     }
 
-    public boolean checaExistenciaAvaliacao(CriarAvaliacaoDto avaliacao) {
+    public boolean checaExistenciaAvaliacao(CriaAvaliacaoDto avaliacao) {
         Usuario usuario = usuarioRepository.findById(avaliacao.getIdUsuario()).get();
         if (usuario == null) {
             return true;

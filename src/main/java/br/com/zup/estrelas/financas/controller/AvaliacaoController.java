@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
-import br.com.zup.estrelas.financas.dto.CriarAvaliacaoDto;
+import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.service.AvaliacaoService;
 
@@ -24,7 +24,7 @@ public class AvaliacaoController {
     AvaliacaoService service;
 
     @PostMapping
-    public Avaliacao insereAvaliacao(@RequestBody CriarAvaliacaoDto avaliacao) {
+    public Avaliacao insereAvaliacao(@RequestBody CriaAvaliacaoDto avaliacao) {
         return this.service.insereAvaliacao(avaliacao);
 
     }
@@ -47,7 +47,7 @@ public class AvaliacaoController {
 
     @PutMapping(path = "/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
-            @RequestBody CriarAvaliacaoDto avaliacao) {
+            @RequestBody CriaAvaliacaoDto avaliacao) {
         return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
 
     }

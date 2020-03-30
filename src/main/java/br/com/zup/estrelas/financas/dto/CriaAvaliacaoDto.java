@@ -1,14 +1,13 @@
 package br.com.zup.estrelas.financas.dto;
 
-public class CriarAvaliacaoDto  {
-
-
+public class CriaAvaliacaoDto {
 
     private int notaAvaliacao;
 
     private String comentario;
 
     private Long idUsuario;
+    
 
     public int getNotaAvaliacao() {
         return notaAvaliacao;
