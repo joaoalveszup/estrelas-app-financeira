@@ -117,6 +117,16 @@ public class Usuario {
         this.empresa = empresa;
     }
 
+    public List<Dependente> getDependentes() {
+        return dependentes;
+    }
+
+    public void setDependentes(List<Dependente> dependentes) {
+        this.dependentes = dependentes;
+    }
+    
+    
+
 
 
 }
