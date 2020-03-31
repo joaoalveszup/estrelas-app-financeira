@@ -17,7 +17,7 @@ import br.com.zup.estrelas.financas.service.DespesaService;
 
 
 @RestController
-@RequestMapping("/despesas")
+@RequestMapping("usuarios/{idUsuario}/despesas")
 public class DespesaController {
 
     @Autowired
@@ -48,5 +48,10 @@ public class DespesaController {
 
         return this.despesaService.atualizaDespesa(idDespesa, despesa);
 
+    }
+
+    @GetMapping(path = "/mes-corrente", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Despesa> despesasAvencerNoMes(@PathVariable Long idUsuario) {
+        return (List<Despesa>) despesaService.despesasAVencer(idUsuario);
     }
 }
