@@ -29,8 +29,19 @@ public class AvaliacaoService {
         AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
         avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
         avaliacaoDto.setComentario(avaliacao.getComentario());
-        avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
         avaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+        avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
+        return avaliacaoDto;
+
+    }
+
+    public AvaliacaoDto buscaAvaliacaoPorIdUsuario(Long idUsuario, CriaAvaliacaoDto avaliacao) {
+        Avaliacao avaliacaoBuscada = avaliacaoRepository.findFirstByIdUsuario(idUsuario);
+        AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
+        avaliacaoDto.setIdAvaliacao(avaliacaoBuscada.getIdAvaliacao());
+        avaliacaoDto.setComentario(avaliacaoBuscada.getComentario());
+        avaliacaoDto.setNotaAvaliacao(avaliacaoBuscada.getNotaAvaliacao());
+        avaliacaoDto.setNomeUsuario(avaliacaoBuscada.getUsuario().getNome());
         return avaliacaoDto;
 
     }
@@ -42,7 +53,7 @@ public class AvaliacaoService {
             AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
             avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
             avaliacaoDto.setComentario(avaliacao.getComentario());
-            avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
+            avaliacaoDto.setNomeUsuario(avaliacaoDto.getNomeUsuario());
             avaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
             listadeAvaliacaoDto.add(avaliacaoDto);
         }
@@ -53,7 +64,7 @@ public class AvaliacaoService {
 
     public void deletaAvaliacao(Long idAvaliacao) {
         this.avaliacaoRepository.deleteById(idAvaliacao);
-        
+
     }
 
     public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto avaliacao) {
@@ -77,7 +88,8 @@ public class AvaliacaoService {
             Avaliacao avaliacaoPercistida = new Avaliacao();
             avaliacaoPercistida.setComentario(avaliacao.getComentario());
             avaliacaoPercistida.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-            avaliacaoPercistida.setUsuario(usuario);            
+            avaliacaoPercistida.setIdUsuario(usuario.getIdUsuario());
+
             return avaliacaoRepository.save(avaliacaoPercistida);
         }
 

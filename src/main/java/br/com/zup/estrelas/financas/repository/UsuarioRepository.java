@@ -6,5 +6,7 @@ import br.com.zup.estrelas.financas.entity.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
+    
+    
 
 }
