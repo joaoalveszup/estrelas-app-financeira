@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,18 +24,24 @@ public class Objetivo {
     @Column(nullable = false)
     private String nome;
 
-
     @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
-    
 
-    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
-    private List<Investimento> investimento;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // PESQUISE SOBRE O FETCH
+    @JoinColumn(name = "id_objetivo") // USEI JOIN COLUMN PRA REFERENCIAR
+    private List<Investimento> investimentos;
+
+    @Column
+    private float valorTotal;
+
+    @Column(name = "numero_investimentos")
+    private int numeroInvestimentos;
 
     public String getNome() {
         return nome;
@@ -47,7 +54,7 @@ public class Objetivo {
     public Long getIdObjetivo() {
         return idObjetivo;
     }
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -60,17 +67,37 @@ public class Objetivo {
         return idUsuario;
     }
 
-    public List<Investimento> getInvestimento() {
-        return investimento;
+    public List<Investimento> getInvestimentos() {
+        return investimentos;
     }
 
-    public void setInvestimento(List<Investimento> investimento) {
-        this.investimento = investimento;
+    public void setInvestimentos(List<Investimento> investimentos) {
+        this.investimentos = investimentos;
     }
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
-    
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public int getNumeroInvestimentos() {
+        return numeroInvestimentos;
+    }
+
+    public void setNumeroInvestimentos(int numeroInvestimentos) {
+        this.numeroInvestimentos = numeroInvestimentos;
+    }
+
+    public void setIdObjetivo(Long idObjetivo) {
+        this.idObjetivo = idObjetivo;
+    }
+
+
 }
