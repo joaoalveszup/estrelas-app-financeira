@@ -10,5 +10,5 @@ import br.com.zup.estrelas.financas.entity.Despesa;
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
     
-    List<Despesa> findAllByVencimentoBetween(LocalDate inicioData, LocalDate fimData);
+    List<Despesa> findAllByIdUsuarioAndVencimentoBetween(Long idUsuario, LocalDate inicioData, LocalDate fimData);
 }

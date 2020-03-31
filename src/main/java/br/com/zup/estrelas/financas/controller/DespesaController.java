@@ -1,7 +1,6 @@
 package br.com.zup.estrelas.financas.controller;
 
 
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -50,9 +49,9 @@ public class DespesaController {
         return this.despesaService.atualizaDespesa(idDespesa, despesa);
 
     }
-    
-    @GetMapping(path = "/mes-corrente/{vencimento}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Despesa> despesasAvencerNoMes(@PathVariable LocalDate vencimento) {
-        return (List<Despesa>) despesaService.despesasAVencer(vencimento);
+
+    @GetMapping(path = "/mes-corrente", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Despesa> despesasAvencerNoMes(@PathVariable Long idUsuario) {
+        return (List<Despesa>) despesaService.despesasAVencer(idUsuario);
     }
 }
