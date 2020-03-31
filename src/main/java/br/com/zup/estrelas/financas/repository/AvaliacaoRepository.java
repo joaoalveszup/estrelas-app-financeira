@@ -8,6 +8,10 @@ import br.com.zup.estrelas.financas.entity.Usuario;
 @Repository
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
-    Avaliacao findByUsuario(Usuario usuario);
+    Avaliacao findByUsuario(Usuario Usuario);
+
+    Avaliacao findFirstByIdUsuario(Long idUsuario);
+
+
 
 }

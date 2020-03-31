@@ -24,9 +24,13 @@ public class Avaliacao {
     private String comentario;
 
     @OneToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
+
+    @Column(name = "id_usuario")
+    private Long idUsuario;
 
     public Long getIdAvaliacao() {
         return idAvaliacao;
@@ -59,5 +63,15 @@ public class Avaliacao {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+
 
 }
