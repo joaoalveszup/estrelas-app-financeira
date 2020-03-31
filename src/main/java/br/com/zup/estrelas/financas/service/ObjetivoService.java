@@ -3,7 +3,7 @@ package br.com.zup.estrelas.financas.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 
@@ -25,7 +25,7 @@ public class ObjetivoService {
         }
 
         objetivoRecebido.setInvestimentos(
-                investimentoService.criaInvestimentos(objetivoRecebido, objetivoAtual));// em teste
+                investimentoService.criaInvestimentos(objetivoRecebido, objetivoAtual));
         return this.objetivoRepository.save(objetivoRecebido);
     }
 
@@ -38,29 +38,25 @@ public class ObjetivoService {
     }
 
     public Objetivo atualizarObjetivo(Long idObjetivo, Objetivo objetivo) {
-        Objetivo objetivoAtual = objetivoRepository.findById(idObjetivo).get();
 
-        objetivoAtual.setNome(objetivo.getNome());
-        if (garanteNumeroInvestimentoValido(objetivo)) {
-            objetivoAtual.setNumeroInvestimentos(objetivo.getNumeroInvestimentos());
+        if (!(objetivo.getNumeroInvestimentos() > 0)) {
+            return null;
         }
+        Objetivo objetivoSalvoBanco = objetivoRepository.findById(idObjetivo).get();
+        List<Investimento> listaInvestimentos =
+                investimentoService.criaInvestimentos(objetivo, objetivoSalvoBanco);
 
-        objetivoAtual.setValorTotal(objetivo.getValorTotal());
-        objetivoAtual
-                .setInvestimentos(investimentoService.criaInvestimentos(objetivo, objetivoAtual));
+        objetivoSalvoBanco.setNome(objetivo.getNome());
+        objetivoSalvoBanco.setNumeroInvestimentos(objetivo.getNumeroInvestimentos());
 
-        return this.objetivoRepository.save(objetivoAtual);
+        objetivoSalvoBanco.setValorTotal(objetivo.getValorTotal());
+        objetivoSalvoBanco.setInvestimentos(listaInvestimentos);
+
+        return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(@PathVariable Long idObjetivo) {
+    public void deletaObjetivo(Long idObjetivo) {
         this.objetivoRepository.deleteById(idObjetivo);
     }
 
-
-    private boolean garanteNumeroInvestimentoValido(Objetivo objetivo) {
-        if (objetivo.getNumeroInvestimentos() > 0) {
-            return true;
-        }
-        return false;
-    }
 }
