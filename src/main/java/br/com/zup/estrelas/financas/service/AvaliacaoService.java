@@ -85,12 +85,12 @@ public class AvaliacaoService {
         }
 
         if (this.validaAvaliacao(avaliacao)) {
-            Avaliacao avaliacaoPercistida = new Avaliacao();
-            avaliacaoPercistida.setComentario(avaliacao.getComentario());
-            avaliacaoPercistida.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-            avaliacaoPercistida.setIdUsuario(usuario.getIdUsuario());
+            Avaliacao avaliacaoPersistida = new Avaliacao();
+            avaliacaoPersistida.setComentario(avaliacao.getComentario());
+            avaliacaoPersistida.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+            avaliacaoPersistida.setIdUsuario(usuario.getIdUsuario());
 
-            return avaliacaoRepository.save(avaliacaoPercistida);
+            return avaliacaoRepository.save(avaliacaoPersistida);
         }
 
         return null;
