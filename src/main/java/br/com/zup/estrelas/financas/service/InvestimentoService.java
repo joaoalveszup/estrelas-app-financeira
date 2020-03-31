@@ -15,7 +15,6 @@ public class InvestimentoService {
     @Autowired
     InvestimentoRepository investimentoRepository;
 
-    // método provavelmente não será mais utilizado
     public Investimento insereInvestimento(Investimento investimento) {
         return this.investimentoRepository.save(investimento);
     }
@@ -28,7 +27,6 @@ public class InvestimentoService {
         return this.investimentoRepository.findAll();
     }
 
-    // método provavelmente não será mais utilizado
     public Investimento atualizaInvestimento(Long idInvestimento, Investimento investimento) {
 
         Investimento investimentoAtual = investimentoRepository.findById(idInvestimento).get();
@@ -38,7 +36,6 @@ public class InvestimentoService {
         return this.investimentoRepository.save(investimentoAtual);
     }
 
-    // método provavelmente não será mais utilizado
     public void deleteInvestimento(Long idInvestimento) {
         investimentoRepository.deleteById(idInvestimento);
     }
