@@ -58,7 +58,7 @@ public class DespesaService {
         return this.repository.save(despesaBanco);
     }
 
-    private List<Despesa> despesasAVencer(LocalDate data) {
+    public List<Despesa> despesasAVencer(LocalDate data) {
 
         YearMonth month = YearMonth.from(data);
         LocalDate inicioData = month.atDay(1);
