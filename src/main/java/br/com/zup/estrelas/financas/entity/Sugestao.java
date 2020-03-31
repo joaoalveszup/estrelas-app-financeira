@@ -2,9 +2,12 @@ package br.com.zup.estrelas.financas.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import br.com.zup.estrelas.financas.enums.TipoSugestao;
 
 
 @Entity
@@ -23,7 +26,8 @@ public class Sugestao {
     private String descricao;
 
     @Column(name = "tipo_sugestao", nullable = false)
-    private String tipoSugestao;
+    @Enumerated(EnumType.STRING)
+    private TipoSugestao tipoSugestao;
 
     public Long getIdSugestao() {
         return idSugestao;
@@ -49,11 +53,11 @@ public class Sugestao {
         this.descricao = descricao;
     }
 
-    public String getTipoSugestao() {
+    public TipoSugestao getTipoSugestao() {
         return tipoSugestao;
     }
 
-    public void setTipoSugestao(String tipoSugestao) {
+    public void setTipoSugestao(TipoSugestao tipoSugestao) {
         this.tipoSugestao = tipoSugestao;
     }
 
