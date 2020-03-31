@@ -33,8 +33,8 @@ public class Objetivo {
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // PESQUISE SOBRE O FETCH
-    @JoinColumn(name = "id_objetivo") // USEI JOIN COLUMN PRA REFERENCIAR
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) 
+    @JoinColumn(name = "id_objetivo") 
     private List<Investimento> investimentos;
 
     @Column

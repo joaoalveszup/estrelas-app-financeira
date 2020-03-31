@@ -30,9 +30,8 @@ public class Investimento {
     @JsonIgnore
     private Objetivo objetivo;
 
-    //ADICIONEI JSONIGNORE AQUI PQ NÃO É NECESSÁRIO
     @JsonIgnore
-    @Column(name = "id_objetivo") // E SEM O NULLABLE, P FUNCIONAR
+    @Column(name = "id_objetivo") 
     private Long idObjetivo;
 
     @Column
