@@ -17,7 +17,7 @@ import br.com.zup.estrelas.financas.service.DespesaService;
 
 
 @RestController
-@RequestMapping("/despesas")
+@RequestMapping("/usuarios/{idUsuario}/despesas")
 public class DespesaController {
 
     @Autowired
