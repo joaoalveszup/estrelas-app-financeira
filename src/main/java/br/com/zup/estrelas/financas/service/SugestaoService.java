@@ -13,6 +13,11 @@ public class SugestaoService {
     SugestaoRepository sugestaoRepository;
 
     public Sugestao insereSugestao(Sugestao sugestao) {
+        if (limitaCaratereTitulo(sugestao.getTitulo())
+                || limitaCaratereDescricao(sugestao.getDescricao())) {
+            return null;
+        }
+
         return this.sugestaoRepository.save(sugestao);
     }
 
@@ -30,9 +35,39 @@ public class SugestaoService {
 
     public Sugestao alteraSugestao(Long idSugestao, Sugestao sugestao) {
         Sugestao sugestaoBanco = sugestaoRepository.findById(idSugestao).get();
-        sugestaoBanco.setTitulo(sugestao.getTitulo());
-        sugestaoBanco.setDescricao(sugestao.getDescricao());
-        sugestaoBanco.setTipoSugestao(sugestao.getTipoSugestao());
+
+        if (limitaCaratereDescricao(sugestao.getDescricao())
+                || limitaCaratereTitulo(sugestao.getTitulo())) {
+            return null;
+        }
+        if (validaTituloEDescricao(sugestao.getTitulo(), sugestao.getDescricao())) {
+            sugestaoBanco.setDescricao(sugestao.getDescricao());
+            sugestaoBanco.setTitulo(sugestao.getTitulo());
+        }
         return this.sugestaoRepository.save(sugestaoBanco);
     }
+
+    public boolean validaTituloEDescricao(String titulo, String descricao) {
+        if (titulo.equals(titulo) || descricao.equals(descricao)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean limitaCaratereTitulo(String titulo) {
+
+        if (titulo.length() > 40) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean limitaCaratereDescricao(String descricao) {
+        if (descricao.length() > 400) {
+            return true;
+        }
+        return false;
+    }
+
 }
+
