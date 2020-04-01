@@ -26,23 +26,15 @@ public class AvaliacaoService {
 
     public AvaliacaoDto buscaAvaliacao(Long idAvaliacao) {
         Avaliacao avaliacao = avaliacaoRepository.findById(idAvaliacao).get();
-        AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
-        avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
-        avaliacaoDto.setComentario(avaliacao.getComentario());
-        avaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-        avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
-        return avaliacaoDto;
+        return AvaliacaoDto.fromAvaliacao(avaliacao);
 
     }
 
-    public AvaliacaoDto buscaAvaliacaoPorIdUsuario(Long idUsuario, CriaAvaliacaoDto avaliacao) {
+    public AvaliacaoDto buscaAvaliacaoPorIdUsuario(Long idUsuario) {
         Avaliacao avaliacaoBuscada = avaliacaoRepository.findFirstByIdUsuario(idUsuario);
-        AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
-        avaliacaoDto.setIdAvaliacao(avaliacaoBuscada.getIdAvaliacao());
-        avaliacaoDto.setComentario(avaliacaoBuscada.getComentario());
-        avaliacaoDto.setNotaAvaliacao(avaliacaoBuscada.getNotaAvaliacao());
-        avaliacaoDto.setNomeUsuario(avaliacaoBuscada.getUsuario().getNome());
-        return avaliacaoDto;
+        return AvaliacaoDto.fromAvaliacao(avaliacaoBuscada);
+
+
 
     }
 
@@ -50,12 +42,7 @@ public class AvaliacaoService {
         List<Avaliacao> listaDeAvaliacao = avaliacaoRepository.findAll();
         List<AvaliacaoDto> listadeAvaliacaoDto = new ArrayList<AvaliacaoDto>();
         for (Avaliacao avaliacao : listaDeAvaliacao) {
-            AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
-            avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
-            avaliacaoDto.setComentario(avaliacao.getComentario());
-            avaliacaoDto.setNomeUsuario(avaliacaoDto.getNomeUsuario());
-            avaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-            listadeAvaliacaoDto.add(avaliacaoDto);
+            listadeAvaliacaoDto.add(AvaliacaoDto.fromAvaliacao(avaliacao));
         }
         return listadeAvaliacaoDto;
 
@@ -67,30 +54,25 @@ public class AvaliacaoService {
 
     }
 
-    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto avaliacao) {
-        if (this.validaAvaliacao(avaliacao)) {
+    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto) {
+        if (this.validaAvaliacao(criaAvaliacaoDto)) {
             Avaliacao avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao).get();
-            avaliacaoBanco.setComentario(avaliacao.getComentario());
-            avaliacaoBanco.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+            avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
+            avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
             return avaliacaoRepository.save(avaliacaoBanco);
 
         }
         return null;
     }
 
-    public Avaliacao insereAvaliacao(CriaAvaliacaoDto avaliacao) {
-        Usuario usuario = usuarioRepository.findById(avaliacao.getIdUsuario()).get();
-        if (this.checaExistenciaAvaliacao(avaliacao)) {
+    public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario) {
+
+        if (this.checaExistenciaAvaliacao(criaAvaliacaoDto, idUsuario)) {
             return null;
         }
 
-        if (this.validaAvaliacao(avaliacao)) {
-            Avaliacao avaliacaoPersistida = new Avaliacao();
-            avaliacaoPersistida.setComentario(avaliacao.getComentario());
-            avaliacaoPersistida.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
-            avaliacaoPersistida.setIdUsuario(usuario.getIdUsuario());
-
-            return avaliacaoRepository.save(avaliacaoPersistida);
+        if (this.validaAvaliacao(criaAvaliacaoDto)) {
+            return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
         }
 
         return null;
@@ -109,8 +91,8 @@ public class AvaliacaoService {
         return true;
     }
 
-    public boolean checaExistenciaAvaliacao(CriaAvaliacaoDto avaliacao) {
-        Usuario usuario = usuarioRepository.findById(avaliacao.getIdUsuario()).get();
+    public boolean checaExistenciaAvaliacao(CriaAvaliacaoDto avaliacao, Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
         if (usuario == null) {
             return true;
         }

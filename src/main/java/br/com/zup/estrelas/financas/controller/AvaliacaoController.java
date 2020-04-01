@@ -21,17 +21,17 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoService service;
 
-    @PostMapping(path ="/usuarios/{idUsuario}/avaliacoes")
-    public Avaliacao insereAvaliacao(@RequestBody CriaAvaliacaoDto avaliacao) {
-        return this.service.insereAvaliacao(avaliacao);
+    @PostMapping(path = "/usuarios/{idUsuario}/avaliacoes")
+    public Avaliacao insereAvaliacao(@PathVariable Long idUsuario,
+            @RequestBody CriaAvaliacaoDto avaliacao) {
+        return this.service.insereAvaliacao(avaliacao, idUsuario);
 
     }
 
     @GetMapping(path = "/usuarios/{idUsuario}/avaliacoes",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AvaliacaoDto buscaAvaliacaoPorIdUsuario(@PathVariable Long idUsuario,
-            @RequestBody CriaAvaliacaoDto avaliacao) {
-        return this.service.buscaAvaliacaoPorIdUsuario(idUsuario, avaliacao);
+    public AvaliacaoDto buscaAvaliacaoPorIdUsuario(@PathVariable Long idUsuario) {
+        return this.service.buscaAvaliacaoPorIdUsuario(idUsuario);
 
     }
 
@@ -40,13 +40,14 @@ public class AvaliacaoController {
         return this.service.buscaAvaliacao(idAvaliacao);
     }
 
-    @GetMapping(path ="/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<AvaliacaoDto> buscaAvaliacoes() {
         return this.service.buscaAvaliacoes();
 
     }
 
-    @DeleteMapping(path = "/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(path = "/avaliacoes/{idAvaliacao}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaAvaliacao(@PathVariable Long idAvaliacao) {
         this.service.deletaAvaliacao(idAvaliacao);
     }

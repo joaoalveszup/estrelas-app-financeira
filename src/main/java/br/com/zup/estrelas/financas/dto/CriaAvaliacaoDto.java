@@ -1,12 +1,21 @@
 package br.com.zup.estrelas.financas.dto;
 
+import br.com.zup.estrelas.financas.entity.Avaliacao;
+
 public class CriaAvaliacaoDto {
 
     private int notaAvaliacao;
 
     private String comentario;
 
-    private Long idUsuario;
+    
+
+    public static CriaAvaliacaoDto fromAvaliacao(Avaliacao avaliacao) {
+        CriaAvaliacaoDto criaAvaliacaoDto = new CriaAvaliacaoDto();
+        criaAvaliacaoDto.setComentario(avaliacao.getComentario());
+        criaAvaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+        return criaAvaliacaoDto;
+    }
     
 
     public int getNotaAvaliacao() {
@@ -25,14 +34,6 @@ public class CriaAvaliacaoDto {
         this.comentario = comentario;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-
+   
 
 }

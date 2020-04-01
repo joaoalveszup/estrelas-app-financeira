@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.dto;
 
+import br.com.zup.estrelas.financas.entity.Avaliacao;
+
 public class AvaliacaoDto {
 
     private Long idAvaliacao;
@@ -8,7 +10,17 @@ public class AvaliacaoDto {
 
     private int notaAvaliacao;
 
-    private String nomeUsuario;
+    private String nomeUsuario;     
+        
+    public static AvaliacaoDto fromAvaliacao(Avaliacao avaliacao) {
+        AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
+        avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
+        avaliacaoDto.setComentario(avaliacao.getComentario());
+        avaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
+        avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
+        return avaliacaoDto;
+    }
+    
 
     public String getNomeUsuario() {
         return nomeUsuario;
