@@ -2,9 +2,12 @@ package br.com.zup.estrelas.financas.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
+import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
@@ -21,26 +24,33 @@ public class DespesaService {
     UsuarioRepository usuarioRepository;
 
 
-    public Despesa insereDespesa(Despesa despesa) {
-        Usuario usuario = usuarioRepository.findById(despesa.getIdUsuario()).get();
+    public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
-            if (despesa.getTipoDeDespesa().equals(despesaUsuario.getTipoDeDespesa())
-                    && !(despesa.getTipoDeDespesa().equals(TipoDespesa.OUTRO))) {
+            if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
+                    && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
                 return null;
             }
         }
-        return this.repository.save(despesa);
+        return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
     }
 
-    public Despesa buscaDespesa(Long idDespesa) {
+    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) {
+        Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa);
 
-        return repository.findById(idDespesa).get();
+        return DespesaDTO.fromDespesa(despesa);
     }
 
-    public List<Despesa> listaDespesas() {
-
-        return (List<Despesa>) this.repository.findAll();
+    public List<DespesaDTO> listaDespesas(Long idUsuario) {
+        
+        List<Despesa> listaDespesa = repository.findAllByIdUsuario(idUsuario);
+        List<DespesaDTO> listaDespesaDto = new ArrayList<DespesaDTO>();
+        
+        for(Despesa despesa : listaDespesa) {
+           listaDespesaDto.add(DespesaDTO.fromDespesa(despesa));
+        }
+        return listaDespesaDto; 
     }
 
     public void deletaDespesa(Long idDespesa) {
@@ -48,12 +58,13 @@ public class DespesaService {
         this.repository.deleteById(idDespesa);
     }
 
-    public Despesa atualizaDespesa(Long idDespesa, Despesa despesa) {
+    public Despesa atualizaDespesa(Long idDespesa, DespesaDTO despesaDto) {
 
         Despesa despesaBanco = repository.findById(idDespesa).get();
 
-        despesaBanco.setValor(despesa.getValor());
-        despesaBanco.setVencimento(despesa.getVencimento());
+        // TODO: tartar setValor e setVencimento.
+        despesaBanco.setValor(despesaDto.getValor());
+        despesaBanco.setVencimento(despesaDto.getVencimento());
 
         return this.repository.save(despesaBanco);
     }
