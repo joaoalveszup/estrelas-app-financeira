@@ -1,8 +1,10 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
@@ -15,8 +17,9 @@ public class ObjetivoService {
     @Autowired
     InvestimentoService investimentoService;
 
-    public Objetivo insereObjetivo(Objetivo objetivoRecebido) {
+    public Objetivo insereObjetivo(Long idUsuario, ObjetivoDto objetivoDtoRecebido) {
 
+        Objetivo objetivoRecebido = Objetivo.fromObjetivo(idUsuario, objetivoDtoRecebido);
         Objetivo objetivoAtual;
         try {
             objetivoAtual = objetivoRepository.findById(objetivoRecebido.getIdObjetivo()).get();
@@ -29,16 +32,26 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoRecebido);
     }
 
-    public Objetivo buscaObjetivo(Long idObjetivo) {
-        return this.objetivoRepository.findById(idObjetivo).get();
+    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo) {
+        Objetivo objetivo =
+                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).get();
+
+        return ObjetivoDto.fromEntity(objetivo);
     }
 
-    public List<Objetivo> listaObjetivos() {
-        return this.objetivoRepository.findAll();
+    public List<ObjetivoDto> listaObjetivos(Long idUsuario) {
+        List<Objetivo> listaObjetivo = this.objetivoRepository.findAllByIdUsuario(idUsuario);
+        List<ObjetivoDto> listaObjetivoDto = new ArrayList<ObjetivoDto>();
+
+        for (Objetivo objetivo : listaObjetivo) {
+            listaObjetivoDto.add(ObjetivoDto.fromEntity(objetivo));
+        }
+        return listaObjetivoDto;
     }
 
-    public Objetivo atualizarObjetivo(Long idObjetivo, Objetivo objetivo) {
+    public Objetivo atualizarObjetivo(Long idUsuario, Long idObjetivo, ObjetivoDto objetivoDto) {
 
+        Objetivo objetivo = Objetivo.fromObjetivo(idUsuario, objetivoDto);
         if (!(objetivo.getNumeroInvestimentos() > 0)) {
             return null;
         }
@@ -55,8 +68,15 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(Long idObjetivo) {
-        this.objetivoRepository.deleteById(idObjetivo);
+    public void deletaObjetivo(Long idUsuario, Long idObjetivo) {
+        try {
+            if(this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow() != null) {
+                this.objetivoRepository.deleteById(idObjetivo);
+            }
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
 }

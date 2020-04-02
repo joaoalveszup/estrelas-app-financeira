@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 
 @Entity
 public class Objetivo {
@@ -42,6 +43,18 @@ public class Objetivo {
 
     @Column(name = "numero_investimentos")
     private int numeroInvestimentos;
+    
+    public static Objetivo fromObjetivo(Long idUsuario, ObjetivoDto objetivoDto) {
+        Objetivo objetivo = new Objetivo();
+        objetivo.setNome(objetivoDto.getNome());
+        objetivo.setUsuario(objetivoDto.getUsuario());
+        objetivo.setInvestimentos(objetivoDto.getInvestimentos());
+        objetivo.setValorTotal(objetivoDto.getValorTotal());
+        objetivo.setNumeroInvestimentos(objetivoDto.getNumeroInvestimentos());
+        objetivo.setIdUsuario(idUsuario);
+        
+        return objetivo;
+    }
 
     public String getNome() {
         return nome;
