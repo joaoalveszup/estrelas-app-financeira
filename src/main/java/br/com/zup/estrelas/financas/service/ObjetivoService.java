@@ -39,9 +39,9 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoRecebido);
     }
 
-    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo) {
+    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
         Objetivo objetivo =
-                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).get();
+                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(() ->new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo"));
 
         return ObjetivoDto.fromEntity(objetivo);
     }

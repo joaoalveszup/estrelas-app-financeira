@@ -28,7 +28,7 @@ public class ObjetivoController {
     }
 
     @GetMapping(path = "/usuarios/{idUsuario}/objetivos/{idObjetivo}")
-    public ObjetivoDto buscaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo) {
+    public ObjetivoDto buscaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
         return objetivoService.buscaObjetivo(idUsuario, idObjetivo);
     }
 
