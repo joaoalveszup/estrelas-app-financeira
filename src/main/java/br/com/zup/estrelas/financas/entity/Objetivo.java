@@ -44,14 +44,14 @@ public class Objetivo {
     @Column(name = "numero_investimentos")
     private int numeroInvestimentos;
     
-    public static Objetivo fromObjetivo(Long idUsuario, ObjetivoDto objetivoDto) {
+    public static Objetivo fromDto(Usuario usuario, ObjetivoDto objetivoDto) {
         Objetivo objetivo = new Objetivo();
         objetivo.setNome(objetivoDto.getNome());
-        objetivo.setUsuario(objetivoDto.getUsuario());
+        objetivo.setUsuario(usuario);
         objetivo.setInvestimentos(objetivoDto.getInvestimentos());
         objetivo.setValorTotal(objetivoDto.getValorTotal());
         objetivo.setNumeroInvestimentos(objetivoDto.getNumeroInvestimentos());
-        objetivo.setIdUsuario(idUsuario);
+        objetivo.setIdUsuario(usuario.getIdUsuario());
         
         return objetivo;
     }

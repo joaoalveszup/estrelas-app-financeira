@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
+import br.com.zup.estrelas.financas.entity.Usuario;
+import br.com.zup.estrelas.financas.exceptions.ExceptionUsuarioEObjetivoNulo;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
+import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
 @Service
 public class ObjetivoService {
@@ -15,11 +18,15 @@ public class ObjetivoService {
     @Autowired
     ObjetivoRepository objetivoRepository;
     @Autowired
+    UsuarioRepository usuarioRepository;
+    @Autowired
     InvestimentoService investimentoService;
 
     public Objetivo insereObjetivo(Long idUsuario, ObjetivoDto objetivoDtoRecebido) {
 
-        Objetivo objetivoRecebido = Objetivo.fromObjetivo(idUsuario, objetivoDtoRecebido);
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Objetivo objetivoRecebido = Objetivo.fromDto(usuario, objetivoDtoRecebido);
+        objetivoRecebido.setIdUsuario(usuario.getIdUsuario());
         Objetivo objetivoAtual;
         try {
             objetivoAtual = objetivoRepository.findById(objetivoRecebido.getIdObjetivo()).get();
@@ -51,7 +58,9 @@ public class ObjetivoService {
 
     public Objetivo atualizarObjetivo(Long idUsuario, Long idObjetivo, ObjetivoDto objetivoDto) {
 
-        Objetivo objetivo = Objetivo.fromObjetivo(idUsuario, objetivoDto);
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Objetivo objetivo = Objetivo.fromDto(usuario, objetivoDto);
+        objetivo.setIdUsuario(idUsuario);
         if (!(objetivo.getNumeroInvestimentos() > 0)) {
             return null;
         }
@@ -69,13 +78,10 @@ public class ObjetivoService {
     }
 
     public void deletaObjetivo(Long idUsuario, Long idObjetivo) {
-        try {
-            if(this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow() != null) {
-                this.objetivoRepository.deleteById(idObjetivo);
-            }
-            
-        } catch (Exception e) {
-            // TODO: handle exception
+        
+        if (this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
+                .orElseThrow(new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo")) != null) {
+            this.objetivoRepository.deleteById(idObjetivo);
         }
     }
 

@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 import br.com.zup.estrelas.financas.entity.Investimento;
 
 @Repository
-public interface InvestimentoRepository extends JpaRepository<Investimento, Long>{
+public interface InvestimentoRepository extends JpaRepository<Investimento, Long> {
 
     long countByPagoAndIdObjetivo(Boolean pago, Long idObjetivo);
+
     List<Investimento> findByPagoAndIdObjetivo(Boolean Pago, Long idObjetivo);
-    
+
 }
