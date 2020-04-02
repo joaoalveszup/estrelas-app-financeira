@@ -4,11 +4,11 @@ import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.enums.Parentesco;
 
 public class DependenteDto {
-    
+
     private String nome;
     private Parentesco parentesco;
     private Float renda;
-    
+
     public static DependenteDto fromDto(Dependente dependente) {
         DependenteDto dependenteDto = new DependenteDto();
         dependenteDto.setNome(dependente.getNome());

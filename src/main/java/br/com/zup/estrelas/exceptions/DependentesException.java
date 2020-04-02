@@ -1,9 +1,9 @@
 package br.com.zup.estrelas.exceptions;
 
 @SuppressWarnings("serial")
-public class ValidaDependentes extends Exception {
+public class DependentesException extends Exception {
 
-    public ValidaDependentes(String mensagem) {
+    public DependentesException(String mensagem) {
         super(mensagem);
     }
 

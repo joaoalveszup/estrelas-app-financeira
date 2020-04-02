@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.enums.Parentesco;
 
@@ -41,11 +42,23 @@ public class Dependente {
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
 
-    public static Dependente fromDto(DependenteDto dependenteDto) {
+    public static Dependente fromDto(DependenteDto dependenteDto, Long idUsuario,
+            Long idDependente) {
         Dependente dependente = new Dependente();
+        dependente.setIdDependente(idDependente);
         dependente.setNome(dependenteDto.getNome());
         dependente.setRenda(dependenteDto.getRenda());
         dependente.setParentesco(dependenteDto.getParentesco());
+        dependente.setIdUsuario(idUsuario);
+        return dependente;
+    }
+
+    public static Dependente fromCriacaoDto(CriaDependenteDto criaDependenteDto, Long idUsuario) {
+        Dependente dependente = new Dependente();
+        dependente.setNome(criaDependenteDto.getNome());
+        dependente.setRenda(criaDependenteDto.getRenda());
+        dependente.setParentesco(criaDependenteDto.getParentesco());
+        dependente.setIdUsuario(idUsuario);
         return dependente;
     }
 
@@ -97,7 +110,5 @@ public class Dependente {
     public void setParentesco(Parentesco parentesco) {
         this.parentesco = parentesco;
     }
-
-
 
 }
