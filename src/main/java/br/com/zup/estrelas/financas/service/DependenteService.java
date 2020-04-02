@@ -1,8 +1,11 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.Parentesco;
@@ -20,9 +23,9 @@ public class DependenteService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Dependente insereDependente(Dependente dependente) {
+    public Dependente insereDependente(DependenteDto dependenteDto, Long idUsuario) {
 
-        Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
@@ -31,48 +34,61 @@ public class DependenteService {
             }
         }
 
-        if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
-            usuario.setSalarioLiquido(usuario.getSalarioLiquido() + dependente.getRenda());
+        if (dependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
+            usuario.setSalarioLiquido(usuario.getSalarioLiquido() + dependenteDto.getRenda());
             this.usuarioRepository.save(usuario);
         }
-        return this.dependenteRepository.save(dependente);
+
+        Dependente dependenteEntidade = Dependente.fromDto(dependenteDto);
+        dependenteEntidade.setIdUsuario(idUsuario);
+
+        return this.dependenteRepository.save(dependenteEntidade);
     }
 
-    public Dependente modificaDependente(Long idDependente, Dependente dependente) {
+    public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario, Long idDependente) {
 
         Dependente dependenteBanco = dependenteRepository.findById(idDependente).get();
-        Usuario usuario = usuarioRepository.findById(dependenteBanco.getIdUsuario()).get();
 
-        dependenteBanco.setNome(dependente.getNome());
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+
+        dependenteBanco.setNome(dependenteDto.getNome());
 
         Float salarioAntigo = dependenteBanco.getRenda();
-        dependenteBanco.setRenda(dependente.getRenda());
+        dependenteBanco.setRenda(dependenteDto.getRenda());
         Float salarioAtual = dependenteBanco.getRenda();
 
         usuario.setSalarioLiquido(usuario.getSalarioLiquido() + salarioAtual - salarioAntigo);
         this.usuarioRepository.save(usuario);
+
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public Dependente buscaDependente(Long idDependente) {
-        return this.dependenteRepository.findById(idDependente).get();
+    public DependenteDto buscaDependente(Long idUsuario, Long idDependente) {
+        Dependente dependente = this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
+        return DependenteDto.fromDto(dependente);
     }
 
-    public List<Dependente> buscaDependentes() {
-        return (List<Dependente>) dependenteRepository.findAll();
+    public List<DependenteDto> buscaDependentes(Long idUsuario) {
+        
+        List<Dependente> listaDependente = this.dependenteRepository.findAllByIdUsuario(idUsuario);
+        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
+        
+        for(Dependente dependente : listaDependente) {
+            listaDependenteDto.add(DependenteDto.fromDto(dependente));
+        }
+        
+        return listaDependenteDto;
     }
 
-    public void deletaDependente(Long idDependente) {
-
-        Dependente dependente = buscaDependente(idDependente);
-        Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
+    public void deletaDependente(DependenteDto dependente, Long idUsuario, Long idDependente) {
+       
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
         if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependente.getRenda());
             this.usuarioRepository.save(usuario);
         }
+
         this.dependenteRepository.deleteById(idDependente);
     }
 }
-
-

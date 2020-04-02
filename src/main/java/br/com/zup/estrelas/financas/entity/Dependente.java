@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.enums.Parentesco;
 
 @Entity
+
 public class Dependente {
 
     @Id
@@ -38,6 +40,14 @@ public class Dependente {
 
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
+
+    public static Dependente fromDto(DependenteDto dependenteDto) {
+        Dependente dependente = new Dependente();
+        dependente.setNome(dependenteDto.getNome());
+        dependente.setRenda(dependenteDto.getRenda());
+        dependente.setParentesco(dependenteDto.getParentesco());
+        return dependente;
+    }
 
     public Long getIdDependente() {
         return idDependente;
@@ -83,5 +93,11 @@ public class Dependente {
     public Parentesco getParentesco() {
         return parentesco;
     }
+
+    public void setParentesco(Parentesco parentesco) {
+        this.parentesco = parentesco;
+    }
+
+
 
 }

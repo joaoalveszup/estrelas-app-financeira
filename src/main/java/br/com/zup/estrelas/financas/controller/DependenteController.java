@@ -11,43 +11,40 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.service.DependenteService;
 
 @RestController
-@RequestMapping(value = {"/usuarios" , "{idUsuario}" , "/dependentes" , ""})
+
 public class DependenteController {
 
     @Autowired
     DependenteService dependenteService;
 
     @PostMapping(path = "/usuarios/{idUsuario}/dependentes")
-    public Dependente insereDependente(@RequestBody Dependente dependente) {
-        return this.dependenteService.insereDependente(dependente);
-    }
-
-    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Dependente buscaDependente(@PathVariable Long idDependente) {
-        return this.dependenteService.buscaDependente(idDependente);
-    }
-
-    @GetMapping(path = "/usuarios/{idUsuario}/dependentes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Dependente> buscaDependentes() {
-        return this.dependenteService.buscaDependentes();
+    public Dependente insereDependente(@RequestBody DependenteDto dependenteDto, @PathVariable Long idUsuario) {
+        return this.dependenteService.insereDependente(dependenteDto, idUsuario);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Dependente modificaDependente(@PathVariable Long idDependente,
-            @RequestBody Dependente dependente) {
+    public Dependente modificaDependente(@RequestBody DependenteDto dependenteDto, @PathVariable Long idUsuario, @PathVariable Long idDependente) {
+        return this.dependenteService.modificaDependente(dependenteDto, idUsuario, idDependente);
+    }
+    
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public DependenteDto buscaDependente(@PathVariable Long idUsuario, @PathVariable Long idDependente) {
+        return this.dependenteService.buscaDependente(idUsuario, idDependente);
+    }
 
-        return this.dependenteService.modificaDependente(idDependente, dependente);
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario) {
+        return (List<DependenteDto>) this.dependenteService.buscaDependentes(idUsuario);
     }
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDependente(@PathVariable Long idDependente) {
-        this.dependenteService.deletaDependente(idDependente);
+    public void deletaDependente(@RequestBody DependenteDto dependente, @PathVariable Long idUsuario, @PathVariable Long idDependente) {
+        this.dependenteService.deletaDependente(dependente, idUsuario, idDependente);
     }
 
 }
-
-
