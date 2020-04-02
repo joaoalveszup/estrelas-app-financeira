@@ -44,7 +44,7 @@ public class SugestaoController {
     }
 
     @PutMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Sugestao alteraSugestao(@PathVariable Long idSugestao, @RequestBody Sugestao sugestao) {
+    public Sugestao alteraSugestao(@PathVariable Long idSugestao, @RequestBody Sugestao sugestao) throws ValidaCampoECaratereException{
         return this.sugestaoService.alteraSugestao(idSugestao, sugestao);
     }
 
