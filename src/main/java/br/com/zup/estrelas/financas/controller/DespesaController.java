@@ -25,11 +25,7 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(path = "/usuarios/{idUsuario}/despesas")
-<<<<<<< HEAD
     public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) throws DespesaException {
-=======
-    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) {
->>>>>>> e90cab1b38b5a513a9bb71bbe771ce4d6a9377d9
         return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
 
