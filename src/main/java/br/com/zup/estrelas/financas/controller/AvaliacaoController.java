@@ -36,27 +36,27 @@ public class AvaliacaoController {
 
     }
 
-    @GetMapping(path = "/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AvaliacaoDto buscaAvaliacao(@PathVariable Long idAvaliacao) {
         return this.service.buscaAvaliacao(idAvaliacao);
     }
 
-    @GetMapping(path = "/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/usuarios/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<AvaliacaoDto> buscaAvaliacoes() {
         return this.service.buscaAvaliacoes();
 
     }
 
-    @DeleteMapping(path = "/avaliacoes/{idAvaliacao}",
+    @DeleteMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaAvaliacao(@PathVariable Long idAvaliacao) {
-        this.service.deletaAvaliacao(idAvaliacao);
+    public void deletaAvaliacao(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario)
+            throws AvaliacaoRegraDeNegocioExeption {
+        this.service.deletaAvaliacao(idAvaliacao, idUsuario);
     }
 
     @PutMapping(path = "/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
-            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption
-    {
+            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption {
         return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
 
     }

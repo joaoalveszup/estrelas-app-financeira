@@ -16,6 +16,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
+    private static final String ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA =
+            "ERRO ID-USUÁRIO OU ID-AVALIAÇÃO INCORRETA!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
             "OPS OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
@@ -51,7 +53,11 @@ public class AvaliacaoService {
 
     }
 
-    public void deletaAvaliacao(Long idAvaliacao) {
+    public void deletaAvaliacao(Long idAvaliacao, Long idUsuario)
+            throws AvaliacaoRegraDeNegocioExeption {
+        avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
+                .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
+                        ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
     }
