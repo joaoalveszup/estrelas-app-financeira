@@ -98,6 +98,7 @@ public class DependenteService {
     }
 
     public List<DependenteDto> buscaDependentePorParentesco(Long idUsuario, Parentesco parentesco) {
+
         List<Dependente> listaDependentePorParentesco =
                 this.dependenteRepository.findByIdUsuarioAndParentesco(idUsuario, parentesco);
         List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
