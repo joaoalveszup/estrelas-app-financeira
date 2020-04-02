@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.entity.Sugestao;
+import br.com.zup.estrelas.financas.exception.ValidaCampoECaratereException;
 import br.com.zup.estrelas.financas.service.SugestaoService;
 
 
@@ -23,7 +24,7 @@ public class SugestaoController {
     SugestaoService sugestaoService;
 
     @PostMapping
-    public Sugestao insereSugestao(@RequestBody Sugestao sugestao) {
+    public Sugestao insereSugestao(@RequestBody Sugestao sugestao) throws ValidaCampoECaratereException {
         return this.sugestaoService.insereSugestao(sugestao);
     }
 
