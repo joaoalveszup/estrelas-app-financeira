@@ -8,6 +8,7 @@ import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
 import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
 import br.com.zup.estrelas.financas.entity.Usuario;
+import br.com.zup.estrelas.financas.exceptions.AvaliacaoRegraDeNegocioExeption;
 import br.com.zup.estrelas.financas.repository.AvaliacaoRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -15,6 +16,9 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
+    private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA = "OPS OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
+            + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
+    private static final String MSG_ERRO_AVALIACAO_EXISTENTE = "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO!";
     private static final int MAX_CARACTERE = 400;
     private static final int NOTA_MIN = 0;
     private static final int NOTA_MAX = 5;
@@ -33,9 +37,6 @@ public class AvaliacaoService {
     public AvaliacaoDto buscaAvaliacaoPorIdUsuario(Long idUsuario) {
         Avaliacao avaliacaoBuscada = avaliacaoRepository.findFirstByIdUsuario(idUsuario);
         return AvaliacaoDto.fromAvaliacao(avaliacaoBuscada);
-
-
-
     }
 
     public List<AvaliacaoDto> buscaAvaliacoes() {
@@ -46,7 +47,6 @@ public class AvaliacaoService {
         }
         return listadeAvaliacaoDto;
 
-
     }
 
     public void deletaAvaliacao(Long idAvaliacao) {
@@ -54,7 +54,8 @@ public class AvaliacaoService {
 
     }
 
-    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto) {
+    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto)
+            throws AvaliacaoRegraDeNegocioExeption {
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
             Avaliacao avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao).get();
             avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
@@ -62,20 +63,23 @@ public class AvaliacaoService {
             return avaliacaoRepository.save(avaliacaoBanco);
 
         }
-        return null;
+        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
     }
 
-    public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario) {
+    public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario)
+            throws AvaliacaoRegraDeNegocioExeption {
 
         if (this.checaExistenciaAvaliacao(criaAvaliacaoDto, idUsuario)) {
-            return null;
+            throw new AvaliacaoRegraDeNegocioExeption(
+                    MSG_ERRO_AVALIACAO_EXISTENTE);
+
         }
 
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
             return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
         }
 
-        return null;
+        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
 
     }
 

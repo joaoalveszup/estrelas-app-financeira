@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
 import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 import br.com.zup.estrelas.financas.entity.Avaliacao;
+import br.com.zup.estrelas.financas.exceptions.AvaliacaoRegraDeNegocioExeption;
 import br.com.zup.estrelas.financas.service.AvaliacaoService;
 
 @RestController
@@ -23,7 +24,7 @@ public class AvaliacaoController {
 
     @PostMapping(path = "/usuarios/{idUsuario}/avaliacoes")
     public Avaliacao insereAvaliacao(@PathVariable Long idUsuario,
-            @RequestBody CriaAvaliacaoDto avaliacao) {
+            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption {
         return this.service.insereAvaliacao(avaliacao, idUsuario);
 
     }
@@ -54,7 +55,8 @@ public class AvaliacaoController {
 
     @PutMapping(path = "/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
-            @RequestBody CriaAvaliacaoDto avaliacao) {
+            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption
+    {
         return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
 
     }
