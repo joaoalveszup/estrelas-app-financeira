@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.entity.Objetivo;
+import br.com.zup.estrelas.financas.exceptions.ExceptionUsuarioEObjetivoNulo;
 import br.com.zup.estrelas.financas.service.ObjetivoService;
 
 @RestController
@@ -43,7 +44,7 @@ public class ObjetivoController {
     }
 
     @DeleteMapping("/usuarios/{idUsuario}/objetivos/{idObjetivo}")
-    public void deletaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo) {
+    public void deletaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
         this.objetivoService.deletaObjetivo(idUsuario, idObjetivo);
     }
 

@@ -3,7 +3,6 @@ package br.com.zup.estrelas.financas.dto;
 import java.util.List;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
-import br.com.zup.estrelas.financas.entity.Usuario;
 
 public class ObjetivoDto {
 

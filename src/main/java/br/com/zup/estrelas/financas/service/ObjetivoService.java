@@ -77,12 +77,12 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(Long idUsuario, Long idObjetivo) {
+    public void deletaObjetivo(Long idUsuario, Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
         
-        if (this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
-                .orElseThrow(new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo")) != null) {
+        this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
+                .orElseThrow(() ->new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo"));
             this.objetivoRepository.deleteById(idObjetivo);
-        }
+        
     }
 
 }
