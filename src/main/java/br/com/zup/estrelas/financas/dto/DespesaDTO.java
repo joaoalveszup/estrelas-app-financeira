@@ -2,7 +2,6 @@ package br.com.zup.estrelas.financas.dto;
 
 import java.time.LocalDate;
 import br.com.zup.estrelas.financas.entity.Despesa;
-import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
 
 public class DespesaDTO {
@@ -54,16 +53,5 @@ public class DespesaDTO {
     public void setIdDespesa(Long idDespesa) {
         this.idDespesa = idDespesa;
     }
-
-    private Usuario usuario;
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
 
 }

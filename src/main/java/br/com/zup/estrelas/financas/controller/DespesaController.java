@@ -40,8 +40,8 @@ public class DespesaController {
     }
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDespesa(@PathVariable Long idDespesa) {
-        this.despesaService.deletaDespesa(idDespesa);
+    public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaException {
+        this.despesaService.deletaDespesa(idUsuario, idDespesa);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})

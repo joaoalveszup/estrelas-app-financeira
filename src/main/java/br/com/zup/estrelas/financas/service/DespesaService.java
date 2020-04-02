@@ -25,45 +25,49 @@ public class DespesaService {
     UsuarioRepository usuarioRepository;
 
 
-    public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario) throws DespesaException {
+    public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario)
+            throws DespesaException {
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
             if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
-                throw new DespesaException("Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.");
+                throw new DespesaException(
+                        "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.");
             }
         }
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
     }
 
     public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) {
-        Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa);
+        Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa).get();
 
         return DespesaDTO.fromDespesa(despesa);
     }
 
     public List<DespesaDTO> listaDespesas(Long idUsuario) {
-        
+
         List<Despesa> listaDespesa = repository.findAllByIdUsuario(idUsuario);
         List<DespesaDTO> listaDespesaDto = new ArrayList<DespesaDTO>();
-        
-        for(Despesa despesa : listaDespesa) {
-           listaDespesaDto.add(DespesaDTO.fromDespesa(despesa));
+
+        for (Despesa despesa : listaDespesa) {
+            listaDespesaDto.add(DespesaDTO.fromDespesa(despesa));
         }
-        return listaDespesaDto; 
+        return listaDespesaDto;
     }
 
-    public void deletaDespesa(Long idDespesa) {
-
+    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaException {
+        repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
+                .orElseThrow(() -> new DespesaException(
+                        "Despesa não corresponde ao usuario inserido, ou despesa ja foi deletada. Por favor inserir um usuario valido ou insira outra despesa."));
         this.repository.deleteById(idDespesa);
     }
 
     public Despesa atualizaDespesa(Long idDespesa, DespesaDTO despesaDto) {
 
         Despesa despesaBanco = repository.findById(idDespesa).get();
-        
-       
+
+
         despesaBanco.setValor(despesaDto.getValor());
         despesaBanco.setVencimento(despesaDto.getVencimento());
 
