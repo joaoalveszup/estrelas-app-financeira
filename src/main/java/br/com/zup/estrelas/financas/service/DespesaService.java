@@ -11,6 +11,7 @@ import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
+import br.com.zup.estrelas.financas.exception.DespesaException;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -24,13 +25,13 @@ public class DespesaService {
     UsuarioRepository usuarioRepository;
 
 
-    public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario) {
+    public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario) throws DespesaException {
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
             if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
-                return null;
+                throw new DespesaException("Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.");
             }
         }
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
@@ -61,8 +62,8 @@ public class DespesaService {
     public Despesa atualizaDespesa(Long idDespesa, DespesaDTO despesaDto) {
 
         Despesa despesaBanco = repository.findById(idDespesa).get();
-
-        // TODO: tartar setValor e setVencimento.
+        
+       
         despesaBanco.setValor(despesaDto.getValor());
         despesaBanco.setVencimento(despesaDto.getVencimento());
 

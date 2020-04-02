@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
+import br.com.zup.estrelas.financas.exception.DespesaException;
 import br.com.zup.estrelas.financas.service.DespesaService;
 
 
@@ -24,7 +25,7 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(path = "/usuarios/{idUsuario}/despesas")
-    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) {
+    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) throws DespesaException {
         return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
 
