@@ -81,7 +81,6 @@ public class DependenteService {
         for (Dependente dependente : listaDependente) {
             listaDependenteDto.add(DependenteDto.fromDto(dependente));
         }
-
         return listaDependenteDto;
     }
 
