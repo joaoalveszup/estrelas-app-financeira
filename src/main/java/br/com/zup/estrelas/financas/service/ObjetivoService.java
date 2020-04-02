@@ -15,6 +15,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class ObjetivoService {
 
+    private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
+            "Usuário ou ojetivo não correspondem.";
     @Autowired
     ObjetivoRepository objetivoRepository;
     @Autowired
@@ -39,9 +41,12 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoRecebido);
     }
 
-    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
+    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo)
+            throws ExceptionUsuarioEObjetivoNulo {
         Objetivo objetivo =
-                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(() ->new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo"));
+                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
+                        .orElseThrow(() -> new ExceptionUsuarioEObjetivoNulo(
+                                USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
 
         return ObjetivoDto.fromEntity(objetivo);
     }
@@ -77,12 +82,13 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(Long idUsuario, Long idObjetivo) throws ExceptionUsuarioEObjetivoNulo {
-        
-        this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
-                .orElseThrow(() ->new ExceptionUsuarioEObjetivoNulo("Usuario ou bojetivo nullo"));
-            this.objetivoRepository.deleteById(idObjetivo);
-        
+    public void deletaObjetivo(Long idUsuario, Long idObjetivo)
+            throws ExceptionUsuarioEObjetivoNulo {
+
+        this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
+                () -> new ExceptionUsuarioEObjetivoNulo(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
+        this.objetivoRepository.deleteById(idObjetivo);
+
     }
 
 }
