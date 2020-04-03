@@ -69,8 +69,7 @@ public class AvaliacaoService {
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
                                 ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
-            avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
-            avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
+            CriaAvaliacaoDto.fromAvaliacao(avaliacaoBanco);
             return avaliacaoRepository.save(avaliacaoBanco);
         }
         throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
