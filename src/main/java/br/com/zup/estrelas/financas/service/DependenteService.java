@@ -47,10 +47,10 @@ public class DependenteService {
             this.usuarioRepository.save(usuario);
         }
 
-        Dependente dependenteEntidade = Dependente.fromCriacaoDto(criaDependenteDto, idUsuario);
-        dependenteEntidade.setIdUsuario(idUsuario);
+        Dependente dependente = Dependente.fromCriacaoDto(criaDependenteDto, idUsuario);
+        dependente.setIdUsuario(idUsuario);
 
-        return this.dependenteRepository.save(dependenteEntidade);
+        return this.dependenteRepository.save(dependente);
     }
 
     public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario,
@@ -72,14 +72,10 @@ public class DependenteService {
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public DependenteDto buscaDependente(Long idUsuario, Long idDependente)
-            throws DependentesException {
+    public DependenteDto buscaDependente(Long idUsuario, Long idDependente) {
 
         Dependente dependente = this.dependenteRepository
                 .findByIdUsuarioAndIdDependente(idUsuario, idDependente).get();
-
-        this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-                .orElseThrow(() -> new DependentesException(MENSAGEM_EXCEPTION_GENERICA));
 
         return DependenteDto.fromDto(dependente);
     }

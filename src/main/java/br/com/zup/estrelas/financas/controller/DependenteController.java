@@ -40,7 +40,7 @@ public class DependenteController {
     @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public DependenteDto buscaDependente(@PathVariable Long idUsuario,
-            @PathVariable Long idDependente) throws DependentesException {
+            @PathVariable Long idDependente) {
         return this.dependenteService.buscaDependente(idUsuario, idDependente);
     }
 
