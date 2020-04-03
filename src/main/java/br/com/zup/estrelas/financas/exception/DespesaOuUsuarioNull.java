@@ -1,13 +1,13 @@
 package br.com.zup.estrelas.financas.exception;
 
-public class DespesaException extends Exception {
+public class DespesaOuUsuarioNull extends Exception {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     
-    public DespesaException(String mensagem) {
+    public DespesaOuUsuarioNull(String mensagem) {
         super(mensagem);
     }
 

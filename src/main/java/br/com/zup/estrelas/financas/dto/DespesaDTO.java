@@ -52,6 +52,6 @@ public class DespesaDTO {
 
     public void setIdDespesa(Long idDespesa) {
         this.idDespesa = idDespesa;
-    }
+    }   
 
 }

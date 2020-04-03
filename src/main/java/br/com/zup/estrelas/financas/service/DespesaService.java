@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
-import br.com.zup.estrelas.financas.exception.DespesaException;
+import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNull;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -19,6 +20,9 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class DespesaService {
 
+    private static final String ESTE_TIPO_DE_DESPESA_JÁ_EXISTE = "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.";
+    private static final String DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA =
+            "Despesa não corresponde ao usuario inserido, ou despesa ja foi deletada. Por favor inserir um usuario valido ou insira outra despesa.";
     @Autowired
     DespesaRepository repository;
     @Autowired
@@ -26,14 +30,14 @@ public class DespesaService {
 
 
     public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario)
-            throws DespesaException {
+            throws DespesaOuUsuarioNull {
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
             if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
-                throw new DespesaException(
-                        "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.");
+                throw new DespesaOuUsuarioNull(
+                        ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
             }
         }
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
@@ -56,22 +60,20 @@ public class DespesaService {
         return listaDespesaDto;
     }
 
-    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaException {
+    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNull {
         repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
-                .orElseThrow(() -> new DespesaException(
-                        "Despesa não corresponde ao usuario inserido, ou despesa ja foi deletada. Por favor inserir um usuario valido ou insira outra despesa."));
+                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                        DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
         this.repository.deleteById(idDespesa);
     }
 
-    public Despesa atualizaDespesa(Long idDespesa, DespesaDTO despesaDto) {
-
-        Despesa despesaBanco = repository.findById(idDespesa).get();
-
-
-        despesaBanco.setValor(despesaDto.getValor());
-        despesaBanco.setVencimento(despesaDto.getVencimento());
-
-        return this.repository.save(despesaBanco);
+    public Despesa atualizaDespesa(Long idUsuario, Long idDespesa, AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {   
+        
+        Despesa despesaDoBanco = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
+        .orElseThrow(() -> new DespesaOuUsuarioNull(
+                DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
+        TipoDespesa tipoDespesa = despesaDoBanco.getTipoDeDespesa();
+        return this.repository.save(Despesa.fromAtualizaDespesa(atualizaDespesaDto, tipoDespesa, idUsuario));
     }
 
     public List<Despesa> despesasAVencer(Long idUsuario) {

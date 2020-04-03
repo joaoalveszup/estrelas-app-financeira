@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
 
@@ -46,6 +47,15 @@ public class Despesa {
         despesaConvertida.setTipoDeDespesa(criaDespesaDto.getTipoDespesa());
         despesaConvertida.setValor(criaDespesaDto.getValor());
         despesaConvertida.setVencimento(criaDespesaDto.getVencimento());
+        return despesaConvertida;
+    }
+    
+    public static Despesa fromAtualizaDespesa(AtualizaDespesaDto atualizaDespesaDto, TipoDespesa tipoDespesa, Long idUsuario) {
+        Despesa despesaConvertida = new Despesa();
+        despesaConvertida.setValor(atualizaDespesaDto.getValor());
+        despesaConvertida.setVencimento(atualizaDespesaDto.getVencimento());
+        despesaConvertida.setTipoDeDespesa(tipoDespesa);
+        despesaConvertida.setIdUsuario(idUsuario);
         return despesaConvertida;
     }
     

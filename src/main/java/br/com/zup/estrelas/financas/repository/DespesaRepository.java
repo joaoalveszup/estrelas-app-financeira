@@ -16,4 +16,5 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
      List<Despesa> findAllByIdUsuario(Long idUsuario);
      
      Optional<Despesa> findByIdUsuarioAndIdDespesa(Long idUsuario, Long idDespesa);
+     
 }

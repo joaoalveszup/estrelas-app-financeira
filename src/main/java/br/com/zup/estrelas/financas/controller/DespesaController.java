@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
-import br.com.zup.estrelas.financas.exception.DespesaException;
+import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNull;
 import br.com.zup.estrelas.financas.service.DespesaService;
 
 
@@ -25,7 +26,7 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(path = "/usuarios/{idUsuario}/despesas")
-    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) throws DespesaException {
+    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto, @PathVariable Long idUsuario) throws DespesaOuUsuarioNull {
         return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
 
@@ -40,14 +41,13 @@ public class DespesaController {
     }
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaException {
+    public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaOuUsuarioNull {
         this.despesaService.deletaDespesa(idUsuario, idDespesa);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Despesa atualizaDespesa(@PathVariable Long idDespesa, @RequestBody DespesaDTO despesaDto) {
-
-        return this.despesaService.atualizaDespesa(idDespesa, despesaDto);
+    public Despesa atualizaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa, @RequestBody AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {
+        return this.despesaService.atualizaDespesa(idUsuario, idDespesa, atualizaDespesaDto);
 
     }
 
