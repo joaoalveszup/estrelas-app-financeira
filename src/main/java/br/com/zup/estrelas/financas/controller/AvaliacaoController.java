@@ -36,11 +36,6 @@ public class AvaliacaoController {
 
     }
 
-    @GetMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AvaliacaoDto buscaAvaliacao(@PathVariable Long idAvaliacao) {
-        return this.service.buscaAvaliacao(idAvaliacao);
-    }
-
     @GetMapping(path = "/usuarios/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<AvaliacaoDto> buscaAvaliacoes() {
         return this.service.buscaAvaliacoes();
@@ -54,7 +49,8 @@ public class AvaliacaoController {
         this.service.deletaAvaliacao(idAvaliacao, idUsuario);
     }
 
-    @PutMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario,
             @RequestBody CriaAvaliacaoDto criaAvaliacaoDto) throws AvaliacaoRegraDeNegocioExeption {
         return this.service.alteraAvaliacao(idAvaliacao, criaAvaliacaoDto, idUsuario);

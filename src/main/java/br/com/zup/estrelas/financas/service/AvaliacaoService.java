@@ -32,9 +32,19 @@ public class AvaliacaoService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public AvaliacaoDto buscaAvaliacao(Long idAvaliacao) {
-        Avaliacao avaliacao = avaliacaoRepository.findById(idAvaliacao).get();
-        return AvaliacaoDto.fromAvaliacao(avaliacao);
+    public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario)
+            throws AvaliacaoRegraDeNegocioExeption {
+
+        if (this.checaExistenciaAvaliacao(criaAvaliacaoDto, idUsuario)) {
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_AVALIACAO_EXISTENTE);
+
+        }
+
+        if (this.validaAvaliacao(criaAvaliacaoDto)) {
+            return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
+        }
+
+        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
 
     }
 
@@ -76,21 +86,6 @@ public class AvaliacaoService {
         throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
     }
 
-    public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario)
-            throws AvaliacaoRegraDeNegocioExeption {
-
-        if (this.checaExistenciaAvaliacao(criaAvaliacaoDto, idUsuario)) {
-            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_AVALIACAO_EXISTENTE);
-
-        }
-
-        if (this.validaAvaliacao(criaAvaliacaoDto)) {
-            return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
-        }
-
-        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
-
-    }
 
     private boolean validaAvaliacao(CriaAvaliacaoDto avaliacao) {
 
