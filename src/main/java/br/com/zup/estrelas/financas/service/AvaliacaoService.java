@@ -19,7 +19,7 @@ public class AvaliacaoService {
     private static final String ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA =
             "ERRO ID-USUÁRIO OU ID-AVALIAÇÃO INCORRETA!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
-            "OPS OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
+            "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
     private static final String MSG_ERRO_AVALIACAO_EXISTENTE =
             "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO!";
@@ -62,14 +62,16 @@ public class AvaliacaoService {
 
     }
 
-    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto)
-            throws AvaliacaoRegraDeNegocioExeption {
+    public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto,
+            Long idUsuario) throws AvaliacaoRegraDeNegocioExeption {
+        Avaliacao avaliacaoBanco =
+                avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
+                        .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
+                                ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
-            Avaliacao avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao).get();
             avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
             avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
             return avaliacaoRepository.save(avaliacaoBanco);
-
         }
         throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
     }

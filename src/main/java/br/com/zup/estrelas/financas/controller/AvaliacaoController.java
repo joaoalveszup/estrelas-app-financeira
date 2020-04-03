@@ -54,10 +54,10 @@ public class AvaliacaoController {
         this.service.deletaAvaliacao(idAvaliacao, idUsuario);
     }
 
-    @PutMapping(path = "/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao,
-            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption {
-        return this.service.alteraAvaliacao(idAvaliacao, avaliacao);
+    @PutMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Avaliacao alteraAvaliacao(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario,
+            @RequestBody CriaAvaliacaoDto criaAvaliacaoDto) throws AvaliacaoRegraDeNegocioExeption {
+        return this.service.alteraAvaliacao(idAvaliacao, criaAvaliacaoDto, idUsuario);
 
     }
 
