@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.enums.TipoSugestao;
 
 
@@ -19,7 +20,7 @@ public class Sugestao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSugestao;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String titulo;
 
     @Column(nullable = false)
@@ -28,6 +29,15 @@ public class Sugestao {
     @Column(name = "tipo_sugestao", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoSugestao tipoSugestao;
+
+    public static Sugestao fromSugestaDto(SugestaoResponseDto sugestaoResponseDto) {
+        Sugestao sugestao = new Sugestao();
+        sugestao.setDescricao(sugestaoResponseDto.getDescricao());
+        sugestao.setTitulo(sugestaoResponseDto.getTitulo());
+        sugestao.setTipoSugestao(sugestaoResponseDto.getTipoSugestao());
+        return sugestao;
+
+    }
 
     public Long getIdSugestao() {
         return idSugestao;
@@ -61,6 +71,6 @@ public class Sugestao {
         this.tipoSugestao = tipoSugestao;
     }
 
-    
+
 
 }
