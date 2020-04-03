@@ -8,7 +8,7 @@ public class CriaAvaliacaoDto {
 
     private String comentario;
 
-    
+
 
     public static CriaAvaliacaoDto fromAvaliacao(Avaliacao avaliacao) {
         CriaAvaliacaoDto criaAvaliacaoDto = new CriaAvaliacaoDto();
@@ -16,7 +16,6 @@ public class CriaAvaliacaoDto {
         criaAvaliacaoDto.setNotaAvaliacao(avaliacao.getNotaAvaliacao());
         return criaAvaliacaoDto;
     }
-    
 
     public int getNotaAvaliacao() {
         return notaAvaliacao;
@@ -34,6 +33,6 @@ public class CriaAvaliacaoDto {
         this.comentario = comentario;
     }
 
-   
+
 
 }

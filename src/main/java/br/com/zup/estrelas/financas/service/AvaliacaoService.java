@@ -22,7 +22,7 @@ public class AvaliacaoService {
             "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
     private static final String MSG_ERRO_AVALIACAO_EXISTENTE =
-            "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO!";
+            "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO, OU O USUÁRIO NÃO EXISTE";
     private static final int MAX_CARACTERE = 400;
     private static final int NOTA_MIN = 0;
     private static final int NOTA_MAX = 5;
@@ -69,7 +69,8 @@ public class AvaliacaoService {
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
                                 ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
-            CriaAvaliacaoDto.fromAvaliacao(avaliacaoBanco);
+            avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
+            avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
             return avaliacaoRepository.save(avaliacaoBanco);
         }
         throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
