@@ -10,8 +10,8 @@ public class AvaliacaoDto {
 
     private int notaAvaliacao;
 
-    private String nomeUsuario;     
-        
+    private String nomeUsuario;
+
     public static AvaliacaoDto fromAvaliacao(Avaliacao avaliacao) {
         AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
         avaliacaoDto.setIdAvaliacao(avaliacao.getIdAvaliacao());
@@ -20,7 +20,6 @@ public class AvaliacaoDto {
         avaliacaoDto.setNomeUsuario(avaliacao.getUsuario().getNome());
         return avaliacaoDto;
     }
-    
 
     public String getNomeUsuario() {
         return nomeUsuario;

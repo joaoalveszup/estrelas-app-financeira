@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
 import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
 
 @Entity
@@ -23,7 +22,6 @@ public class Avaliacao {
     private int notaAvaliacao;
 
     @Column
-
     private String comentario;
 
     @OneToOne
@@ -34,15 +32,6 @@ public class Avaliacao {
 
     @Column(name = "id_usuario")
     private Long idUsuario;
-
-    public static Avaliacao fromDto(AvaliacaoDto avaliacaoDto, Usuario usuario) {
-        Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setIdAvaliacao(avaliacaoDto.getIdAvaliacao());
-        avaliacao.setComentario(avaliacaoDto.getComentario());
-        avaliacao.setNotaAvaliacao(avaliacaoDto.getNotaAvaliacao());
-        avaliacao.setUsuario(usuario);
-        return avaliacao;
-    }
 
     public static Avaliacao fromCriacaoDto(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario) {
         Avaliacao avaliacao = new Avaliacao();
