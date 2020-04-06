@@ -29,6 +29,7 @@ public class AvaliacaoService {
 
     @Autowired
     AvaliacaoRepository avaliacaoRepository;
+    
     @Autowired
     UsuarioRepository usuarioRepository;
 
