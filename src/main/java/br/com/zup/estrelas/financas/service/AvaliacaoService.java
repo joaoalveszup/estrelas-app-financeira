@@ -16,8 +16,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
-    private static final String ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO =
-            "ERRO ID-USUÁRIO OU ID-AVALIAÇÃO INCORRETO!";
+    private static final String ERRO_ID_INCORRETO =
+            "ERRO!  O ID-USUÁRIO OU ID-AVALIAÇÃO ESTÁ INCORRETO!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
             "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
@@ -40,7 +40,7 @@ public class AvaliacaoService {
 
         }
 
-        if (this.validaAvaliacao(criaAvaliacaoDto)) {
+        if (this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
             return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
         }
 
@@ -67,7 +67,7 @@ public class AvaliacaoService {
             throws AvaliacaoRegraDeNegocioExeption {
         avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                 .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                        ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO));
+                        ERRO_ID_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
     }
@@ -77,8 +77,8 @@ public class AvaliacaoService {
         Avaliacao avaliacaoBanco =
                 avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                                ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO));
-        if (this.validaAvaliacao(criaAvaliacaoDto)) {
+                                ERRO_ID_INCORRETO));
+        if (this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
             avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
             avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
             return avaliacaoRepository.save(avaliacaoBanco);
@@ -87,7 +87,7 @@ public class AvaliacaoService {
     }
 
 
-    private boolean validaAvaliacao(CriaAvaliacaoDto avaliacao) {
+    private boolean validaNotaVerificaMaxCaractere(CriaAvaliacaoDto avaliacao) {
 
         if (avaliacao.getNotaAvaliacao() < NOTA_MIN || avaliacao.getNotaAvaliacao() > NOTA_MAX) {
             return false;
