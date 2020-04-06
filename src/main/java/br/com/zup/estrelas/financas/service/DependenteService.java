@@ -73,12 +73,14 @@ public class DependenteService {
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public DependenteDto buscaDependente(Long idUsuario, Long idDependente) throws DependenteException {
+    public DependenteDto buscaDependente(Long idUsuario, Long idDependente)
+            throws DependenteException {
 
-        Optional<Dependente> dependente = this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
-        
+        Optional<Dependente> dependente =
+                this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
+
         this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-        .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
+                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
 
         return DependenteDto.fromDto(dependente.get());
     }
