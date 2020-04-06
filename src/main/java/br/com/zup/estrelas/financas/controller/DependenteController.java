@@ -9,46 +9,62 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.exceptions.DependenteException;
+import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
+import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
+import br.com.zup.estrelas.financas.enums.Parentesco;
 import br.com.zup.estrelas.financas.service.DependenteService;
 
-
 @RestController
-@RequestMapping("/dependentes")
+
 public class DependenteController {
 
     @Autowired
     DependenteService dependenteService;
 
-    @PostMapping
-    public Dependente insereDependente(@RequestBody Dependente dependente) {
-        return this.dependenteService.insereDependente(dependente);
+    @PostMapping(path = "/usuarios/{idUsuario}/dependentes")
+    public Dependente insereDependente(@RequestBody CriaDependenteDto criaDependenteDto,
+            @PathVariable Long idUsuario) throws DependenteException {
+        return this.dependenteService.insereDependente(criaDependenteDto, idUsuario);
     }
 
-    @GetMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Dependente buscaDependente(@PathVariable Long idDependente) {
-        return this.dependenteService.buscaDependente(idDependente);
+    @PutMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Dependente modificaDependente(@RequestBody DependenteDto dependenteDto,
+            @PathVariable Long idUsuario, @PathVariable Long idDependente) {
+        return this.dependenteService.modificaDependente(dependenteDto, idUsuario, idDependente);
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Dependente> buscaDependentes() {
-        return this.dependenteService.buscaDependentes();
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public DependenteDto buscaDependente(@PathVariable Long idUsuario,
+            @PathVariable Long idDependente) throws DependenteException {
+        return this.dependenteService.buscaDependente(idUsuario, idDependente);
     }
 
-    @PutMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Dependente modificaDependente(@PathVariable Long idDependente,
-            @RequestBody Dependente dependente) {
-
-        return this.dependenteService.modificaDependente(idDependente, dependente);
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario) {
+        return (List<DependenteDto>) this.dependenteService.buscaDependentes(idUsuario);
     }
 
-    @DeleteMapping(path = "/{idDependente}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDependente(@PathVariable Long idDependente) {
-        this.dependenteService.deletaDependente(idDependente);
+    @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deletaDependente(@RequestBody DependenteDto dependente,
+            @PathVariable Long idUsuario, @PathVariable Long idDependente)
+            throws DependenteException {
+        this.dependenteService.deletaDependente(dependente, idUsuario, idDependente);
     }
+
+    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/parentesco/{parentesco}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<DependenteDto> buscaDependentePorParentesco(@PathVariable Long idUsuario,
+            @PathVariable Parentesco parentesco) throws DependenteException {
+        return (List<DependenteDto>) this.dependenteService.buscaDependentePorParentesco(idUsuario,
+                parentesco);
+    }
+
 
 }
-
-

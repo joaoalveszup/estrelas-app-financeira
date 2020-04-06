@@ -1,8 +1,13 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.exceptions.DependenteException;
+import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
+import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.Parentesco;
@@ -12,6 +17,12 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class DependenteService {
 
+    private static final String MENSAGEM_EXCEPTION_CONJUGE =
+            "Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
+
+    private static final String MENSAGEM_EXCEPTION_GENERICA =
+            "Esse dependente não corresponde ao usuário informado!";
+
     private static final int RENDA_MIN_DEPENDENTE = 1;
 
     @Autowired
@@ -20,59 +31,97 @@ public class DependenteService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Dependente insereDependente(Dependente dependente) {
+    public Dependente insereDependente(CriaDependenteDto criaDependenteDto, Long idUsuario)
+            throws DependenteException {
 
-        Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
             if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                return null;
+                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
             }
         }
 
-        if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
-            usuario.setSalarioLiquido(usuario.getSalarioLiquido() + dependente.getRenda());
+        if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
+            usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());
             this.usuarioRepository.save(usuario);
         }
+
+        Dependente dependente = Dependente.fromCriacaoDto(criaDependenteDto, idUsuario);
+        dependente.setIdUsuario(idUsuario);
+
         return this.dependenteRepository.save(dependente);
     }
 
-    public Dependente modificaDependente(Long idDependente, Dependente dependente) {
+    public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario,
+            Long idDependente) {
 
         Dependente dependenteBanco = dependenteRepository.findById(idDependente).get();
-        Usuario usuario = usuarioRepository.findById(dependenteBanco.getIdUsuario()).get();
 
-        dependenteBanco.setNome(dependente.getNome());
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+
+        dependenteBanco.setNome(dependenteDto.getNome());
 
         Float salarioAntigo = dependenteBanco.getRenda();
-        dependenteBanco.setRenda(dependente.getRenda());
+        dependenteBanco.setRenda(dependenteDto.getRenda());
         Float salarioAtual = dependenteBanco.getRenda();
 
         usuario.setSalarioLiquido(usuario.getSalarioLiquido() + salarioAtual - salarioAntigo);
         this.usuarioRepository.save(usuario);
+
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public Dependente buscaDependente(Long idDependente) {
-        return this.dependenteRepository.findById(idDependente).get();
+    public DependenteDto buscaDependente(Long idUsuario, Long idDependente)
+            throws DependenteException {
+
+        Optional<Dependente> dependente =
+                this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
+
+        this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
+                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
+
+        return DependenteDto.fromDto(dependente.get());
     }
 
-    public List<Dependente> buscaDependentes() {
-        return (List<Dependente>) dependenteRepository.findAll();
+    public List<DependenteDto> buscaDependentes(Long idUsuario) {
+
+        List<Dependente> listaDependente = this.dependenteRepository.findAllByIdUsuario(idUsuario);
+        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
+
+        for (Dependente dependente : listaDependente) {
+            listaDependenteDto.add(DependenteDto.fromDto(dependente));
+        }
+        return listaDependenteDto;
     }
 
-    public void deletaDependente(Long idDependente) {
+    public void deletaDependente(DependenteDto dependente, Long idUsuario, Long idDependente)
+            throws DependenteException {
 
-        Dependente dependente = buscaDependente(idDependente);
-        Usuario usuario = usuarioRepository.findById(dependente.getIdUsuario()).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
         if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependente.getRenda());
             this.usuarioRepository.save(usuario);
         }
+
+        this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
+                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
+
         this.dependenteRepository.deleteById(idDependente);
     }
+
+    public List<DependenteDto> buscaDependentePorParentesco(Long idUsuario, Parentesco parentesco) {
+
+        List<Dependente> listaDependentePorParentesco =
+                this.dependenteRepository.findByIdUsuarioAndParentesco(idUsuario, parentesco);
+        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
+
+        for (Dependente dependente : listaDependentePorParentesco) {
+            listaDependenteDto.add(DependenteDto.fromDto(dependente));
+        }
+
+        return listaDependenteDto;
+    }
 }
-
-
