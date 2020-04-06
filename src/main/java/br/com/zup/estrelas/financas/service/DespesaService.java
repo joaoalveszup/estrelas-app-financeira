@@ -20,31 +20,40 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class DespesaService {
 
-    private static final String ESTE_TIPO_DE_DESPESA_JÁ_EXISTE = "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.";
+    private static final int PRIMEIRO_DIA_DO_MES = 1;
+    private static final String ESTE_TIPO_DE_DESPESA_JÁ_EXISTE =
+            "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.";
     private static final String DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA =
             "Despesa não corresponde ao usuario inserido, ou despesa ja foi deletada. Por favor inserir um usuario valido ou insira outra despesa.";
+
     @Autowired
     DespesaRepository repository;
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
 
     public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario)
             throws DespesaOuUsuarioNull {
+
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
+
         for (Despesa despesaUsuario : usuario.getDespesas()) {
             despesaUsuario.getTipoDeDespesa();
             if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
-                throw new DespesaOuUsuarioNull(
-                        ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
+                throw new DespesaOuUsuarioNull(ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
             }
         }
+
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
     }
 
-    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) {
-        Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa).get();
+    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNull {
+
+        Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
+                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                        DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
 
         return DespesaDTO.fromDespesa(despesa);
     }
@@ -61,29 +70,31 @@ public class DespesaService {
     }
 
     public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNull {
+
         repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
                 .orElseThrow(() -> new DespesaOuUsuarioNull(
                         DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
         this.repository.deleteById(idDespesa);
     }
 
-    public Despesa atualizaDespesa(Long idUsuario, Long idDespesa, AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {   
-        
+    public Despesa atualizaDespesa(Long idUsuario, Long idDespesa,
+            AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {
+
         Despesa despesaDoBanco = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
-        .orElseThrow(() -> new DespesaOuUsuarioNull(
-                DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
-        TipoDespesa tipoDespesa = despesaDoBanco.getTipoDeDespesa();
-        return this.repository.save(Despesa.fromAtualizaDespesa(atualizaDespesaDto, tipoDespesa, idUsuario));
+                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                        DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
+
+        return this.repository.save(Despesa.fromAtualizaDespesa(atualizaDespesaDto,
+                despesaDoBanco.getTipoDeDespesa(), idUsuario));
     }
 
-    public List<Despesa> despesasAVencer(Long idUsuario) {
+    public List<Despesa> despesasAVencerNoMes(Long idUsuario) {
 
 
         YearMonth month = YearMonth.now();
-        LocalDate inicioData = month.atDay(1);
-        LocalDate fimData = month.atEndOfMonth();
+        LocalDate inicioMes = month.atDay(PRIMEIRO_DIA_DO_MES);
+        LocalDate fimMes = month.atEndOfMonth();
 
-        return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioData,
-                fimData);
+        return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioMes, fimMes);
     }
 }
