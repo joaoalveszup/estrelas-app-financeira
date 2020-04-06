@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.entity.ExampleEntity;
@@ -20,6 +22,15 @@ public class ExampleService {
         }
         
         return repository.save(entity);
+    }
+    
+    public List<ExampleEntity> findAll(Optional<String> text) {
+        
+        if (text.isPresent()) {
+            return repository.findAllByExampleTextStartingWith(text.get());
+        }
+        
+        return this.repository.findAll();
     }
     
 }
