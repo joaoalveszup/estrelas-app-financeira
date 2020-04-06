@@ -15,7 +15,7 @@ import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
-import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNull;
+import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNullException;
 import br.com.zup.estrelas.financas.service.DespesaService;
 
 
@@ -27,13 +27,13 @@ public class DespesaController {
 
     @PostMapping(path = "/usuarios/{idUsuario}/despesas")
     public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto,
-            @PathVariable Long idUsuario) throws DespesaOuUsuarioNull {
+            @PathVariable Long idUsuario) throws DespesaOuUsuarioNullException {
         return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
 
     @GetMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DespesaDTO buscaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaOuUsuarioNull {
+    public DespesaDTO buscaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaOuUsuarioNullException {
         return despesaService.buscaDespesa(idUsuario, idDespesa);
     }
 
@@ -46,14 +46,14 @@ public class DespesaController {
     @DeleteMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa)
-            throws DespesaOuUsuarioNull {
+            throws DespesaOuUsuarioNullException {
         this.despesaService.deletaDespesa(idUsuario, idDespesa);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public Despesa atualizaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa,
-            @RequestBody AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {
+            @RequestBody AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNullException {
         return this.despesaService.atualizaDespesa(idUsuario, idDespesa, atualizaDespesaDto);
 
     }

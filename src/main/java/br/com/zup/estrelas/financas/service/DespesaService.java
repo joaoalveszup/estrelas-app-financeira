@@ -12,7 +12,7 @@ import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
-import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNull;
+import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNullException;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -34,7 +34,7 @@ public class DespesaService {
 
 
     public Despesa insereDespesa(CriaDespesaDTO criaDespesaDto, Long idUsuario)
-            throws DespesaOuUsuarioNull {
+            throws DespesaOuUsuarioNullException {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
@@ -42,17 +42,17 @@ public class DespesaService {
             despesaUsuario.getTipoDeDespesa();
             if (criaDespesaDto.getTipoDespesa().equals(despesaUsuario.getTipoDeDespesa())
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
-                throw new DespesaOuUsuarioNull(ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
+                throw new DespesaOuUsuarioNullException(ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
             }
         }
 
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
     }
 
-    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNull {
+    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNullException {
 
         Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
-                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                .orElseThrow(() -> new DespesaOuUsuarioNullException(
                         DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
 
         return DespesaDTO.fromDespesa(despesa);
@@ -69,19 +69,19 @@ public class DespesaService {
         return listaDespesaDto;
     }
 
-    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNull {
+    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNullException {
 
         repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
-                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                .orElseThrow(() -> new DespesaOuUsuarioNullException(
                         DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
         this.repository.deleteById(idDespesa);
     }
 
     public Despesa atualizaDespesa(Long idUsuario, Long idDespesa,
-            AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNull {
+            AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNullException {
 
         Despesa despesaDoBanco = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
-                .orElseThrow(() -> new DespesaOuUsuarioNull(
+                .orElseThrow(() -> new DespesaOuUsuarioNullException(
                         DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA));
 
         return this.repository.save(Despesa.fromAtualizaDespesa(atualizaDespesaDto,
