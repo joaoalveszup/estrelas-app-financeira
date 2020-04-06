@@ -7,38 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
+import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
 import br.com.zup.estrelas.financas.repository.InvestimentoRepository;
+import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 
 @Service
 public class InvestimentoService {
 
+    private static final int QUANTIDADE_INVESTIMENTOS_PAGOS = 0;
+
+    private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
+            "Usuário ou ojetivo não correspondem.";
+
     @Autowired
     InvestimentoRepository investimentoRepository;
 
-    public Investimento insereInvestimento(Investimento investimento) {
-        return this.investimentoRepository.save(investimento);
-    }
-
-    public Investimento buscaInvestimento(Long idInvestimento) {
-        return this.investimentoRepository.findById(idInvestimento).get();
-    }
-
-    public List<Investimento> buscaInvestimentos() {
-        return this.investimentoRepository.findAll();
-    }
-
-    public Investimento atualizaInvestimento(Long idInvestimento, Investimento investimento) {
-
-        Investimento investimentoAtual = investimentoRepository.findById(idInvestimento).get();
-        investimentoAtual.setDataVencimento(investimentoAtual.getDataVencimento());
-        investimentoAtual.setValor(investimentoAtual.getValor());
-
-        return this.investimentoRepository.save(investimentoAtual);
-    }
-
-    public void deleteInvestimento(Long idInvestimento) {
-        investimentoRepository.deleteById(idInvestimento);
-    }
+    @Autowired
+    ObjetivoRepository objetivoRepository;
 
     public List<Investimento> criaInvestimentos(Objetivo objetivoRecebido, Objetivo objetivoAtual) {
 
@@ -46,33 +31,61 @@ public class InvestimentoService {
 
         float valorASerPago = gerarValorInvestimentoASerPago(objetivoRecebido, objetivoAtual);
         long quantidadeInvestimentosPagos;
+
         if (objetivoAtual != null) {
             quantidadeInvestimentosPagos = investimentoRepository.countByPagoAndIdObjetivo(true,
                     objetivoAtual.getIdObjetivo());
         } else {
-            quantidadeInvestimentosPagos = 0;
+            quantidadeInvestimentosPagos = QUANTIDADE_INVESTIMENTOS_PAGOS;
         }
+
         LocalDate dataAtual = LocalDate.now();
 
-        if (quantidadeInvestimentosPagos > 0) {
+        if (quantidadeInvestimentosPagos > QUANTIDADE_INVESTIMENTOS_PAGOS) {
             List<Investimento> listaInvesimentoPago = investimentoRepository
                     .findByPagoAndIdObjetivo(true, objetivoAtual.getIdObjetivo());
-            for (Investimento investimentoPago : listaInvesimentoPago) {
-                Investimento investimentoAnterior = new Investimento();
-                investimentoAnterior.setValor(investimentoPago.getValor());
-                investimentoAnterior.setDataVencimento(investimentoPago.getDataVencimento());
-                investimentoAnterior.setPago(true);
-                listaInvestimentos.add(investimentoAnterior);
-            }
+            listaInvestimentos =
+                    criaListaInvestimentoPagos(listaInvestimentos, listaInvesimentoPago);
         }
 
+        return  criaNovosInvestimentos(objetivoRecebido, listaInvestimentos,
+                valorASerPago, dataAtual);
+    }
+
+    public List<Investimento> alteraStatusParcela(Long idUsuario, Long idObjetivo,
+            Long idInvestimento, boolean statusParcela) throws UsuarioOuObjetivoNuloException {
+
+        this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
+                () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
+
+        Investimento investimento = investimentoRepository
+                .findByIdInvestimentoAndIdObjetivo(idInvestimento, idObjetivo);
+        investimento.setPago(statusParcela);
+        investimentoRepository.save(investimento);
+        return investimentoRepository.findAllByIdObjetivo(idObjetivo);
+    }
+
+    private List<Investimento> criaNovosInvestimentos(Objetivo objetivoRecebido,
+            List<Investimento> listaInvestimentos, float valorASerPago, LocalDate dataAtual) {
         for (int i = 1; i <= objetivoRecebido.getNumeroInvestimentos(); i++) {
             Investimento investimento = new Investimento();
             investimento.setValor(valorASerPago);
             investimento.setDataVencimento(dataAtual.plusMonths(i));
             listaInvestimentos.add(investimento);
         }
+        return listaInvestimentos;
+    }
 
+    private List<Investimento> criaListaInvestimentoPagos(List<Investimento> listaInvestimentos,
+            List<Investimento> listaInvesimentoPago) {
+        for (Investimento investimentoPago : listaInvesimentoPago) {
+            Investimento investimentoAnterior = new Investimento();
+            investimentoAnterior.setValor(investimentoPago.getValor());
+            investimentoAnterior.setDataVencimento(investimentoPago.getDataVencimento());
+            investimentoAnterior.setPago(true);
+            listaInvestimentos.add(investimentoAnterior);
+
+        }
         return listaInvestimentos;
     }
 
@@ -106,13 +119,4 @@ public class InvestimentoService {
         return valorInvestimentosPago;
     }
 
-    public List<Investimento> alteraStatusParcela(Long idInvestimento, Long idObjetivo,
-            boolean statusParcela) {
-
-        Investimento investimento = investimentoRepository
-                .findByIdInvestimentoAndIdObjetivo(idInvestimento, idObjetivo);
-        investimento.setPago(statusParcela);
-        investimentoRepository.save(investimento);
-        return investimentoRepository.findAllByIdObjetivo(idObjetivo);
-    }
 }

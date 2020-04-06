@@ -91,16 +91,4 @@ public class ObjetivoService {
 
     }
 
-    public ObjetivoDto alteraStatusParcela(Long idUsuario, Long idObjetivo, Long idInvestimento,
-            boolean statusParcela) throws UsuarioOuObjetivoNuloException {
-
-        Objetivo objetivo = this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
-                () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
-        
-        List<Investimento> listInvestimento = investimentoService.alteraStatusParcela(idInvestimento, idObjetivo, statusParcela);
-        objetivo.setInvestimentos(listInvestimento);
-        
-        return ObjetivoDto.fromEntity(objetivo);
-    }
-
 }

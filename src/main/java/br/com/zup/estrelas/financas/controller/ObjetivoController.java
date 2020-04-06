@@ -51,13 +51,5 @@ public class ObjetivoController {
         this.objetivoService.deletaObjetivo(idUsuario, idObjetivo);
     }
 
-    @PutMapping(path = "usuarios/{idUsuario}/objetivos/{idObjetivo}/investimentos/{idInvestimento}/{statusParcela}")
-    public ObjetivoDto atualizaInvestimento(@PathVariable Long idUsuario,
-            @PathVariable Long idObjetivo, @PathVariable Long idInvestimento,
-            @PathVariable String statusParcela) throws UsuarioOuObjetivoNuloException {
-        
-        return objetivoService.alteraStatusParcela(idUsuario, idObjetivo, idInvestimento,
-                (Boolean.parseBoolean(statusParcela)));
-    }
 
 }
