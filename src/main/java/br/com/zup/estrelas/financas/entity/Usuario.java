@@ -8,10 +8,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import br.com.zup.estrelas.financas.dto.UsuarioDto;
 
 @Entity
 public class Usuario {
 
+    private Usuario(String nome, String documento, String tipoDocumento, Float salarioBruto,
+            Float salarioLiquido, String profissao, String empresa) {
+        this.nome = nome;
+        this.documento = documento;
+        this.tipoDocumento = tipoDocumento;
+        this.salarioBruto = salarioBruto;
+        this.salarioLiquido = salarioLiquido;
+        this.profissao = profissao;
+        this.empresa = empresa;
+    }
+
+    public Usuario() {
+
+    }
 
     @Id
     @Column(name = "id_usuario")
@@ -48,6 +63,13 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Objetivo> objetivos;
+
+
+    public static Usuario fromDto(UsuarioDto usuarioDto) {
+        return new Usuario(usuarioDto.getNome(), usuarioDto.getDocumento(),
+                usuarioDto.getTipoDocumento().getValue(), usuarioDto.getSalarioBruto(),
+                usuarioDto.getSalarioLiquido(), usuarioDto.getProfissao(), usuarioDto.getEmpresa());
+    }
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -116,7 +138,7 @@ public class Usuario {
     public void setDespesas(List<Despesa> despesas) {
         this.despesas = despesas;
     }
-  
+
     public List<Dependente> getDependentes() {
         return dependentes;
     }
