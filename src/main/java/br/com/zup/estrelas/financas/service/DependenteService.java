@@ -2,9 +2,10 @@ package br.com.zup.estrelas.financas.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.zup.estrelas.exceptions.DependentesException;
+import br.com.zup.estrelas.exceptions.DependenteException;
 import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
@@ -31,14 +32,14 @@ public class DependenteService {
     UsuarioRepository usuarioRepository;
 
     public Dependente insereDependente(CriaDependenteDto criaDependenteDto, Long idUsuario)
-            throws DependentesException {
+            throws DependenteException {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
             if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                throw new DependentesException(MENSAGEM_EXCEPTION_CONJUGE);
+                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
             }
         }
 
@@ -72,12 +73,14 @@ public class DependenteService {
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public DependenteDto buscaDependente(Long idUsuario, Long idDependente) {
+    public DependenteDto buscaDependente(Long idUsuario, Long idDependente) throws DependenteException {
 
-        Dependente dependente = this.dependenteRepository
-                .findByIdUsuarioAndIdDependente(idUsuario, idDependente).get();
+        Optional<Dependente> dependente = this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
+        
+        this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
+        .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
 
-        return DependenteDto.fromDto(dependente);
+        return DependenteDto.fromDto(dependente.get());
     }
 
     public List<DependenteDto> buscaDependentes(Long idUsuario) {
@@ -92,7 +95,7 @@ public class DependenteService {
     }
 
     public void deletaDependente(DependenteDto dependente, Long idUsuario, Long idDependente)
-            throws DependentesException {
+            throws DependenteException {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
@@ -102,7 +105,7 @@ public class DependenteService {
         }
 
         this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-                .orElseThrow(() -> new DependentesException(MENSAGEM_EXCEPTION_GENERICA));
+                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
 
         this.dependenteRepository.deleteById(idDependente);
     }

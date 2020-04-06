@@ -9,11 +9,11 @@ import br.com.zup.estrelas.financas.enums.Parentesco;
 
 @Repository
 public interface DependenteRepository extends JpaRepository<Dependente, Long> {
-
+    
     List<Dependente> findAllByIdUsuario(Long idUsuario);
 
     List<Dependente> findByIdUsuarioAndParentesco(Long idUsuario, Parentesco parentesco);
 
     Optional<Dependente> findByIdUsuarioAndIdDependente(Long idUsuario, Long idDependente);
-
+    
 }
