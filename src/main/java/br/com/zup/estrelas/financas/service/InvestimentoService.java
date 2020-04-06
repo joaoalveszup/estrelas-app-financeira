@@ -105,4 +105,14 @@ public class InvestimentoService {
 
         return valorInvestimentosPago;
     }
+
+    public List<Investimento> alteraStatusParcela(Long idInvestimento, Long idObjetivo,
+            boolean statusParcela) {
+
+        Investimento investimento = investimentoRepository
+                .findByIdInvestimentoAndIdObjetivo(idInvestimento, idObjetivo);
+        investimento.setPago(statusParcela);
+        investimentoRepository.save(investimento);
+        return investimentoRepository.findAllByIdObjetivo(idObjetivo);
+    }
 }

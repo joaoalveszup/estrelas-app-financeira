@@ -12,4 +12,7 @@ public interface InvestimentoRepository extends JpaRepository<Investimento, Long
 
     List<Investimento> findByPagoAndIdObjetivo(Boolean Pago, Long idObjetivo);
 
+    Investimento findByIdInvestimentoAndIdObjetivo(Long idInvestimento, Long idObjetivo);
+    
+    List<Investimento> findAllByIdObjetivo(Long idObjetivo);
 }

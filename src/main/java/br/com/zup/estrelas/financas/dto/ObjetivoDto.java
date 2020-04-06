@@ -29,7 +29,6 @@ public class ObjetivoDto {
         this.nome = nome;
     }
 
-
     public List<Investimento> getInvestimentos() {
         return investimentos;
     }
@@ -53,7 +52,5 @@ public class ObjetivoDto {
     public void setNumeroInvestimentos(int numeroInvestimentos) {
         this.numeroInvestimentos = numeroInvestimentos;
     }
-
-
 
 }

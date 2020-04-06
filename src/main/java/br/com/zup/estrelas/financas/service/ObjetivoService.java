@@ -8,7 +8,7 @@ import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.entity.Usuario;
-import br.com.zup.estrelas.financas.exceptions.ExceptionUsuarioEObjetivoNulo;
+import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
@@ -42,10 +42,10 @@ public class ObjetivoService {
     }
 
     public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo)
-            throws ExceptionUsuarioEObjetivoNulo {
+            throws UsuarioOuObjetivoNuloException {
         Objetivo objetivo =
                 this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
-                        .orElseThrow(() -> new ExceptionUsuarioEObjetivoNulo(
+                        .orElseThrow(() -> new UsuarioOuObjetivoNuloException(
                                 USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
 
         return ObjetivoDto.fromEntity(objetivo);
@@ -83,12 +83,24 @@ public class ObjetivoService {
     }
 
     public void deletaObjetivo(Long idUsuario, Long idObjetivo)
-            throws ExceptionUsuarioEObjetivoNulo {
+            throws UsuarioOuObjetivoNuloException {
 
         this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
-                () -> new ExceptionUsuarioEObjetivoNulo(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
+                () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
         this.objetivoRepository.deleteById(idObjetivo);
 
+    }
+
+    public ObjetivoDto alteraStatusParcela(Long idUsuario, Long idObjetivo, Long idInvestimento,
+            boolean statusParcela) throws UsuarioOuObjetivoNuloException {
+
+        Objetivo objetivo = this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
+                () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
+        
+        List<Investimento> listInvestimento = investimentoService.alteraStatusParcela(idInvestimento, idObjetivo, statusParcela);
+        objetivo.setInvestimentos(listInvestimento);
+        
+        return ObjetivoDto.fromEntity(objetivo);
     }
 
 }
