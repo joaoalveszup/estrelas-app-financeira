@@ -16,8 +16,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
-    private static final String ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA =
-            "ERRO ID-USUÁRIO OU ID-AVALIAÇÃO INCORRETA!";
+    private static final String ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO =
+            "ERRO ID-USUÁRIO OU ID-AVALIAÇÃO INCORRETO!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
             "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
@@ -35,7 +35,7 @@ public class AvaliacaoService {
     public Avaliacao insereAvaliacao(CriaAvaliacaoDto criaAvaliacaoDto, Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
 
-        if (this.checaExistenciaAvaliacao(criaAvaliacaoDto, idUsuario)) {
+        if (this.verificaSeAvaliacaoExiste(criaAvaliacaoDto, idUsuario)) {
             throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_AVALIACAO_EXISTENTE);
 
         }
@@ -67,7 +67,7 @@ public class AvaliacaoService {
             throws AvaliacaoRegraDeNegocioExeption {
         avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                 .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                        ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
+                        ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
     }
@@ -77,7 +77,7 @@ public class AvaliacaoService {
         Avaliacao avaliacaoBanco =
                 avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                                ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETA));
+                                ERRO_ID_USUARIO_OU_ID_AVALIACAO_INCORRETO));
         if (this.validaAvaliacao(criaAvaliacaoDto)) {
             avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
             avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
@@ -99,7 +99,7 @@ public class AvaliacaoService {
         return true;
     }
 
-    public boolean checaExistenciaAvaliacao(CriaAvaliacaoDto avaliacao, Long idUsuario) {
+    public boolean verificaSeAvaliacaoExiste(CriaAvaliacaoDto avaliacao, Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         if (usuario == null) {
             return true;
