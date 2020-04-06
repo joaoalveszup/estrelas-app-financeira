@@ -40,11 +40,11 @@ public class AvaliacaoService {
 
         }
 
-        if (this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
-            return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
+        if (!this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
 
-        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
+        return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
 
     }
 
@@ -66,8 +66,7 @@ public class AvaliacaoService {
     public void deletaAvaliacao(Long idAvaliacao, Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
         avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
-                .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                        ERRO_ID_INCORRETO));
+                .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
     }
@@ -76,14 +75,14 @@ public class AvaliacaoService {
             Long idUsuario) throws AvaliacaoRegraDeNegocioExeption {
         Avaliacao avaliacaoBanco =
                 avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
-                        .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(
-                                ERRO_ID_INCORRETO));
-        if (this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
-            avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
-            avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
-            return avaliacaoRepository.save(avaliacaoBanco);
+                        .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
+        if (!this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
-        throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
+
+        avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
+        avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
+        return avaliacaoRepository.save(avaliacaoBanco);
     }
 
 
@@ -104,6 +103,7 @@ public class AvaliacaoService {
         if (usuario == null) {
             return true;
         }
+
         Avaliacao avaliacaoBuscada = avaliacaoRepository.findByUsuario(usuario);
         if (avaliacaoBuscada != null) {
             return true;
