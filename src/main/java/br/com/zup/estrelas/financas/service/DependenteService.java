@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.zup.estrelas.exceptions.DependenteException;
 import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.Parentesco;
+import br.com.zup.estrelas.financas.exceptions.DependenteException;
 import br.com.zup.estrelas.financas.repository.DependenteRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 

@@ -1,4 +1,4 @@
-package br.com.zup.estrelas.exceptions;
+package br.com.zup.estrelas.financas.exceptions;
 
 @SuppressWarnings("serial")
 public class DependenteException extends Exception {
