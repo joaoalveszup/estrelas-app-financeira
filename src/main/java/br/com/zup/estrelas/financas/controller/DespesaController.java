@@ -10,48 +10,57 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
+import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
+import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
+import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNullException;
 import br.com.zup.estrelas.financas.service.DespesaService;
 
 
 @RestController
-@RequestMapping("usuarios/{idUsuario}/despesas")
 public class DespesaController {
 
     @Autowired
     DespesaService despesaService;
 
-    @PostMapping
-    public Despesa insereDespesa(@RequestBody Despesa despesa) {
-        return this.despesaService.insereDespesa(despesa);
+    @PostMapping(path = "/usuarios/{idUsuario}/despesas")
+    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto,
+            @PathVariable Long idUsuario) throws DespesaOuUsuarioNullException {
+        return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
 
-    @GetMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Despesa buscaDespesa(@PathVariable Long idDespesa) {
-        return despesaService.buscaDespesa(idDespesa);
+    @GetMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public DespesaDTO buscaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa) throws DespesaOuUsuarioNullException {
+        return despesaService.buscaDespesa(idUsuario, idDespesa);
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Despesa> listaDespesas() {
-        return (List<Despesa>) despesaService.listaDespesas();
+    @GetMapping(path = "/usuarios/{idUsuario}/despesas",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<DespesaDTO> listaDespesas(@PathVariable Long idUsuario) {
+        return (List<DespesaDTO>) despesaService.listaDespesas(idUsuario);
     }
 
-    @DeleteMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDespesa(@PathVariable Long idDespesa) {
-        this.despesaService.deletaDespesa(idDespesa);
+    @DeleteMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa)
+            throws DespesaOuUsuarioNullException {
+        this.despesaService.deletaDespesa(idUsuario, idDespesa);
     }
 
-    @PutMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Despesa atualizaDespesa(@PathVariable Long idDespesa, @RequestBody Despesa despesa) {
-
-        return this.despesaService.atualizaDespesa(idDespesa, despesa);
+    @PutMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Despesa atualizaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa,
+            @RequestBody AtualizaDespesaDto atualizaDespesaDto) throws DespesaOuUsuarioNullException {
+        return this.despesaService.atualizaDespesa(idUsuario, idDespesa, atualizaDespesaDto);
 
     }
 
-    @GetMapping(path = "/mes-corrente", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/usuarios/{idUsuario}/despesas/mes-corrente",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Despesa> despesasAvencerNoMes(@PathVariable Long idUsuario) {
-        return (List<Despesa>) despesaService.despesasAVencer(idUsuario);
+        return (List<Despesa>) despesaService.despesasAVencerNoMes(idUsuario);
     }
 }
