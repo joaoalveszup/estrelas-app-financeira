@@ -21,7 +21,7 @@ public class DependenteService {
             "Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
 
     private static final String MENSAGEM_EXCEPTION_GENERICA =
-            " Esse dependente não corresponde ao usuário informado! ";
+            "Esse dependente não corresponde ao usuário informado!";
 
     private static final int RENDA_MIN_DEPENDENTE = 1;
 
