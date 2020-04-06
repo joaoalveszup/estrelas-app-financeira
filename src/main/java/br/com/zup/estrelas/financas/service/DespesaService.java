@@ -12,7 +12,7 @@ import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
-import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNullException;
+import br.com.zup.estrelas.financas.exceptions.DespesaOuUsuarioNullException;
 import br.com.zup.estrelas.financas.repository.DespesaRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 

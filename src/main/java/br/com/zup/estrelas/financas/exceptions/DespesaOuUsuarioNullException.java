@@ -1,4 +1,4 @@
-package br.com.zup.estrelas.financas.exception;
+package br.com.zup.estrelas.financas.exceptions;
 
 public class DespesaOuUsuarioNullException extends Exception {
 

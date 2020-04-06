@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.exceptions.DependenteException;
 import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.enums.Parentesco;
+import br.com.zup.estrelas.financas.exceptions.DependenteException;
 import br.com.zup.estrelas.financas.service.DependenteService;
 
 @RestController

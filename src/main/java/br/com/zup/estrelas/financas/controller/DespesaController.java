@@ -15,7 +15,7 @@ import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
 import br.com.zup.estrelas.financas.entity.Despesa;
-import br.com.zup.estrelas.financas.exception.DespesaOuUsuarioNullException;
+import br.com.zup.estrelas.financas.exceptions.DespesaOuUsuarioNullException;
 import br.com.zup.estrelas.financas.service.DespesaService;
 
 
