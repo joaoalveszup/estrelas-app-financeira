@@ -85,9 +85,21 @@ public class DependenteService {
         return DependenteDto.fromDto(dependente.get());
     }
 
-    public List<DependenteDto> buscaDependentes(Long idUsuario) {
+    public List<DependenteDto> buscaDependentes(Long idUsuario, Optional<Parentesco> parentesco) {
+
+        if (parentesco.isPresent()) {
+
+            List<Dependente> listaDependente = this.dependenteRepository
+                    .findAllByIdUsuarioAndParentesco(idUsuario, parentesco.get());
+            return criaListaDto(listaDependente);
+        }
 
         List<Dependente> listaDependente = this.dependenteRepository.findAllByIdUsuario(idUsuario);
+
+        return criaListaDto(listaDependente);
+    }
+
+    private List<DependenteDto> criaListaDto(List<Dependente> listaDependente) {
         List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
 
         for (Dependente dependente : listaDependente) {
@@ -112,16 +124,5 @@ public class DependenteService {
         this.dependenteRepository.deleteById(idDependente);
     }
 
-    public List<DependenteDto> buscaDependentePorParentesco(Long idUsuario, Parentesco parentesco) {
-
-        List<Dependente> listaDependentePorParentesco =
-                this.dependenteRepository.findByIdUsuarioAndParentesco(idUsuario, parentesco);
-        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
-
-        for (Dependente dependente : listaDependentePorParentesco) {
-            listaDependenteDto.add(DependenteDto.fromDto(dependente));
-        }
-
-        return listaDependenteDto;
-    }
 }
+
