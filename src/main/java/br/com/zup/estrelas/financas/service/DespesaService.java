@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
@@ -96,5 +97,26 @@ public class DespesaService {
         LocalDate fimMes = month.atEndOfMonth();
 
         return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioMes, fimMes);
+    }
+
+    public List<DespesaDTO> buscaPorTipoDespesa(Long idUsuario, Optional<TipoDespesa> tipoDeDespesa) {
+        
+        if(tipoDeDespesa.isPresent()) {
+            List<Despesa> listaDespesa = repository.findAllByIdUsuarioAndTipoDeDespesa(idUsuario, tipoDeDespesa);
+            List<DespesaDTO> listaDespesaDtoFiltrada = new ArrayList<DespesaDTO>();
+
+            for (Despesa despesa : listaDespesa) {
+                listaDespesaDtoFiltrada.add(DespesaDTO.fromDespesa(despesa));
+            }
+            return listaDespesaDtoFiltrada;
+        }
+        
+        List<Despesa> listaDeDespesa = this.repository.findAll();
+        List<DespesaDTO> listaDespesaDto = new ArrayList<DespesaDTO>();
+
+        for (Despesa despesa : listaDeDespesa) {
+            listaDespesaDto.add(DespesaDTO.fromDespesa(despesa));
+        }
+        return listaDespesaDto;
     }
 }
