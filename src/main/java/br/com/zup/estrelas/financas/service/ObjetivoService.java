@@ -61,13 +61,13 @@ public class ObjetivoService {
         return listaObjetivoDto;
     }
 
-    public Objetivo atualizarObjetivo(Long idUsuario, Long idObjetivo, ObjetivoDto objetivoDto) {
+    public Objetivo atualizarObjetivo(Long idUsuario, Long idObjetivo, ObjetivoDto objetivoDto) throws UsuarioOuObjetivoNuloException {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         Objetivo objetivo = Objetivo.fromDto(usuario, objetivoDto);
         objetivo.setIdUsuario(idUsuario);
         if (!(objetivo.getNumeroInvestimentos() > 0)) {
-            return null;
+            throw new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM);
         }
         Objetivo objetivoSalvoBanco = objetivoRepository.findById(idObjetivo).get();
         List<Investimento> listaInvestimentos =
