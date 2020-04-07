@@ -56,12 +56,12 @@ public class AvaliacaoService {
     public List<AvaliacaoDto> buscaAvaliacoes(Optional<Integer> notaAvaliacao)
             throws AvaliacaoRegraDeNegocioExeption {
         if (notaAvaliacao.isPresent()) {
-            Integer testaNotaAvaliacao = notaAvaliacao.get();
-            if (testaNotaAvaliacao < NOTA_MIN || testaNotaAvaliacao > NOTA_MAX) {
+            Integer valorNotaAvaliacao = notaAvaliacao.get();
+            if (valorNotaAvaliacao < NOTA_MIN || valorNotaAvaliacao > NOTA_MAX) {
                 throw new AvaliacaoRegraDeNegocioExeption(ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA);
             }
             List<Avaliacao> listaAvaliacao =
-                    this.avaliacaoRepository.findAllByNotaAvaliacao(testaNotaAvaliacao);
+                    this.avaliacaoRepository.findAllByNotaAvaliacao(valorNotaAvaliacao);
             return criaListaAvaliacao(listaAvaliacao);
         }
 
