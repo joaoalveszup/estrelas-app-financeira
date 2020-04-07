@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
@@ -49,7 +50,8 @@ public class DespesaService {
         return this.repository.save(Despesa.fromCriacaoDto(criaDespesaDto, idUsuario));
     }
 
-    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNullException {
+    public DespesaDTO buscaDespesa(Long idUsuario, Long idDespesa)
+            throws DespesaOuUsuarioNullException {
 
         Despesa despesa = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
                 .orElseThrow(() -> new DespesaOuUsuarioNullException(
@@ -96,5 +98,28 @@ public class DespesaService {
         LocalDate fimMes = month.atEndOfMonth();
 
         return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioMes, fimMes);
+    }
+
+    public List<DespesaDTO> buscaPorTipoDespesa(Long idUsuario,
+            Optional<TipoDespesa> tipoDeDespesa) {
+
+        if (tipoDeDespesa.isPresent()) {
+            List<Despesa> listaDespesa =
+                    repository.findAllByIdUsuarioAndTipoDeDespesa(idUsuario, tipoDeDespesa);
+
+            return criaListaDespesaDTO(listaDespesa);
+        }
+
+        List<Despesa> listaDeDespesa = this.repository.findAll();
+        return criaListaDespesaDTO(listaDeDespesa);
+    }
+
+    private List<DespesaDTO> criaListaDespesaDTO(List<Despesa> listaDespesa) {
+        List<DespesaDTO> listaDespesaDtoFiltrada = new ArrayList<DespesaDTO>();
+
+        for (Despesa despesa : listaDespesa) {
+            listaDespesaDtoFiltrada.add(DespesaDTO.fromDespesa(despesa));
+        }
+        return listaDespesaDtoFiltrada;
     }
 }
