@@ -55,7 +55,6 @@ public class AvaliacaoService {
         if (notaAvaliacao.isPresent()) {
             List<Avaliacao> listaAvaliacao =
                     this.avaliacaoRepository.findAllByNotaAvaliacao(notaAvaliacao.get());
-
             return criaListaAvaliacao(listaAvaliacao);
         }
 
