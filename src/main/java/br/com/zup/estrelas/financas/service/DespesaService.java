@@ -100,22 +100,17 @@ public class DespesaService {
         return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioMes, fimMes);
     }
 
-    public List<DespesaDTO> buscaPorTipoDespesa(Long idUsuario, Optional<TipoDespesa> tipoDeDespesa)
-            throws DespesaOuUsuarioNullException {
+    public List<DespesaDTO> buscaPorTipoDespesa(Long idUsuario,
+            Optional<TipoDespesa> tipoDeDespesa) {
 
         if (tipoDeDespesa.isPresent()) {
-            List<Despesa> listaDespesa;
-            if ((listaDespesa = repository.findAllByIdUsuarioAndTipoDeDespesa(idUsuario,
-                    tipoDeDespesa)) == null) {
+            List<Despesa> listaDespesa =
+                    repository.findAllByIdUsuarioAndTipoDeDespesa(idUsuario, tipoDeDespesa);
 
-                throw new DespesaOuUsuarioNullException(
-                        DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA);
-            }
             return criaListaDespesaDTO(listaDespesa);
         }
 
         List<Despesa> listaDeDespesa = this.repository.findAll();
-
         return criaListaDespesaDTO(listaDeDespesa);
     }
 
