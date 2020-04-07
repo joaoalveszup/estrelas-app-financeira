@@ -49,7 +49,7 @@ public class DependenteController {
     @GetMapping(path = "/usuarios/{idUsuario}/dependentes",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario,
-            @RequestParam Optional<Parentesco> parentesco) throws DependenteException {
+            @RequestParam Optional<Parentesco> parentesco) {
         return this.dependenteService.buscaDependentes(idUsuario, parentesco);
     }
 
