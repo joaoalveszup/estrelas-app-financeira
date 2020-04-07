@@ -36,12 +36,7 @@ public class DependenteService {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
-        for (Dependente dependenteUsuario : usuario.getDependentes()) {
-
-            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
-            }
-        }
+        validaDependente(usuario);
 
         if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());
@@ -52,6 +47,15 @@ public class DependenteService {
         dependente.setIdUsuario(idUsuario);
 
         return this.dependenteRepository.save(dependente);
+    }
+
+    private void validaDependente(Usuario usuario) throws DependenteException {
+        for (Dependente dependenteUsuario : usuario.getDependentes()) {
+
+            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
+                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
+            }
+        }
     }
 
     public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario,
