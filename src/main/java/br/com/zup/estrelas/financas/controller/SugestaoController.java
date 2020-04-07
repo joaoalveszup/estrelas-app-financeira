@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
+import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
+import br.com.zup.estrelas.financas.exception.ValidaCampoECaratereException;
 import br.com.zup.estrelas.financas.service.SugestaoService;
 
 
@@ -23,8 +26,9 @@ public class SugestaoController {
     SugestaoService sugestaoService;
 
     @PostMapping
-    public Sugestao insereSugestao(@RequestBody Sugestao sugestao) {
-        return this.sugestaoService.insereSugestao(sugestao);
+    public SugestaoResponseDto insereSugestao(@RequestBody SugestaoRequestDto sugestaoRequestDto)
+            throws ValidaCampoECaratereException {
+        return this.sugestaoService.insereSugestao(sugestaoRequestDto);
     }
 
     @GetMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -43,8 +47,10 @@ public class SugestaoController {
     }
 
     @PutMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Sugestao alteraSugestao(@PathVariable Long idSugestao, @RequestBody Sugestao sugestao) {
-        return this.sugestaoService.alteraSugestao(idSugestao, sugestao);
+    public SugestaoResponseDto alteraSugestao(@PathVariable Long idSugestao,
+            @RequestBody SugestaoRequestDto sugestaoRequestDto)
+            throws ValidaCampoECaratereException {
+        return this.sugestaoService.alteraSugestao(idSugestao, sugestaoRequestDto);
     }
 
 }
