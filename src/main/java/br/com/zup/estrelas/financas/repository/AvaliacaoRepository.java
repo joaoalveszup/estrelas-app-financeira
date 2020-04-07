@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,5 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     
     Optional<Avaliacao> findByIdUsuarioAndIdAvaliacao(Long idUsuario, Long idAvaliacao);
 
-
+    List<Avaliacao> findAllByNotaAvaliacao(Integer notaAvaliacao);
 }
