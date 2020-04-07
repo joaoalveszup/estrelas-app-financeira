@@ -65,7 +65,7 @@ public class DespesaController {
 
     @GetMapping(path = "/usuarios/{idUsuario}/despesas")
     public List<DespesaDTO> buscaPorTipoDespesa(@PathVariable Long idUsuario,
-            @RequestParam(value = "tipo-de-despesa") Optional<TipoDespesa> tipoDeDespesa) {
+            @RequestParam(value = "tipo-de-despesa") Optional<TipoDespesa> tipoDeDespesa) throws DespesaOuUsuarioNullException {
         return despesaService.buscaPorTipoDespesa(idUsuario, tipoDeDespesa);
     }
 }
