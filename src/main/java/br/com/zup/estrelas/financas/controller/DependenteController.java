@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.financas.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
@@ -46,8 +48,9 @@ public class DependenteController {
 
     @GetMapping(path = "/usuarios/{idUsuario}/dependentes",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario) {
-        return (List<DependenteDto>) this.dependenteService.buscaDependentes(idUsuario);
+    public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario,
+            @RequestParam Optional<Parentesco> parentesco) throws DependenteException {
+        return this.dependenteService.buscaDependentes(idUsuario, parentesco);
     }
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
@@ -57,14 +60,5 @@ public class DependenteController {
             throws DependenteException {
         this.dependenteService.deletaDependente(dependente, idUsuario, idDependente);
     }
-
-    @GetMapping(path = "/usuarios/{idUsuario}/dependentes/parentesco/{parentesco}",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<DependenteDto> buscaDependentePorParentesco(@PathVariable Long idUsuario,
-            @PathVariable Parentesco parentesco) throws DependenteException {
-        return (List<DependenteDto>) this.dependenteService.buscaDependentePorParentesco(idUsuario,
-                parentesco);
-    }
-
 
 }

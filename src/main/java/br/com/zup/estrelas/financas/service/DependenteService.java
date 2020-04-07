@@ -36,12 +36,7 @@ public class DependenteService {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
-        for (Dependente dependenteUsuario : usuario.getDependentes()) {
-
-            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
-            }
-        }
+        validaDependente(usuario);
 
         if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());
@@ -52,6 +47,15 @@ public class DependenteService {
         dependente.setIdUsuario(idUsuario);
 
         return this.dependenteRepository.save(dependente);
+    }
+
+    private void validaDependente(Usuario usuario) throws DependenteException {
+        for (Dependente dependenteUsuario : usuario.getDependentes()) {
+
+            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
+                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
+            }
+        }
     }
 
     public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario,
@@ -85,9 +89,21 @@ public class DependenteService {
         return DependenteDto.fromDto(dependente.get());
     }
 
-    public List<DependenteDto> buscaDependentes(Long idUsuario) {
+    public List<DependenteDto> buscaDependentes(Long idUsuario, Optional<Parentesco> parentesco) {
+
+        if (parentesco.isPresent()) {
+
+            List<Dependente> listaDependente = this.dependenteRepository
+                    .findAllByIdUsuarioAndParentesco(idUsuario, parentesco.get());
+            return criaListaDto(listaDependente);
+        }
 
         List<Dependente> listaDependente = this.dependenteRepository.findAllByIdUsuario(idUsuario);
+
+        return criaListaDto(listaDependente);
+    }
+
+    private List<DependenteDto> criaListaDto(List<Dependente> listaDependente) {
         List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
 
         for (Dependente dependente : listaDependente) {
@@ -112,16 +128,5 @@ public class DependenteService {
         this.dependenteRepository.deleteById(idDependente);
     }
 
-    public List<DependenteDto> buscaDependentePorParentesco(Long idUsuario, Parentesco parentesco) {
-
-        List<Dependente> listaDependentePorParentesco =
-                this.dependenteRepository.findByIdUsuarioAndParentesco(idUsuario, parentesco);
-        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
-
-        for (Dependente dependente : listaDependentePorParentesco) {
-            listaDependenteDto.add(DependenteDto.fromDto(dependente));
-        }
-
-        return listaDependenteDto;
-    }
 }
+
