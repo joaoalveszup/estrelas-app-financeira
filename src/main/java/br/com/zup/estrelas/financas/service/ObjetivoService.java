@@ -1,22 +1,34 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
+import br.com.zup.estrelas.financas.entity.Usuario;
+import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
+import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 
 @Service
 public class ObjetivoService {
 
+    private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
+            "Usuário ou ojetivo não correspondem.";
     @Autowired
     ObjetivoRepository objetivoRepository;
     @Autowired
+    UsuarioRepository usuarioRepository;
+    @Autowired
     InvestimentoService investimentoService;
 
-    public Objetivo insereObjetivo(Objetivo objetivoRecebido) {
+    public Objetivo insereObjetivo(Long idUsuario, ObjetivoDto objetivoDtoRecebido) {
 
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Objetivo objetivoRecebido = Objetivo.fromDto(usuario, objetivoDtoRecebido);
+        objetivoRecebido.setIdUsuario(usuario.getIdUsuario());
         Objetivo objetivoAtual;
         try {
             objetivoAtual = objetivoRepository.findById(objetivoRecebido.getIdObjetivo()).get();
@@ -29,16 +41,31 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoRecebido);
     }
 
-    public Objetivo buscaObjetivo(Long idObjetivo) {
-        return this.objetivoRepository.findById(idObjetivo).get();
+    public ObjetivoDto buscaObjetivo(Long idUsuario, Long idObjetivo)
+            throws UsuarioOuObjetivoNuloException {
+        Objetivo objetivo =
+                this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo)
+                        .orElseThrow(() -> new UsuarioOuObjetivoNuloException(
+                                USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
+
+        return ObjetivoDto.fromEntity(objetivo);
     }
 
-    public List<Objetivo> listaObjetivos() {
-        return this.objetivoRepository.findAll();
+    public List<ObjetivoDto> listaObjetivos(Long idUsuario) {
+        List<Objetivo> listaObjetivo = this.objetivoRepository.findAllByIdUsuario(idUsuario);
+        List<ObjetivoDto> listaObjetivoDto = new ArrayList<ObjetivoDto>();
+
+        for (Objetivo objetivo : listaObjetivo) {
+            listaObjetivoDto.add(ObjetivoDto.fromEntity(objetivo));
+        }
+        return listaObjetivoDto;
     }
 
-    public Objetivo atualizarObjetivo(Long idObjetivo, Objetivo objetivo) {
+    public Objetivo atualizarObjetivo(Long idUsuario, Long idObjetivo, ObjetivoDto objetivoDto) {
 
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Objetivo objetivo = Objetivo.fromDto(usuario, objetivoDto);
+        objetivo.setIdUsuario(idUsuario);
         if (!(objetivo.getNumeroInvestimentos() > 0)) {
             return null;
         }
@@ -55,8 +82,13 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(Long idObjetivo) {
+    public void deletaObjetivo(Long idUsuario, Long idObjetivo)
+            throws UsuarioOuObjetivoNuloException {
+
+        this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
+                () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
         this.objetivoRepository.deleteById(idObjetivo);
+
     }
 
 }
