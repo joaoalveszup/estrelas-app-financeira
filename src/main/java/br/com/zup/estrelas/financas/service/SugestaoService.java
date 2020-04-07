@@ -23,7 +23,7 @@ public class SugestaoService {
     public SugestaoResponseDto insereSugestao(SugestaoRequestDto sugestaoRequestDto)
             throws ValidaCampoECaratereException {
 
-        testaLimiteCaratere(sugestaoRequestDto);
+        testaLimiteCaractere(sugestaoRequestDto);
         
         Sugestao sugestao =
                 this.sugestaoRepository.save(Sugestao.fromSugestaoRequestDto(sugestaoRequestDto));
@@ -48,7 +48,7 @@ public class SugestaoService {
         Sugestao sugestao = Sugestao.fromSugestaoRequestDto(sugestaoRequestDto);
         Sugestao sugestaoBanco = sugestaoRepository.findById(idSugestao).get();
 
-        testaLimiteCaratere(sugestaoRequestDto);
+        testaLimiteCaractere(sugestaoRequestDto);
        
         sugestaoBanco.setDescricao(sugestao.getDescricao());
         sugestaoBanco.setTitulo(sugestao.getTitulo());
@@ -69,7 +69,7 @@ public class SugestaoService {
 
     }
 
-    public void testaLimiteCaratere(SugestaoRequestDto sugestaoRequestDto) throws ValidaCampoECaratereException {
+    public void testaLimiteCaractere(SugestaoRequestDto sugestaoRequestDto) throws ValidaCampoECaratereException {
         if (minLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
                 sugestaoRequestDto.getDescricao())
                 || maxLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
