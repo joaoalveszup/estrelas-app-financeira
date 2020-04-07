@@ -39,7 +39,7 @@ public class AvaliacaoController {
     }
     
     @GetMapping(path = "/usuarios/avaliacoes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<AvaliacaoDto> findAll(@RequestParam Optional<Integer> notaAvaliacao) {
+    public List<AvaliacaoDto> findAll(@RequestParam Optional<Integer> notaAvaliacao) throws AvaliacaoRegraDeNegocioExeption {
         return service.buscaAvaliacoes(notaAvaliacao);
     }
 

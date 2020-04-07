@@ -17,6 +17,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
+    private static final String ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA =
+            "OCORREU ERRO AO BUSCAR A NOTA!, VOCÊ DIGITOU UMA NOTA MENOR QUE 0 OU MAIOR QUE 5!";
     private static final String ERRO_ID_INCORRETO =
             "ERRO!  O ID-USUÁRIO OU ID-AVALIAÇÃO ESTÁ INCORRETO!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
@@ -51,10 +53,15 @@ public class AvaliacaoService {
     }
 
 
-    public List<AvaliacaoDto> buscaAvaliacoes(Optional<Integer> notaAvaliacao) {
+    public List<AvaliacaoDto> buscaAvaliacoes(Optional<Integer> notaAvaliacao)
+            throws AvaliacaoRegraDeNegocioExeption {
         if (notaAvaliacao.isPresent()) {
+            Integer testaNotaAvaliacao = notaAvaliacao.get();
+            if (testaNotaAvaliacao < NOTA_MIN || testaNotaAvaliacao > NOTA_MAX) {
+                throw new AvaliacaoRegraDeNegocioExeption(ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA);
+            }
             List<Avaliacao> listaAvaliacao =
-                    this.avaliacaoRepository.findAllByNotaAvaliacao(notaAvaliacao.get());
+                    this.avaliacaoRepository.findAllByNotaAvaliacao(testaNotaAvaliacao);
             return criaListaAvaliacao(listaAvaliacao);
         }
 
