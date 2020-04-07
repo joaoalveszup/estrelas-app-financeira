@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
-import br.com.zup.estrelas.financas.exception.ValidaCampoECaratereException;
+import br.com.zup.estrelas.financas.exceptions.ValidaCampoECaratereException;
 import br.com.zup.estrelas.financas.service.SugestaoService;
 
 
