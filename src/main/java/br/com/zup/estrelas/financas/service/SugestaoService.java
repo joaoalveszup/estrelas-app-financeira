@@ -12,27 +12,26 @@ import br.com.zup.estrelas.financas.repository.SugestaoRepository;
 @Service
 public class SugestaoService {
 
+    public final int MIN_LIMITE_DE_CARATERE_TITULO_E_DESCRICAO = 3;
+    public final int MAX_LIMITE_CARATERE_TITULO = 40;
+    public final int MAX_LIMITE_CARATERE_DESCRICAO = 400;
+
     @Autowired
     SugestaoRepository sugestaoRepository;
 
 
-    public SugestaoResponseDto insereSugestao(SugestaoResponseDto sugestaoResponseDto)
+    public SugestaoResponseDto insereSugestao(SugestaoRequestDto sugestaoRequestDto)
             throws ValidaCampoECaratereException {
-        if (minLimitaCaraterDescricao(sugestaoResponseDto.getDescricao())
-                || minLimitaCaratereTitulo(sugestaoResponseDto.getTitulo()))
+        if (minLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
+                sugestaoRequestDto.getDescricao())
+                || maxLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
+                        sugestaoRequestDto.getDescricao()))
             throw new ValidaCampoECaratereException(
-                    "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu titulo contem entre 3 e 40 carateres. "); 
-                          
-        {
-            if (maxLimitaCaratereTitulo(sugestaoResponseDto.getTitulo())
-                    || maxLimitaCaratereDescricao(sugestaoResponseDto.getDescricao())) {
-                throw new ValidaCampoECaratereException(
-                        "Tendo problemas com inserçao da sua sugestao? Verifique se a sua descricao contem entre 3 e 400 carateres ");
-            }
+                    "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu título ou descricão contém no mínimo 3 carateres."
+                    + "\"2. Verificar se seu titulo tem menos de 40 caratares é a descricao tem mais de 400 caratares ");
 
-        }
         Sugestao sugestao =
-                this.sugestaoRepository.save(Sugestao.fromSugestaDto(sugestaoResponseDto));
+                this.sugestaoRepository.save(Sugestao.fromSugestaoRequestDto(sugestaoRequestDto));
         return SugestaoResponseDto.fromSugestaoResponseDto(sugestao);
 
     }
@@ -51,49 +50,37 @@ public class SugestaoService {
 
     public SugestaoResponseDto alteraSugestao(Long idSugestao,
             SugestaoResponseDto sugestaoResponseDto) throws ValidaCampoECaratereException {
-        Sugestao sugestao = Sugestao.fromSugestaDto(sugestaoResponseDto);
+        Sugestao sugestao = Sugestao.fromSugestaoDto(sugestaoResponseDto);
         Sugestao sugestaoBanco = sugestaoRepository.findById(idSugestao).get();
-        if (minLimitaCaraterDescricao(sugestao.getDescricao())
-                || minLimitaCaratereTitulo(sugestao.getTitulo()))
+
+        if (minLimitaCaratereTituloEDescricao(sugestaoResponseDto.getTitulo(),
+                sugestaoResponseDto.getDescricao())
+                || maxLimitaCaratereTituloEDescricao(sugestaoResponseDto.getTitulo(),
+                        sugestaoResponseDto.getDescricao())) {
             throw new ValidaCampoECaratereException(
-                    "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu titulo contem entre 3 e 40 carateres. "); 
-                          {
-            if (maxLimitaCaratereDescricao(sugestao.getDescricao())
-                    || maxLimitaCaratereTitulo(sugestao.getTitulo())) {
-
-                throw new ValidaCampoECaratereException(
-                        "Tendo problemas com inserçao da sua sugestao? Verifique se a sua descricao contem entre 3 e 400 carateres");
-            }
+                    "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu título ou descricão contém no mínimo 3 carateres. "
+                            + "2. Verificar se seu titulo tem menos de 40 caratares é se a descricao tem mais de 400 caratares");
         }
-
         sugestaoBanco.setDescricao(sugestao.getDescricao());
         sugestaoBanco.setTitulo(sugestao.getTitulo());
-
-
         return SugestaoResponseDto
                 .fromSugestaoResponseDto(this.sugestaoRepository.save(sugestaoBanco));
     }
 
-    public boolean validaTituloEDescricao(String titulo, String descricao) {
-        return titulo.equals(titulo) || descricao.equals(descricao);
+
+
+    public boolean maxLimitaCaratereTituloEDescricao(String titulo, String descricao) {
+        return titulo.length() > MAX_LIMITE_CARATERE_TITULO
+                || descricao.length() > MAX_LIMITE_CARATERE_DESCRICAO;
     }
 
-    public boolean maxLimitaCaratereTitulo(String titulo) {
-        return titulo.length() > 40;
-    }
-
-    static public boolean maxLimitaCaratereDescricao(String descricao) {
-        return descricao.length() > 400;
-    }
-
-    public boolean minLimitaCaratereTitulo(String titulo) {
-        return titulo.length() < 3;
+    public boolean minLimitaCaratereTituloEDescricao(String titulo, String descricao) {
+        return titulo.length() < MIN_LIMITE_DE_CARATERE_TITULO_E_DESCRICAO
+                || descricao.length() < MIN_LIMITE_DE_CARATERE_TITULO_E_DESCRICAO;
 
     }
 
-    public boolean minLimitaCaraterDescricao(String descricao) {
-        return descricao.length() < 3;
 
-    }
+
 }
 

@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.enums.TipoSugestao;
 
@@ -30,11 +31,19 @@ public class Sugestao {
     @Enumerated(EnumType.STRING)
     private TipoSugestao tipoSugestao;
 
-    public static Sugestao fromSugestaDto(SugestaoResponseDto sugestaoResponseDto) {
+    public static Sugestao fromSugestaoDto(SugestaoResponseDto sugestaoResponseDto) {
         Sugestao sugestao = new Sugestao();
         sugestao.setDescricao(sugestaoResponseDto.getDescricao());
         sugestao.setTitulo(sugestaoResponseDto.getTitulo());
         sugestao.setTipoSugestao(sugestaoResponseDto.getTipoSugestao());
+        return sugestao;
+    }
+    
+    public static Sugestao fromSugestaoRequestDto(SugestaoRequestDto sugestaoRequestDto) {
+        Sugestao sugestao = new Sugestao();
+        sugestao.setDescricao(sugestaoRequestDto.getDescricao());
+        sugestao.setTitulo(sugestaoRequestDto.getTitulo());
+        sugestao.setTipoSugestao(sugestaoRequestDto.getTipoSugestao());
         return sugestao;
 
     }

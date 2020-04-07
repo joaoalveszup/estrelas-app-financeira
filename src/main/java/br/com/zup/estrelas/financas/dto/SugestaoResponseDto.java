@@ -7,6 +7,15 @@ public class SugestaoResponseDto {
     private String titulo;
     private String descricao;
     private TipoSugestao tipoSugestao;
+    private Long idSugestao;
+
+    public Long getIdSugestao() {
+        return idSugestao;
+    }
+
+    public void setIdSugestao(Long idSugestao) {
+        this.idSugestao = idSugestao;
+    }
 
     public String getTitulo() {
         return titulo;
