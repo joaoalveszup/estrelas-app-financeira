@@ -2,6 +2,7 @@ package br.com.zup.estrelas.financas.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
@@ -16,6 +17,8 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
+    private static final String ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA =
+            "OCORREU ERRO AO BUSCAR A NOTA!, VOCÊ DIGITOU UMA NOTA MENOR QUE 0 OU MAIOR QUE 5!";
     private static final String ERRO_ID_INCORRETO =
             "ERRO!  O ID-USUÁRIO OU ID-AVALIAÇÃO ESTÁ INCORRETO!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
@@ -29,7 +32,7 @@ public class AvaliacaoService {
 
     @Autowired
     AvaliacaoRepository avaliacaoRepository;
-    
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -49,20 +52,29 @@ public class AvaliacaoService {
 
     }
 
+
+    public List<AvaliacaoDto> buscaAvaliacoes(Optional<Integer> notaAvaliacao)
+            throws AvaliacaoRegraDeNegocioExeption {
+        if (notaAvaliacao.isPresent()) {
+            Integer valorNotaAvaliacao = notaAvaliacao.get();
+            if (valorNotaAvaliacao < NOTA_MIN || valorNotaAvaliacao > NOTA_MAX) {
+                throw new AvaliacaoRegraDeNegocioExeption(ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA);
+            }
+            List<Avaliacao> listaAvaliacao =
+                    this.avaliacaoRepository.findAllByNotaAvaliacao(valorNotaAvaliacao);
+            return criaListaAvaliacao(listaAvaliacao);
+        }
+
+        List<Avaliacao> listaDeAvaliacao = avaliacaoRepository.findAll();
+        return criaListaAvaliacao(listaDeAvaliacao);
+
+    }
+
     public AvaliacaoDto buscaAvaliacaoPorIdUsuario(Long idUsuario) {
         Avaliacao avaliacaoBuscada = avaliacaoRepository.findFirstByIdUsuario(idUsuario);
         return AvaliacaoDto.fromAvaliacao(avaliacaoBuscada);
     }
 
-    public List<AvaliacaoDto> buscaAvaliacoes() {
-        List<Avaliacao> listaDeAvaliacao = avaliacaoRepository.findAll();
-        List<AvaliacaoDto> listadeAvaliacaoDto = new ArrayList<AvaliacaoDto>();
-        for (Avaliacao avaliacao : listaDeAvaliacao) {
-            listadeAvaliacaoDto.add(AvaliacaoDto.fromAvaliacao(avaliacao));
-        }
-        return listadeAvaliacaoDto;
-
-    }
 
     public void deletaAvaliacao(Long idAvaliacao, Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
@@ -110,6 +122,16 @@ public class AvaliacaoService {
             return true;
         }
         return false;
+    }
+
+    public List<AvaliacaoDto> criaListaAvaliacao(List<Avaliacao> listadeAvaliacao) {
+        List<AvaliacaoDto> listadeAvaliacaoDto = new ArrayList<AvaliacaoDto>();
+        for (Avaliacao avaliacao : listadeAvaliacao) {
+            listadeAvaliacaoDto.add(AvaliacaoDto.fromAvaliacao(avaliacao));
+
+        }
+
+        return listadeAvaliacaoDto;
     }
 }
 
