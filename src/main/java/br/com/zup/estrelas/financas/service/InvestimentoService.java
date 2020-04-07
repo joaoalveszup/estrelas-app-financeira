@@ -14,7 +14,9 @@ import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 @Service
 public class InvestimentoService {
 
-    private static final int QUANTIDADE_INVESTIMENTOS_PAGOS = 0;
+    private static final int NAO_HA_VALOR_INVESTIMENTO_A_SER_PAGO = 0;
+
+    private static final int NAO_HA_INVESTIMENTOS_PAGOS = 0;
 
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
             "Usuário ou ojetivo não correspondem.";
@@ -36,23 +38,23 @@ public class InvestimentoService {
             quantidadeInvestimentosPagos = investimentoRepository.countByPagoAndIdObjetivo(true,
                     objetivoAtual.getIdObjetivo());
         } else {
-            quantidadeInvestimentosPagos = QUANTIDADE_INVESTIMENTOS_PAGOS;
+            quantidadeInvestimentosPagos = NAO_HA_INVESTIMENTOS_PAGOS;
         }
 
         LocalDate dataAtual = LocalDate.now();
 
-        if (quantidadeInvestimentosPagos > QUANTIDADE_INVESTIMENTOS_PAGOS) {
+        if (quantidadeInvestimentosPagos > NAO_HA_INVESTIMENTOS_PAGOS) {
             List<Investimento> listaInvesimentoPago = investimentoRepository
                     .findByPagoAndIdObjetivo(true, objetivoAtual.getIdObjetivo());
             listaInvestimentos =
-                    criaListaInvestimentoPagos(listaInvestimentos, listaInvesimentoPago);
+                    criacaoDeListaInvestimentoPagos(listaInvestimentos, listaInvesimentoPago);
         }
 
-        return  criaNovosInvestimentos(objetivoRecebido, listaInvestimentos,
+        return criacaoDeNovosInvestimentos(objetivoRecebido, listaInvestimentos,
                 valorASerPago, dataAtual);
     }
 
-    public List<Investimento> alteraStatusParcela(Long idUsuario, Long idObjetivo,
+    public Investimento alteraStatusInvestimento(Long idUsuario, Long idObjetivo,
             Long idInvestimento, boolean statusParcela) throws UsuarioOuObjetivoNuloException {
 
         this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
@@ -61,11 +63,11 @@ public class InvestimentoService {
         Investimento investimento = investimentoRepository
                 .findByIdInvestimentoAndIdObjetivo(idInvestimento, idObjetivo);
         investimento.setPago(statusParcela);
-        investimentoRepository.save(investimento);
-        return investimentoRepository.findAllByIdObjetivo(idObjetivo);
+        
+        return investimentoRepository.save(investimento);
     }
 
-    private List<Investimento> criaNovosInvestimentos(Objetivo objetivoRecebido,
+    private List<Investimento> criacaoDeNovosInvestimentos(Objetivo objetivoRecebido,
             List<Investimento> listaInvestimentos, float valorASerPago, LocalDate dataAtual) {
         for (int i = 1; i <= objetivoRecebido.getNumeroInvestimentos(); i++) {
             Investimento investimento = new Investimento();
@@ -76,7 +78,7 @@ public class InvestimentoService {
         return listaInvestimentos;
     }
 
-    private List<Investimento> criaListaInvestimentoPagos(List<Investimento> listaInvestimentos,
+    private List<Investimento> criacaoDeListaInvestimentoPagos(List<Investimento> listaInvestimentos,
             List<Investimento> listaInvesimentoPago) {
         for (Investimento investimentoPago : listaInvesimentoPago) {
             Investimento investimentoAnterior = new Investimento();
@@ -109,7 +111,7 @@ public class InvestimentoService {
         float valorInvestimentosPago = valorCadaInvestimento;
 
         if (objetivoAtual == null) {
-            valorInvestimentosPago = 0;
+            valorInvestimentosPago = NAO_HA_VALOR_INVESTIMENTO_A_SER_PAGO;
         } else {
             long quantidadeInvestimentosPagos = investimentoRepository
                     .countByPagoAndIdObjetivo(true, objetivoAtual.getIdObjetivo());

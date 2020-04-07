@@ -19,19 +19,19 @@ public class InvestimentoController {
     InvestimentoService investimentoService;
 
     @PutMapping(
-            path = "usuarios/{idUsuario}/objetivos/{idObjetivo}/investimentos/{idInvestimento}/statusParcela")
-    public List<Investimento> atualizaInvestimentoParaTrue(@PathVariable Long idUsuario,
+            path = "usuarios/{idUsuario}/objetivos/{idObjetivo}/investimentos/{idInvestimento}/pagar")
+    public Investimento realizaPagamento(@PathVariable Long idUsuario,
             @PathVariable Long idObjetivo, @PathVariable Long idInvestimento)
             throws UsuarioOuObjetivoNuloException {
 
-        return investimentoService.alteraStatusParcela(idUsuario, idObjetivo, idInvestimento, true);
+        return investimentoService.alteraStatusInvestimento(idUsuario, idObjetivo, idInvestimento, true);
     }
 
-    @DeleteMapping(path = "usuarios/{idUsuario}/objetivos/{idObjetivo}/investimentos/{idInvestimento}/statusParcela")
-    public List<Investimento> atualizaInvestimentoParaFalse(@PathVariable Long idUsuario,
+    @DeleteMapping(path = "usuarios/{idUsuario}/objetivos/{idObjetivo}/investimentos/{idInvestimento}/pagar")
+    public Investimento desfazPagamento(@PathVariable Long idUsuario,
             @PathVariable Long idObjetivo, @PathVariable Long idInvestimento)
             throws UsuarioOuObjetivoNuloException {
 
-        return investimentoService.alteraStatusParcela(idUsuario, idObjetivo, idInvestimento, false);
+        return investimentoService.alteraStatusInvestimento(idUsuario, idObjetivo, idInvestimento, false);
     }
 }
