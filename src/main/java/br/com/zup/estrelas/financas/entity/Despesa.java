@@ -32,6 +32,16 @@ public class Despesa {
 
     @Column(nullable = false)
     private LocalDate vencimento;
+    
+    @Column(nullable = false)
+    private boolean paga;
+    
+    @Column(nullable = false)
+    private boolean recorrente;
+    
+    @Column(nullable = false, name = "numero_recorrencias")
+    private Integer numeroRecorrencias;
+
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
@@ -47,14 +57,14 @@ public class Despesa {
         despesaConvertida.setTipoDeDespesa(criaDespesaDto.getTipoDespesa());
         despesaConvertida.setValor(criaDespesaDto.getValor());
         despesaConvertida.setVencimento(criaDespesaDto.getVencimento());
+        despesaConvertida.setNumeroRecorrencias(criaDespesaDto.getNumeroRecorrencias());
+        despesaConvertida.setRecorrente(criaDespesaDto.isRecorrente());
         return despesaConvertida;
     }
     
-    public static Despesa fromAtualizaDespesa(AtualizaDespesaDto atualizaDespesaDto, TipoDespesa tipoDespesa, Long idUsuario) {
+    public static Despesa fromDespesaAtualizada(AtualizaDespesaDto atualizaDespesaDto, Long idUsuario) {
         Despesa despesaConvertida = new Despesa();
         despesaConvertida.setValor(atualizaDespesaDto.getValor());
-        despesaConvertida.setVencimento(atualizaDespesaDto.getVencimento());
-        despesaConvertida.setTipoDeDespesa(tipoDespesa);
         despesaConvertida.setIdUsuario(idUsuario);
         return despesaConvertida;
     }
@@ -107,4 +117,27 @@ public class Despesa {
         this.vencimento = vencimento;
     }
     
+    public boolean isPaga() {
+        return paga;
+    }
+    
+    public void setPaga(boolean paga) {
+        this.paga = paga;
+    }
+    
+    public boolean isRecorrente() {
+        return recorrente;
+    }
+    
+    public void setRecorrente(boolean recorrente) {
+        this.recorrente = recorrente;
+    }
+    
+    public int getNumeroRecorrencias() {
+        return numeroRecorrencias;
+    }
+    
+    public void setNumeroRecorrencias(int numeroRecorrencias) {
+        this.numeroRecorrencias = numeroRecorrencias;
+    }
 }

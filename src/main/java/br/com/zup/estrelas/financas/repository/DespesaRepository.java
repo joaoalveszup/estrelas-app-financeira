@@ -21,4 +21,5 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
  
     List<Despesa> findAllByIdUsuarioAndTipoDeDespesa(Long idUsuario, Optional<TipoDespesa> tipoDeDespesa);
 
+    List<Despesa> findAllByIdUsuarioAndTipoDeDespesaAndVencimentoIsAfter(Long idUsuario, TipoDespesa tipoDeDespesa, LocalDate vencimento);
 }

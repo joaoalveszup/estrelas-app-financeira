@@ -29,7 +29,7 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(path = "/usuarios/{idUsuario}/despesas")
-    public Despesa insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto,
+    public List<DespesaDTO> insereDespesa(@RequestBody CriaDespesaDTO criaDespesaDto,
             @PathVariable Long idUsuario) throws DespesaOuUsuarioNullException {
         return this.despesaService.insereDespesa(criaDespesaDto, idUsuario);
     }
@@ -65,7 +65,9 @@ public class DespesaController {
 
     @GetMapping(path = "/usuarios/{idUsuario}/despesas")
     public List<DespesaDTO> buscaPorTipoDespesa(@PathVariable Long idUsuario,
-            @RequestParam(value = "tipo-de-despesa") Optional<TipoDespesa> tipoDeDespesa) throws DespesaOuUsuarioNullException {
-        return despesaService.buscaPorTipoDespesa(idUsuario, tipoDeDespesa);
+            @RequestParam(value = "tipo-de-despesa") Optional<TipoDespesa> tipoDeDespesa)
+            throws DespesaOuUsuarioNullException {
+        return despesaService.listarDespesas(idUsuario, tipoDeDespesa);
     }
+
 }

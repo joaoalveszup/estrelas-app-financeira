@@ -8,6 +8,26 @@ public class CriaDespesaDTO {
     private float valor;
     private LocalDate vencimento;
     private TipoDespesa tipoDespesa;
+    private int numeroRecorrencias;
+    private boolean recorrente;
+    
+    
+
+    public boolean isRecorrente() {
+        return recorrente;
+    }
+
+    public void setRecorrente(boolean recorrente) {
+        this.recorrente = recorrente;
+    }
+
+    public int getNumeroRecorrencias() {
+        return numeroRecorrencias;
+    }
+
+    public void setNumeroRecorrencias(int numeroRecorrencias) {
+        this.numeroRecorrencias = numeroRecorrencias;
+    }
 
     public float getValor() {
         return valor;
