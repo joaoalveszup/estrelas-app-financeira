@@ -17,14 +17,14 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class AvaliacaoService {
 
-    private static final String ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA =
+    private static final String ERRO_AO_INSERRIR_UMA_NOTA_PARA_O_FILTRO =
             "OCORREU ERRO AO BUSCAR A NOTA!, VOCÊ DIGITOU UMA NOTA MENOR QUE 0 OU MAIOR QUE 5!";
     private static final String ERRO_ID_INCORRETO =
             "ERRO!  O ID-USUÁRIO OU ID-AVALIAÇÃO ESTÁ INCORRETO!";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
             "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
                     + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
-    private static final String MSG_ERRO_AVALIACAO_EXISTENTE =
+    private static final String MSG_ERRO_AVALIACAO_JA_EXISTE_OU_USUARIO_NULL =
             "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO, OU O USUÁRIO NÃO EXISTE";
     private static final int MAX_CARACTERE = 400;
     private static final int NOTA_MIN = 0;
@@ -40,11 +40,11 @@ public class AvaliacaoService {
             throws AvaliacaoRegraDeNegocioExeption {
 
         if (this.verificaSeAvaliacaoExiste(criaAvaliacaoDto, idUsuario)) {
-            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_AVALIACAO_EXISTENTE);
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_AVALIACAO_JA_EXISTE_OU_USUARIO_NULL);
 
         }
 
-        if (!this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
+        if (!this.validaNotaEVerificaMaxCaractere(criaAvaliacaoDto)) {
             throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
 
@@ -58,7 +58,7 @@ public class AvaliacaoService {
         if (notaAvaliacao.isPresent()) {
             Integer valorNotaAvaliacao = notaAvaliacao.get();
             if (valorNotaAvaliacao < NOTA_MIN || valorNotaAvaliacao > NOTA_MAX) {
-                throw new AvaliacaoRegraDeNegocioExeption(ERRO_AO_INSERRIR_UMA_NOTA_DE_BUSCA);
+                throw new AvaliacaoRegraDeNegocioExeption(ERRO_AO_INSERRIR_UMA_NOTA_PARA_O_FILTRO);
             }
             List<Avaliacao> listaAvaliacao =
                     this.avaliacaoRepository.findAllByNotaAvaliacao(valorNotaAvaliacao);
@@ -86,20 +86,20 @@ public class AvaliacaoService {
 
     public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto,
             Long idUsuario) throws AvaliacaoRegraDeNegocioExeption {
-        Avaliacao avaliacaoBanco =
+        Avaliacao avaliacaoBuscada =
                 avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
-        if (!this.validaNotaVerificaMaxCaractere(criaAvaliacaoDto)) {
+        if (!this.validaNotaEVerificaMaxCaractere(criaAvaliacaoDto)) {
             throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
 
-        avaliacaoBanco.setComentario(criaAvaliacaoDto.getComentario());
-        avaliacaoBanco.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
-        return avaliacaoRepository.save(avaliacaoBanco);
+        avaliacaoBuscada.setComentario(criaAvaliacaoDto.getComentario());
+        avaliacaoBuscada.setNotaAvaliacao(criaAvaliacaoDto.getNotaAvaliacao());
+        return avaliacaoRepository.save(avaliacaoBuscada);
     }
 
 
-    private boolean validaNotaVerificaMaxCaractere(CriaAvaliacaoDto avaliacao) {
+    private boolean validaNotaEVerificaMaxCaractere(CriaAvaliacaoDto avaliacao) {
 
         if (avaliacao.getNotaAvaliacao() < NOTA_MIN || avaliacao.getNotaAvaliacao() > NOTA_MAX) {
             return false;
@@ -112,12 +112,12 @@ public class AvaliacaoService {
     }
 
     public boolean verificaSeAvaliacaoExiste(CriaAvaliacaoDto avaliacao, Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
-        if (usuario == null) {
+        Usuario usuarioBuscado = usuarioRepository.findById(idUsuario).get();
+        if (usuarioBuscado == null) {
             return true;
         }
 
-        Avaliacao avaliacaoBuscada = avaliacaoRepository.findByUsuario(usuario);
+        Avaliacao avaliacaoBuscada = avaliacaoRepository.findByUsuario(usuarioBuscado);
         if (avaliacaoBuscada != null) {
             return true;
         }
