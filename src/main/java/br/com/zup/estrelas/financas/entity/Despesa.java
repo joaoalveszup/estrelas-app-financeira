@@ -32,25 +32,26 @@ public class Despesa {
 
     @Column(nullable = false)
     private LocalDate vencimento;
-    
+
     @Column(nullable = false)
     private boolean paga;
-    
+
     @Column(nullable = false)
     private boolean recorrente;
-    
+
     @Column(nullable = false, name = "numero_recorrencias")
     private Integer numeroRecorrencias;
 
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false,
+            updatable = false)
     @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "id_usuario")
     private Long idUsuario;
-    
+
     public static Despesa fromCriacaoDto(CriaDespesaDTO criaDespesaDto, Long idUsuario) {
         Despesa despesaConvertida = new Despesa();
         despesaConvertida.setIdUsuario(idUsuario);
@@ -61,14 +62,15 @@ public class Despesa {
         despesaConvertida.setRecorrente(criaDespesaDto.isRecorrente());
         return despesaConvertida;
     }
-    
-    public static Despesa fromDespesaAtualizada(AtualizaDespesaDto atualizaDespesaDto, Long idUsuario) {
+
+    public static Despesa fromDespesaAtualizada(AtualizaDespesaDto atualizaDespesaDto,
+            Long idUsuario) {
         Despesa despesaConvertida = new Despesa();
         despesaConvertida.setValor(atualizaDespesaDto.getValor());
         despesaConvertida.setIdUsuario(idUsuario);
         return despesaConvertida;
     }
-    
+
     public Long getIdDespesa() {
         return idDespesa;
     }
@@ -116,27 +118,27 @@ public class Despesa {
     public void setVencimento(LocalDate vencimento) {
         this.vencimento = vencimento;
     }
-    
+
     public boolean isPaga() {
         return paga;
     }
-    
+
     public void setPaga(boolean paga) {
         this.paga = paga;
     }
-    
+
     public boolean isRecorrente() {
         return recorrente;
     }
-    
+
     public void setRecorrente(boolean recorrente) {
         this.recorrente = recorrente;
     }
-    
+
     public int getNumeroRecorrencias() {
         return numeroRecorrencias;
     }
-    
+
     public void setNumeroRecorrencias(int numeroRecorrencias) {
         this.numeroRecorrencias = numeroRecorrencias;
     }
