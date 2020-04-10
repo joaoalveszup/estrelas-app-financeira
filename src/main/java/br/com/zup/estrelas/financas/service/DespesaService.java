@@ -69,7 +69,7 @@ public class DespesaService {
                     repository.findAllByIdUsuarioAndTipoDeDespesaAndVencimentoIsAfter(idUsuario,
                             despesaDoBanco.getTipoDeDespesa(), despesaDoBanco.getVencimento()));
         } else {
-            
+
             this.repository.delete(despesaDoBanco);
 
         }
@@ -103,8 +103,7 @@ public class DespesaService {
         return this.repository.findAllByIdUsuarioAndVencimentoBetween(idUsuario, inicioMes, fimMes);
     }
 
-    public List<DespesaDTO> listarDespesas(Long idUsuario,
-            Optional<TipoDespesa> tipoDeDespesa) {
+    public List<DespesaDTO> listarDespesas(Long idUsuario, Optional<TipoDespesa> tipoDeDespesa) {
 
         if (tipoDeDespesa.isPresent()) {
             List<Despesa> listaDespesa =
