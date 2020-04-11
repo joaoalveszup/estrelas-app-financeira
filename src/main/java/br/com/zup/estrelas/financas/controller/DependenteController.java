@@ -41,16 +41,16 @@ public class DependenteController {
 
     @GetMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DependenteDto buscaDependente(@PathVariable Long idUsuario,
+    public DependenteDto buscaDependentePorId(@PathVariable Long idUsuario,
             @PathVariable Long idDependente) throws DependenteException {
-        return this.dependenteService.buscaDependente(idUsuario, idDependente);
+        return this.dependenteService.buscaDependentePorId(idUsuario, idDependente);
     }
 
     @GetMapping(path = "/usuarios/{idUsuario}/dependentes",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<DependenteDto> buscaDependentes(@PathVariable Long idUsuario,
+    public List<DependenteDto> buscaListaDeDependentes(@PathVariable Long idUsuario,
             @RequestParam Optional<Parentesco> parentesco) {
-        return this.dependenteService.buscaDependentes(idUsuario, parentesco);
+        return this.dependenteService.buscaListaDeDependentes(idUsuario, parentesco);
     }
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",

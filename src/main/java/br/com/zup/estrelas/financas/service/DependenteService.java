@@ -17,26 +17,49 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class DependenteService {
 
-    private static final String MENSAGEM_EXCEPTION_CONJUGE =
+    private static final String MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA =
             "Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
-
-    private static final String MENSAGEM_EXCEPTION_GENERICA =
+    
+    private static final String MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO =
             "Esse dependente não corresponde ao usuário informado!";
-
+    
     private static final int RENDA_MIN_DEPENDENTE = 1;
-
+    
     @Autowired
     DependenteRepository dependenteRepository;
 
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    private Usuario buscaUsuarioPorId(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        return usuario;
+    }
+
+    private void validaExistenciaDeConjuge(Usuario usuario) throws DependenteException {
+        for (Dependente dependenteUsuario : usuario.getDependentes()) {
+
+            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
+                throw new DependenteException(MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA);
+            }
+        }
+    }
+
+    private List<DependenteDto> criaListaDto(List<Dependente> listaDependente) {
+        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
+
+        for (Dependente dependente : listaDependente) {
+            listaDependenteDto.add(DependenteDto.fromDto(dependente));
+        }
+        return listaDependenteDto;
+    }
+
     public Dependente insereDependente(CriaDependenteDto criaDependenteDto, Long idUsuario)
             throws DependenteException {
 
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = buscaUsuarioPorId(idUsuario);
 
-        validaDependente(usuario);
+        validaExistenciaDeConjuge(usuario);
 
         if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());
@@ -47,15 +70,6 @@ public class DependenteService {
         dependente.setIdUsuario(idUsuario);
 
         return this.dependenteRepository.save(dependente);
-    }
-
-    private void validaDependente(Usuario usuario) throws DependenteException {
-        for (Dependente dependenteUsuario : usuario.getDependentes()) {
-
-            if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                throw new DependenteException(MENSAGEM_EXCEPTION_CONJUGE);
-            }
-        }
     }
 
     public Dependente modificaDependente(DependenteDto dependenteDto, Long idUsuario,
@@ -77,19 +91,21 @@ public class DependenteService {
         return this.dependenteRepository.save(dependenteBanco);
     }
 
-    public DependenteDto buscaDependente(Long idUsuario, Long idDependente)
+    public DependenteDto buscaDependentePorId(Long idUsuario, Long idDependente)
             throws DependenteException {
 
         Optional<Dependente> dependente =
                 this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente);
 
         this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
+                .orElseThrow(() -> new DependenteException(
+                        MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO));
 
         return DependenteDto.fromDto(dependente.get());
     }
 
-    public List<DependenteDto> buscaDependentes(Long idUsuario, Optional<Parentesco> parentesco) {
+    public List<DependenteDto> buscaListaDeDependentes(Long idUsuario,
+            Optional<Parentesco> parentesco) {
 
         if (parentesco.isPresent()) {
 
@@ -103,19 +119,10 @@ public class DependenteService {
         return criaListaDto(listaDependente);
     }
 
-    private List<DependenteDto> criaListaDto(List<Dependente> listaDependente) {
-        List<DependenteDto> listaDependenteDto = new ArrayList<DependenteDto>();
-
-        for (Dependente dependente : listaDependente) {
-            listaDependenteDto.add(DependenteDto.fromDto(dependente));
-        }
-        return listaDependenteDto;
-    }
-
     public void deletaDependente(DependenteDto dependente, Long idUsuario, Long idDependente)
             throws DependenteException {
 
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = buscaUsuarioPorId(idUsuario);
 
         if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependente.getRenda());
@@ -123,7 +130,8 @@ public class DependenteService {
         }
 
         this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-                .orElseThrow(() -> new DependenteException(MENSAGEM_EXCEPTION_GENERICA));
+                .orElseThrow(() -> new DependenteException(
+                        MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO));
 
         this.dependenteRepository.deleteById(idDependente);
     }
