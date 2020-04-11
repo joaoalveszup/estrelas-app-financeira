@@ -43,6 +43,5 @@ target/
 
 ### Intellij ###
 .idea/
-**/veloepark-parent/mysql-data/
 *.iml
 *.iws
