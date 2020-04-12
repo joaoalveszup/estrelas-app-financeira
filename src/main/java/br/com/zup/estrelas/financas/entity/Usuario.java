@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.entity;
 
+import br.com.zup.estrelas.financas.dto.UsuarioDto;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,24 +9,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import br.com.zup.estrelas.financas.dto.UsuarioDto;
+import org.springframework.beans.BeanUtils;
 
 @Entity
 public class Usuario {
 
-    private Usuario(String nome, String documento, String tipoDocumento, Float salarioBruto,
-            Float salarioLiquido, String profissao, String empresa) {
-        this.nome = nome;
-        this.documento = documento;
-        this.tipoDocumento = tipoDocumento;
-        this.salarioBruto = salarioBruto;
-        this.salarioLiquido = salarioLiquido;
-        this.profissao = profissao;
-        this.empresa = empresa;
+    public Usuario(UsuarioDto usuarioDto) {
+        BeanUtils.copyProperties(usuarioDto, this);
+        this.tipoDocumento = usuarioDto.getTipoDocumento().getValue();
     }
 
     public Usuario() {
-
     }
 
     @Id
@@ -63,13 +57,6 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Objetivo> objetivos;
-
-
-    public static Usuario fromDto(UsuarioDto usuarioDto) {
-        return new Usuario(usuarioDto.getNome(), usuarioDto.getDocumento(),
-                usuarioDto.getTipoDocumento().getValue(), usuarioDto.getSalarioBruto(),
-                usuarioDto.getSalarioLiquido(), usuarioDto.getProfissao(), usuarioDto.getEmpresa());
-    }
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -147,5 +134,11 @@ public class Usuario {
         this.dependentes = dependentes;
     }
 
+    public List<Objetivo> getObjetivos() {
+        return objetivos;
+    }
 
+    public void setObjetivos(List<Objetivo> objetivos) {
+        this.objetivos = objetivos;
+    }
 }

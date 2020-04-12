@@ -4,7 +4,7 @@ public enum TipoDocumento {
     
     CPF("cpf"), RG("rg"), PASSAPORTE("passaporte"), OUTRO("outro");
     
-    private TipoDocumento(String value) {
+    TipoDocumento(String value) {
         this.value = value;
     }
 
