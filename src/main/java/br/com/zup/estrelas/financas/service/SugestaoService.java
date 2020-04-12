@@ -83,22 +83,24 @@ public class SugestaoService {
         }
       
     }
-   public List<SugestaoRequestDto> buscaTipoSugestao(Optional<TipoSugestao> tipoSugestao ) {
+   public List<SugestaoResponseDto> buscaTipoSugestao(Optional<TipoSugestao> tipoSugestao ) {
        if(tipoSugestao.isPresent()) {
-           List<Sugestao> listaSugestao = sugestaoRepository.findAllByTipoSugestao(tipoSugestao);
-           return criaListaSugestaoDto(listaSugestao);
+           List<Sugestao> listaSugestao = sugestaoRepository.findByTipoSugestao(tipoSugestao);
+           return criaListaSugestaoResponseDto(listaSugestao);
        }
        List<Sugestao> listaDeSugestao = this.sugestaoRepository.findAll();
-    return criaListaSugestaoDto(listaDeSugestao);
+    return criaListaSugestaoResponseDto(listaDeSugestao);
        
    }
    
-   public List<SugestaoRequestDto> criaListaSugestaoDto(List<Sugestao> listaSugestao){
-       List<SugestaoRequestDto> novaListaSugestaoDto = new ArrayList<SugestaoRequestDto>();
+ 
+   public List<SugestaoResponseDto> criaListaSugestaoResponseDto(List<Sugestao> listaSugestao){
+       List<SugestaoResponseDto> novaListaSugestaoDto = new ArrayList<SugestaoResponseDto>();
        for(Sugestao sugestao : listaSugestao ) {
-          novaListaSugestaoDto.add(SugestaoRequestDto.fromSugestao(sugestao)); 
+          novaListaSugestaoDto.add(SugestaoResponseDto.fromSugestaoResponseDto(sugestao)); 
        }
     return novaListaSugestaoDto;
    }
+   
 }
 

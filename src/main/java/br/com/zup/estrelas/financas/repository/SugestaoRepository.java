@@ -10,6 +10,6 @@ import br.com.zup.estrelas.financas.enums.TipoSugestao;
 @Repository
 public interface SugestaoRepository extends JpaRepository<Sugestao, Long>{
 
-    List<Sugestao> findAllByTipoSugestao( Optional<TipoSugestao> tipoSugestao);
+    List<Sugestao> findByTipoSugestao( Optional<TipoSugestao> tipoSugestao);
     
 }
