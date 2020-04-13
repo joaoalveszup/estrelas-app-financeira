@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.exceptions;
 
+import static java.util.Objects.nonNull;
+
 import br.com.zup.estrelas.financas.dto.ErroDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +37,18 @@ public class GlobalExceptionHandler {
         List<ErroDto> errosDeValidacao = new ArrayList<>();
 
         for (ObjectError erro : e.getBindingResult().getAllErrors()) {
-            String baseStr = erro.getCodes()[STR_NOME_DO_CAMPO];
-            StringBuilder mensagemASerRetornada = new StringBuilder();
 
-            mensagemASerRetornada.append("O campo ");
-            mensagemASerRetornada.append(baseStr.substring(baseStr.lastIndexOf(".") + IGNORA_POS_PONTO));
-            mensagemASerRetornada.append(" ");
-            mensagemASerRetornada.append(erro.getDefaultMessage());
-            errosDeValidacao.add(new ErroDto(mensagemASerRetornada.toString()));
+            if (nonNull(erro.getCodes()) && nonNull(erro.getCodes()[STR_NOME_DO_CAMPO])) {
+                String baseNomeDoCampo = erro.getCodes()[STR_NOME_DO_CAMPO];
+
+                StringBuilder mensagemASerExibida = new StringBuilder();
+                mensagemASerExibida.append("O campo ");
+                mensagemASerExibida.append(baseNomeDoCampo.substring(baseNomeDoCampo.lastIndexOf(".") + IGNORA_POS_PONTO));
+                mensagemASerExibida.append(" ");
+                mensagemASerExibida.append(erro.getDefaultMessage());
+
+                errosDeValidacao.add(new ErroDto(mensagemASerExibida.toString()));
+            }
         }
 
         return errosDeValidacao;
