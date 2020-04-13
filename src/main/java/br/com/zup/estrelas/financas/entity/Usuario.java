@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.financas.entity;
 
 import br.com.zup.estrelas.financas.dto.UsuarioDto;
+import br.com.zup.estrelas.financas.enums.TipoDocumento;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +17,6 @@ public class Usuario {
 
     public Usuario(UsuarioDto usuarioDto) {
         BeanUtils.copyProperties(usuarioDto, this);
-        this.tipoDocumento = usuarioDto.getTipoDocumento().getValue();
     }
 
     public Usuario() {
@@ -34,7 +34,7 @@ public class Usuario {
     private String documento;
 
     @Column(name = "tipo_documento", nullable = false)
-    private String tipoDocumento;
+    private TipoDocumento tipoDocumento;
 
     @Column(name = "salario_bruto", nullable = false)
     private Float salarioBruto;
@@ -78,11 +78,11 @@ public class Usuario {
         this.documento = documento;
     }
 
-    public String getTipoDocumento() {
+    public TipoDocumento getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 

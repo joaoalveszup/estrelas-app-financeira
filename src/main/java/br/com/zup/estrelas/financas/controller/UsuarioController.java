@@ -4,6 +4,7 @@ import br.com.zup.estrelas.financas.dto.UsuarioDto;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.service.UsuarioService;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class UsuarioController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Usuario insereUsuario(@RequestBody UsuarioDto usuarioDto) {
+    public Usuario insereUsuario(@Valid @RequestBody UsuarioDto usuarioDto) {
         return this.usuarioService.insereUsuario(usuarioDto);
     }
 

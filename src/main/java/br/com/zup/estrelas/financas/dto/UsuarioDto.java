@@ -15,7 +15,6 @@ public class UsuarioDto {
     @NotBlank
     private String documento;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumento;
 
