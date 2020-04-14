@@ -134,7 +134,7 @@ public class DespesaService {
                     && !(criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO))) {
                 throw new DespesaOuUsuarioNullException(ESTE_TIPO_DE_DESPESA_JÁ_EXISTE);
             }
-        }
+            }
     }
 
     private List<Despesa> manipulaDespesas(CriaDespesaDTO criaDespesaDto, Long idUsuario,
