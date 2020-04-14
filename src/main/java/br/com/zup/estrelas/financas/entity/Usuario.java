@@ -1,5 +1,7 @@
 package br.com.zup.estrelas.financas.entity;
 
+import br.com.zup.estrelas.financas.dto.UsuarioDto;
+import br.com.zup.estrelas.financas.enums.TipoDocumento;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,10 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.springframework.beans.BeanUtils;
 
 @Entity
 public class Usuario {
 
+    public Usuario(UsuarioDto usuarioDto) {
+        BeanUtils.copyProperties(usuarioDto, this);
+    }
+
+    public Usuario() {
+    }
 
     @Id
     @Column(name = "id_usuario")
@@ -25,7 +34,7 @@ public class Usuario {
     private String documento;
 
     @Column(name = "tipo_documento", nullable = false)
-    private String tipoDocumento;
+    private TipoDocumento tipoDocumento;
 
     @Column(name = "salario_bruto", nullable = false)
     private Float salarioBruto;
@@ -69,11 +78,11 @@ public class Usuario {
         this.documento = documento;
     }
 
-    public String getTipoDocumento() {
+    public TipoDocumento getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
@@ -116,7 +125,7 @@ public class Usuario {
     public void setDespesas(List<Despesa> despesas) {
         this.despesas = despesas;
     }
-  
+
     public List<Dependente> getDependentes() {
         return dependentes;
     }
@@ -125,5 +134,11 @@ public class Usuario {
         this.dependentes = dependentes;
     }
 
+    public List<Objetivo> getObjetivos() {
+        return objetivos;
+    }
 
+    public void setObjetivos(List<Objetivo> objetivos) {
+        this.objetivos = objetivos;
+    }
 }

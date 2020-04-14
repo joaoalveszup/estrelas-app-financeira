@@ -40,3 +40,8 @@ target/
 **/.factorypath
 **/.sts4-cache/
 **/.springBeans
+
+### Intellij ###
+.idea/
+*.iml
+*.iws
