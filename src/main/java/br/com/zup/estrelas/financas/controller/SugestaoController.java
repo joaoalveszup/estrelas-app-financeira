@@ -52,7 +52,8 @@ public class SugestaoController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<SugestaoResponseDto> listaSugestao(@RequestParam (value = "tipo-sugestao") Optional <TipoSugestao> tipoSugestao ) {
-        return sugestaoService.buscaTipoSugestao(tipoSugestao);
+    public List<SugestaoResponseDto> listaSugestao(
+            @RequestParam(value = "tipo-sugestao") Optional<TipoSugestao> tipoSugestao) {
+        return sugestaoService.listaSugestao(tipoSugestao);
     }
 }

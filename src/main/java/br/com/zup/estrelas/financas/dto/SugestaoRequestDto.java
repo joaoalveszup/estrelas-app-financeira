@@ -13,7 +13,7 @@ public class SugestaoRequestDto {
         sugestaoRequestDto.setTitulo(sugestao.getTitulo());
         sugestaoRequestDto.setDescricao(sugestao.getDescricao());
         sugestaoRequestDto.setTipoSugestao(sugestao.getTipoSugestao());
-       
+
         return sugestaoRequestDto;
     }
 
@@ -40,6 +40,6 @@ public class SugestaoRequestDto {
     public void setTipoSugestao(TipoSugestao tipoSugestao) {
         this.tipoSugestao = tipoSugestao;
     }
-   
+
 
 }
