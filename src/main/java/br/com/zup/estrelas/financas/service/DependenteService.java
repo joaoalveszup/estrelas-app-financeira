@@ -36,15 +36,11 @@ public class DependenteService {
         return usuario;
     }
 
-    private void validaExistenciaDeConjuge(Usuario usuario)
-            throws DependenteException {
+    private void validaExistenciaDeConjuge(Usuario usuario) throws DependenteException {
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
             if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                    throw new DependenteException(
-                            MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA);
-                }
+                throw new DependenteException(MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA);
             }
         }
     }
@@ -63,7 +59,9 @@ public class DependenteService {
 
         Usuario usuario = buscaUsuarioPorId(idUsuario);
 
-        validaExistenciaDeConjuge(usuario);
+        if (criaDependenteDto.getParentesco().equals(Parentesco.CONJUGE)) {
+            validaExistenciaDeConjuge(usuario);
+        }
 
         if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());
