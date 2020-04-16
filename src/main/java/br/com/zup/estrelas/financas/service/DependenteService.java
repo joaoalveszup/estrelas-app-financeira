@@ -19,12 +19,12 @@ public class DependenteService {
 
     private static final String MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA =
             "Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
-    
+
     private static final String MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO =
             "Esse dependente não corresponde ao usuário informado!";
-    
+
     private static final int RENDA_MIN_DEPENDENTE = 1;
-    
+
     @Autowired
     DependenteRepository dependenteRepository;
 
@@ -36,11 +36,15 @@ public class DependenteService {
         return usuario;
     }
 
-    private void validaExistenciaDeConjuge(Usuario usuario) throws DependenteException {
+    private void validaExistenciaDeConjuge(Usuario usuario)
+            throws DependenteException {
         for (Dependente dependenteUsuario : usuario.getDependentes()) {
 
             if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
-                throw new DependenteException(MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA);
+                if (dependenteUsuario.getParentesco().equals(Parentesco.CONJUGE)) {
+                    throw new DependenteException(
+                            MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA);
+                }
             }
         }
     }
