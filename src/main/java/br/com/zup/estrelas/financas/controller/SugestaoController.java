@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.financas.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
+import br.com.zup.estrelas.financas.enums.TipoSugestao;
 import br.com.zup.estrelas.financas.exceptions.ValidaCampoECaratereException;
 import br.com.zup.estrelas.financas.service.SugestaoService;
 
@@ -36,11 +39,6 @@ public class SugestaoController {
         return this.sugestaoService.buscaSugestao(idSugestao);
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Sugestao> buscaSugestoes() {
-        return this.sugestaoService.buscaSugestoes();
-    }
-
     @DeleteMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteSugestao(@PathVariable Long idSugestao) {
         this.sugestaoService.deleteSugestao(idSugestao);
@@ -53,4 +51,9 @@ public class SugestaoController {
         return this.sugestaoService.alteraSugestao(idSugestao, sugestaoRequestDto);
     }
 
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<SugestaoResponseDto> listaSugestao(
+            @RequestParam(value = "tipo-sugestao") Optional<TipoSugestao> tipoSugestao) {
+        return sugestaoService.listaSugestao(tipoSugestao);
+    }
 }

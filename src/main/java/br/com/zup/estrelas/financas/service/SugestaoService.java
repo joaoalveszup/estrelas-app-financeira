@@ -1,11 +1,14 @@
 package br.com.zup.estrelas.financas.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
+import br.com.zup.estrelas.financas.enums.TipoSugestao;
 import br.com.zup.estrelas.financas.exceptions.ValidaCampoECaratereException;
 import br.com.zup.estrelas.financas.repository.SugestaoRepository;
 
@@ -24,7 +27,7 @@ public class SugestaoService {
             throws ValidaCampoECaratereException {
 
         testaLimiteCaractere(sugestaoRequestDto);
-        
+
         Sugestao sugestao =
                 this.sugestaoRepository.save(Sugestao.fromSugestaoRequestDto(sugestaoRequestDto));
         return SugestaoResponseDto.fromSugestaoResponseDto(sugestao);
@@ -49,7 +52,7 @@ public class SugestaoService {
         Sugestao sugestaoBanco = sugestaoRepository.findById(idSugestao).get();
 
         testaLimiteCaractere(sugestaoRequestDto);
-       
+
         sugestaoBanco.setDescricao(sugestao.getDescricao());
         sugestaoBanco.setTitulo(sugestao.getTitulo());
         return SugestaoResponseDto
@@ -69,7 +72,8 @@ public class SugestaoService {
 
     }
 
-    public void testaLimiteCaractere(SugestaoRequestDto sugestaoRequestDto) throws ValidaCampoECaratereException {
+    public void testaLimiteCaractere(SugestaoRequestDto sugestaoRequestDto)
+            throws ValidaCampoECaratereException {
         if (minLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
                 sugestaoRequestDto.getDescricao())
                 || maxLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
@@ -78,8 +82,27 @@ public class SugestaoService {
                     "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu título ou descricão contém no mínimo 3 carateres. "
                             + "2. Verificar se seu titulo tem menos de 40 caratares é se a descricao tem mais de 400 caratares");
         }
+
     }
 
+    public List<SugestaoResponseDto> listaSugestao(Optional<TipoSugestao> tipoSugestao) {
+        if (tipoSugestao.isPresent()) {
+            List<Sugestao> listaSugestao = sugestaoRepository.findByTipoSugestao(tipoSugestao);
+            return listaSugestaoResponseDto(listaSugestao);
+        }
+        List<Sugestao> listaDeSugestao = this.sugestaoRepository.findAll();
+        return listaSugestaoResponseDto(listaDeSugestao);
+
+    }
+
+
+    public List<SugestaoResponseDto> listaSugestaoResponseDto(List<Sugestao> listaSugestao) {
+        List<SugestaoResponseDto> novaListaSugestaoDto = new ArrayList<SugestaoResponseDto>();
+        for (Sugestao sugestao : listaSugestao) {
+            novaListaSugestaoDto.add(SugestaoResponseDto.fromSugestaoResponseDto(sugestao));
+        }
+        return novaListaSugestaoDto;
+    }
 
 }
 
