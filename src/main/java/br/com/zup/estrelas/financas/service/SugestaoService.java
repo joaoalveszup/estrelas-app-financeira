@@ -12,6 +12,9 @@ import br.com.zup.estrelas.financas.repository.SugestaoRepository;
 @Service
 public class SugestaoService {
 
+    private static final String ERRO_LIMITE_CARACTERE_INCORRETO = "Erro! Título ou descricão contém menos de 3 carateres"
+            + " ou título tem mais de 40 caratares ou a descricao tem mais de 400 caratares. "
+            + "Por favor, insira quantidade de caracteres corretos";
     public final int MIN_LIMITE_DE_CARATERE_TITULO_E_DESCRICAO = 3;
     public final int MAX_LIMITE_CARATERE_TITULO = 40;
     public final int MAX_LIMITE_CARATERE_DESCRICAO = 400;
@@ -75,8 +78,7 @@ public class SugestaoService {
                 || maxLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
                         sugestaoRequestDto.getDescricao())) {
             throw new ValidaCampoECaratereException(
-                    "Tendo problemas com inserçao da sua sugestao? 1. Verifique se seu título ou descricão contém no mínimo 3 carateres. "
-                            + "2. Verificar se seu titulo tem menos de 40 caratares é se a descricao tem mais de 400 caratares");
+                    ERRO_LIMITE_CARACTERE_INCORRETO);
         }
     }
 

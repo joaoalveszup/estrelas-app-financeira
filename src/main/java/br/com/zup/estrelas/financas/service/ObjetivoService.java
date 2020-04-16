@@ -16,11 +16,13 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 public class ObjetivoService {
 
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
-            "Usuário ou ojetivo não correspondem.";
+            "Erro! Usuário ou objetivo não correspondem. Por favor, insira um usuário ou objetivo válido";
     @Autowired
     ObjetivoRepository objetivoRepository;
+    
     @Autowired
     UsuarioRepository usuarioRepository;
+    
     @Autowired
     InvestimentoService investimentoService;
 

@@ -18,14 +18,14 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 public class AvaliacaoService {
 
     private static final String ERRO_AO_INSERRIR_UMA_NOTA_PARA_O_FILTRO =
-            "OCORREU ERRO AO BUSCAR A NOTA!, VOCÊ DIGITOU UMA NOTA MENOR QUE 0 OU MAIOR QUE 5!";
+            "Erro ao buscar a nota! Você digitou uma nota menor que 0 ou maior que 5! Por favor, insira uma nota válida.";
     private static final String ERRO_ID_INCORRETO =
-            "ERRO!  O ID-USUÁRIO OU ID-AVALIAÇÃO ESTÁ INCORRETO!";
+            "Erro! O id-usuário ou id-avaliação está incorreto! Por favor, insira o id correspondente.";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
-            "OPS! OCORREU UM ERRO! VOCÊ EXCEDEU O MÁXIMO DE"
-                    + " CARACTERE NO COMENTARIO, OU INSERIU UMA NOTA INVALIDA!";
+            "Erro! Você excedeu o máximo de caractere no comentário ou inseriu uma nota inválida!"
+            + " Por favor, insira um comentário ou nota válido ";
     private static final String MSG_ERRO_AVALIACAO_JA_EXISTE_OU_USUARIO_NULL =
-            "OCORREU UM ERRO JÁ EXISTE UMA AVALIAÇÃO PARA ESTE USUARIO, OU O USUÁRIO NÃO EXISTE";
+            "Erro! Já existe uma avaliação para este usuário ou o ele não existe. Por favor, insira um usuário válido.";
     private static final int MAX_CARACTERE = 400;
     private static final int NOTA_MIN = 0;
     private static final int NOTA_MAX = 5;

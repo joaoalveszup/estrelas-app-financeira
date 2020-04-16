@@ -18,10 +18,10 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 public class DependenteService {
 
     private static final String MENSAGEM_EXCEPTION_EXISTENCIA_DE_CONJUGE_NA_LISTA =
-            "Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
+            "Erro! Já existe um cônjuge na sua lista de dependentes. Por favor, insira outro parentesco!";
     
     private static final String MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO =
-            "Esse dependente não corresponde ao usuário informado!";
+            "Erro! Esse dependente não corresponde ao usuário informado.  Por favor, insira outro dependente!";
     
     private static final int RENDA_MIN_DEPENDENTE = 1;
     

@@ -19,7 +19,7 @@ public class InvestimentoService {
     private static final int NAO_HA_INVESTIMENTOS_PAGOS = 0;
 
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
-            "Usuário ou ojetivo não correspondem.";
+            "Erro! Usuário ou objetivo não correspondem. Por favor, insira um usuário ou objetivo válido";
 
     @Autowired
     InvestimentoRepository investimentoRepository;
