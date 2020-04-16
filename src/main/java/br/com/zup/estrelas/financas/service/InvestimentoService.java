@@ -24,6 +24,7 @@ public class InvestimentoService {
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
         "Usuário ou ojetivo não correspondem.";
     private static final int PRIMEIRO_DIA_DO_MES = 1;
+    public static final double VALOR_INVESTIMENTOS_ZERADO = 0D;
 
     @Autowired
     InvestimentoRepository investimentoRepository;
@@ -75,7 +76,7 @@ public class InvestimentoService {
         YearMonth month = YearMonth.now();
 
         if (objetivosDoUsuario.isEmpty()) {
-            return 0D;
+            return VALOR_INVESTIMENTOS_ZERADO;
         }
 
         Double somaDosInvestimentos = this.investimentoRepository
@@ -83,7 +84,7 @@ public class InvestimentoService {
                 PRIMEIRO_DIA_DO_MES), month.atEndOfMonth());
 
         if (Objects.isNull(somaDosInvestimentos)) {
-            return 0D;
+            return VALOR_INVESTIMENTOS_ZERADO;
         }
 
         return somaDosInvestimentos;
