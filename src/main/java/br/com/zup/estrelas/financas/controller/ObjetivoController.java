@@ -1,5 +1,10 @@
 package br.com.zup.estrelas.financas.controller;
 
+import br.com.zup.estrelas.financas.dto.ObjetivoDto;
+import br.com.zup.estrelas.financas.dto.SomaObjetivosMesDto;
+import br.com.zup.estrelas.financas.entity.Objetivo;
+import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
+import br.com.zup.estrelas.financas.service.ObjetivoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,10 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.financas.dto.ObjetivoDto;
-import br.com.zup.estrelas.financas.entity.Objetivo;
-import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
-import br.com.zup.estrelas.financas.service.ObjetivoService;
 
 @RestController
 @RequestMapping
@@ -37,6 +38,12 @@ public class ObjetivoController {
     @GetMapping(path = "/usuarios/{idUsuario}/objetivos")
     public List<ObjetivoDto> listaObjetivos(@PathVariable Long idUsuario) {
         return objetivoService.listaObjetivos(idUsuario);
+    }
+
+
+    @GetMapping(path = "/usuarios/{idUsuario}/objetivos/mes-corrente")
+    public SomaObjetivosMesDto recuperaValorMensalObjetivos(@PathVariable Long idUsuario) {
+        return objetivoService.recuperaValorMensalObjetivos(idUsuario);
     }
 
     @PutMapping(path = "usuarios/{idUsuario}/objetivos/{idObjetivo}")
