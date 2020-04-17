@@ -17,13 +17,14 @@ import org.springframework.stereotype.Service;
 public class InvestimentoService {
 
     private static final int NAO_HA_VALOR_INVESTIMENTO_A_SER_PAGO = 0;
-
     private static final int NAO_HA_INVESTIMENTOS_PAGOS = 0;
 
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
-        "Usuário ou ojetivo não correspondem.";
+            "Erro! Usuário ou objetivo não correspondem. Por favor, insira um usuário ou objetivo válido";
+
+    
     private static final int PRIMEIRO_DIA_DO_MES = 1;
-    public static final double VALOR_INVESTIMENTOS_ZERADO = 0D;
+    private static final double VALOR_INVESTIMENTOS_ZERADO = 0D;
 
     @Autowired
     InvestimentoRepository investimentoRepository;

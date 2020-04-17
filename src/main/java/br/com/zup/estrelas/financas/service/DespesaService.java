@@ -22,12 +22,14 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 public class DespesaService {
 
     private static final String MENSAGEM_NUMERO_INVALIDO =
-            "Por favor, inserir número válido de recorrências, ou digite uma despesa diferete do tipo 'OUTRO'.";
+            "Erro! Número de recorrência inválido ou despesa é do tipo 'OUTRO'! "
+            + "Por favor, insira um número válido de recorrências, ou digite uma despesa diferete do tipo 'OUTRO'.";
     private static final int PRIMEIRO_DIA_DO_MES = 1;
     private static final String ESTE_TIPO_DE_DESPESA_JÁ_EXISTE =
-            "Este tipo de Despesa já existe. Para inseri-la mude o tipo para 'OUTRO'.";
+            "Erro! Este tipo de Despesa já existe. Por favor, altere o tipo para 'OUTRO'.";
     private static final String DESPESA_NÃO_CORRESPONDE_AO_USUARIO_INSERIDO_OU_DESPESA_JA_FOI_DELETADA =
-            "Despesa não corresponde ao usuario inserido, ou despesa ja foi deletada. Por favor inserir um usuario valido ou insira outra despesa.";
+            "Erro! Despesa não corresponde ao usuário inserido, ou não existe. "
+            + "Por favor, inserir um usuário válido ou outra despesa.";
 
     @Autowired
     DespesaRepository repository;
