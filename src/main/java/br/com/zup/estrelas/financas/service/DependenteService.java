@@ -24,7 +24,7 @@ public class DependenteService {
             "Erro! Esse dependente não corresponde ao usuário informado.  Por favor, insira outro dependente!";
     
     private static final int RENDA_MIN_DEPENDENTE = 1;
-    
+
     @Autowired
     DependenteRepository dependenteRepository;
 
@@ -59,7 +59,9 @@ public class DependenteService {
 
         Usuario usuario = buscaUsuarioPorId(idUsuario);
 
-        validaExistenciaDeConjuge(usuario);
+        if (criaDependenteDto.getParentesco().equals(Parentesco.CONJUGE)) {
+            validaExistenciaDeConjuge(usuario);
+        }
 
         if (criaDependenteDto.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() + criaDependenteDto.getRenda());

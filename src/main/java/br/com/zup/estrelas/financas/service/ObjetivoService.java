@@ -1,22 +1,24 @@
 package br.com.zup.estrelas.financas.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.ObjetivoDto;
+import br.com.zup.estrelas.financas.dto.SomaObjetivosMesDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
 import br.com.zup.estrelas.financas.entity.Objetivo;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.exceptions.UsuarioOuObjetivoNuloException;
 import br.com.zup.estrelas.financas.repository.ObjetivoRepository;
 import br.com.zup.estrelas.financas.repository.UsuarioRepository;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ObjetivoService {
 
     private static final String USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM =
             "Erro! Usuário ou objetivo não correspondem. Por favor, insira um usuário ou objetivo válido";
+    
     @Autowired
     ObjetivoRepository objetivoRepository;
     
@@ -91,6 +93,12 @@ public class ObjetivoService {
                 () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
         this.objetivoRepository.deleteById(idObjetivo);
 
+    }
+
+    public SomaObjetivosMesDto recuperaValorMensalObjetivos(Long idUsuario) {
+        List<Long> objetivosDoUsuario = this.objetivoRepository.findAllIdsFromUser(idUsuario);
+
+        return new SomaObjetivosMesDto(this.investimentoService.retornaValoresInvestimentosDoMesCorrente(objetivosDoUsuario));
     }
 
 }

@@ -13,7 +13,7 @@ import br.com.zup.estrelas.financas.enums.TipoDespesa;
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
     List<Despesa> findAllByIdUsuarioAndVencimentoBetween(Long idUsuario, LocalDate inicioData,
-            LocalDate fimData);
+        LocalDate fimData);
 
     List<Despesa> findAllByIdUsuario(Long idUsuario);
 
