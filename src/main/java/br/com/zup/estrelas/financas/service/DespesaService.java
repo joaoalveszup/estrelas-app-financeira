@@ -146,7 +146,7 @@ public class DespesaService {
                     || criaDespesaDto.getTipoDespesa().equals(TipoDespesa.OUTRO)) {
                 throw new DespesaOuUsuarioNullException(MENSAGEM_NUMERO_INVALIDO);
             }
-            LocalDate data = LocalDate.now();
+            LocalDate data = LocalDate.now().withDayOfMonth(criaDespesaDto.getVencimento().getDayOfMonth());
             for (int i = 0; i < criaDespesaDto.getNumeroRecorrencias(); i++) {
 
                 Despesa despesa = Despesa.fromCriacaoDto(criaDespesaDto, idUsuario);
