@@ -121,13 +121,14 @@ public class DependenteService {
         return criaListaDto(listaDependente);
     }
 
-    public void deletaDependente(DependenteDto dependente, Long idUsuario, Long idDependente)
+    public void deletaDependente(Long idUsuario, Long idDependente)
             throws DependenteException {
 
         Usuario usuario = buscaUsuarioPorId(idUsuario);
+       Dependente dependenteDoBanco = dependenteRepository.findById(idDependente).get();
 
-        if (dependente.getRenda() >= RENDA_MIN_DEPENDENTE) {
-            usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependente.getRenda());
+        if (dependenteDoBanco.getRenda() >= RENDA_MIN_DEPENDENTE) {
+            usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependenteDoBanco.getRenda());
             this.usuarioRepository.save(usuario);
         }
 

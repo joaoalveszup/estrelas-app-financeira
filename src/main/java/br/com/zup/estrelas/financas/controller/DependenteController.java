@@ -55,10 +55,9 @@ public class DependenteController {
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/dependentes/{idDependente}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDependente(@RequestBody DependenteDto dependente,
-            @PathVariable Long idUsuario, @PathVariable Long idDependente)
+    public void deletaDependente(@PathVariable Long idUsuario, @PathVariable Long idDependente)
             throws DependenteException {
-        this.dependenteService.deletaDependente(dependente, idUsuario, idDependente);
+        this.dependenteService.deletaDependente(idUsuario, idDependente);
     }
 
 }
