@@ -2,7 +2,7 @@ package br.com.zup.estrelas.financas.exceptions;
 
 import static java.util.Objects.nonNull;
 
-import br.com.zup.estrelas.financas.dto.ErroDto;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -25,16 +25,16 @@ public class GlobalExceptionHandler {
         DespesaOuUsuarioNullException.class,
         UsuarioOuObjetivoNuloException.class,
         ValidaCampoECaratereException.class})
-    public @ResponseBody ErroDto handleErrosDeNegocio(Exception e) {
-        return new ErroDto(e.getMessage());
+    public @ResponseBody MensagemDto handleErrosDeNegocio(Exception e) {
+        return new MensagemDto(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public @ResponseBody List<ErroDto> handleValidationError(MethodArgumentNotValidException e) {
+    public @ResponseBody List<MensagemDto> handleValidationError(MethodArgumentNotValidException e) {
 
-        List<ErroDto> errosDeValidacao = new ArrayList<>();
+        List<MensagemDto> errosDeValidacao = new ArrayList<>();
 
         for (ObjectError erro : e.getBindingResult().getAllErrors()) {
 
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
                 mensagemASerExibida.append(" ");
                 mensagemASerExibida.append(erro.getDefaultMessage());
 
-                errosDeValidacao.add(new ErroDto(mensagemASerExibida.toString()));
+                errosDeValidacao.add(new MensagemDto(mensagemASerExibida.toString()));
             }
         }
 

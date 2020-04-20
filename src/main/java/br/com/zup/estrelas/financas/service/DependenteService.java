@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.CriaDependenteDto;
 import br.com.zup.estrelas.financas.dto.DependenteDto;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.entity.Dependente;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.Parentesco;
@@ -121,22 +122,23 @@ public class DependenteService {
         return criaListaDto(listaDependente);
     }
 
-    public void deletaDependente(Long idUsuario, Long idDependente)
+    public MensagemDto deletaDependente(Long idUsuario, Long idDependente)
             throws DependenteException {
 
+        Dependente dependenteDoBanco =
+                this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
+                        .orElseThrow(() -> new DependenteException(
+                                MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO));
+
         Usuario usuario = buscaUsuarioPorId(idUsuario);
-       Dependente dependenteDoBanco = dependenteRepository.findById(idDependente).get();
 
         if (dependenteDoBanco.getRenda() >= RENDA_MIN_DEPENDENTE) {
             usuario.setSalarioLiquido(usuario.getSalarioLiquido() - dependenteDoBanco.getRenda());
             this.usuarioRepository.save(usuario);
         }
 
-        this.dependenteRepository.findByIdUsuarioAndIdDependente(idUsuario, idDependente)
-                .orElseThrow(() -> new DependenteException(
-                        MENSAGEM_EXCEPTION_CORRESPONDENCIA_DEPENDENTE_USUARIO));
-
         this.dependenteRepository.deleteById(idDependente);
+        return new MensagemDto("Dependente deletado com sucesso!");
     }
 
 }
