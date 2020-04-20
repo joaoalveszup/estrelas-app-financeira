@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.service;
 
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.dto.SomaObjetivosMesDto;
 import br.com.zup.estrelas.financas.entity.Investimento;
@@ -86,13 +87,14 @@ public class ObjetivoService {
         return this.objetivoRepository.save(objetivoSalvoBanco);
     }
 
-    public void deletaObjetivo(Long idUsuario, Long idObjetivo)
+    public MensagemDto deletaObjetivo(Long idUsuario, Long idObjetivo)
             throws UsuarioOuObjetivoNuloException {
 
         this.objetivoRepository.findByIdUsuarioAndIdObjetivo(idUsuario, idObjetivo).orElseThrow(
                 () -> new UsuarioOuObjetivoNuloException(USUÁRIO_OU_OJETIVO_NÃO_CORRESPONDEM));
         this.objetivoRepository.deleteById(idObjetivo);
 
+        return new MensagemDto("Objetivo deletado com sucesso!");
     }
 
     public SomaObjetivosMesDto recuperaValorMensalObjetivos(Long idUsuario) {

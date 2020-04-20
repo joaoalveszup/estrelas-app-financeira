@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.controller;
 
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.dto.ObjetivoDto;
 import br.com.zup.estrelas.financas.dto.SomaObjetivosMesDto;
 import br.com.zup.estrelas.financas.entity.Objetivo;
@@ -53,9 +54,9 @@ public class ObjetivoController {
     }
 
     @DeleteMapping("/usuarios/{idUsuario}/objetivos/{idObjetivo}")
-    public void deletaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo)
+    public MensagemDto deletaObjetivo(@PathVariable Long idUsuario, @PathVariable Long idObjetivo)
             throws UsuarioOuObjetivoNuloException {
-        this.objetivoService.deletaObjetivo(idUsuario, idObjetivo);
+        return this.objetivoService.deletaObjetivo(idUsuario, idObjetivo);
     }
 
 
