@@ -46,6 +46,7 @@ public class SugestaoResponseDto {
         sugestaoResponseDto.setDescricao(sugestao.getDescricao());
         sugestaoResponseDto.setTiposugestao(sugestao.getTipoSugestao());
         sugestaoResponseDto.setTitulo(sugestao.getTitulo());
+        sugestaoResponseDto.setIdSugestao(sugestao.getIdSugestao());
         return sugestaoResponseDto;
 
     }

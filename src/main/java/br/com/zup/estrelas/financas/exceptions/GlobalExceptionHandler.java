@@ -25,14 +25,16 @@ public class GlobalExceptionHandler {
         DespesaOuUsuarioNullException.class,
         UsuarioOuObjetivoNuloException.class,
         ValidaCampoECaratereException.class})
-    public @ResponseBody ErroDto handleErrosDeNegocio(Exception e) {
+    public @ResponseBody
+    ErroDto handleErrosDeNegocio(Exception e) {
         return new ErroDto(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public @ResponseBody List<ErroDto> handleValidationError(MethodArgumentNotValidException e) {
+    public @ResponseBody
+    List<ErroDto> handleValidationError(MethodArgumentNotValidException e) {
 
         List<ErroDto> errosDeValidacao = new ArrayList<>();
 
@@ -43,7 +45,8 @@ public class GlobalExceptionHandler {
 
                 StringBuilder mensagemASerExibida = new StringBuilder();
                 mensagemASerExibida.append("O campo ");
-                mensagemASerExibida.append(baseNomeDoCampo.substring(baseNomeDoCampo.lastIndexOf(".") + IGNORA_POS_PONTO));
+                mensagemASerExibida.append(
+                    baseNomeDoCampo.substring(baseNomeDoCampo.lastIndexOf(".") + IGNORA_POS_PONTO));
                 mensagemASerExibida.append(" ");
                 mensagemASerExibida.append(erro.getDefaultMessage());
 

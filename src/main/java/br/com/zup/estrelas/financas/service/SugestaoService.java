@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
@@ -15,9 +16,10 @@ import br.com.zup.estrelas.financas.repository.SugestaoRepository;
 @Service
 public class SugestaoService {
 
-    private static final String ERRO_LIMITE_CARACTERE_INCORRETO = "Erro! Título ou descricão contém menos de 3 carateres"
-            + " ou título tem mais de 40 caratares ou a descricao tem mais de 400 caratares. "
-            + "Por favor, insira quantidade de caracteres corretos";
+    private static final String ERRO_LIMITE_CARACTERE_INCORRETO =
+            "Erro! Título ou descricão contém menos de 3 carateres"
+                    + " ou título tem mais de 40 caratares ou a descricao tem mais de 400 caratares. "
+                    + "Por favor, insira quantidade de caracteres corretos";
     public final int MIN_LIMITE_DE_CARATERE_TITULO_E_DESCRICAO = 3;
     public final int MAX_LIMITE_CARATERE_TITULO = 40;
     public final int MAX_LIMITE_CARATERE_DESCRICAO = 400;
@@ -45,8 +47,10 @@ public class SugestaoService {
         return (List<Sugestao>) sugestaoRepository.findAll();
     }
 
-    public void deleteSugestao(Long idSugestao) {
-        this.sugestaoRepository.deleteById(idSugestao);
+    public MensagemDto deleteSugestao(Long idSugestao) {
+       this.sugestaoRepository.deleteById(idSugestao);
+        return new MensagemDto("Sugestao deletada com sucesso");
+
     }
 
     public SugestaoResponseDto alteraSugestao(Long idSugestao,
@@ -81,8 +85,7 @@ public class SugestaoService {
                 sugestaoRequestDto.getDescricao())
                 || maxLimitaCaratereTituloEDescricao(sugestaoRequestDto.getTitulo(),
                         sugestaoRequestDto.getDescricao())) {
-            throw new ValidaCampoECaratereException(
-                    ERRO_LIMITE_CARACTERE_INCORRETO);
+            throw new ValidaCampoECaratereException(ERRO_LIMITE_CARACTERE_INCORRETO);
         }
 
     }

@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.service;
 
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class AvaliacaoService {
             "Erro! O id-usuário ou id-avaliação está incorreto! Por favor, insira o id correspondente.";
     private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIDA =
             "Erro! Você excedeu o máximo de caractere no comentário ou inseriu uma nota inválida!"
-            + " Por favor, insira um comentário ou nota válido ";
+            + " Por favor, insira um comentário ou nota válida ";
     private static final String MSG_ERRO_AVALIACAO_JA_EXISTE_OU_USUARIO_NULL =
             "Erro! Já existe uma avaliação para este usuário ou o ele não existe. Por favor, insira um usuário válido.";
     private static final int MAX_CARACTERE = 400;
@@ -76,12 +77,13 @@ public class AvaliacaoService {
     }
 
 
-    public void deletaAvaliacao(Long idAvaliacao, Long idUsuario)
+    public MensagemDto deletaAvaliacao(Long idAvaliacao, Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
         avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                 .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
+        return new MensagemDto("Avaliação foi deletada com sucesso!");
     }
 
     public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto,
