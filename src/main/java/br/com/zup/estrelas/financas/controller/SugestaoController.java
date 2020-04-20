@@ -2,7 +2,9 @@ package br.com.zup.estrelas.financas.controller;
 
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.dto.SugestaoRequestDto;
 import br.com.zup.estrelas.financas.dto.SugestaoResponseDto;
 import br.com.zup.estrelas.financas.entity.Sugestao;
@@ -28,8 +32,9 @@ public class SugestaoController {
     @Autowired
     SugestaoService sugestaoService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SugestaoResponseDto insereSugestao(@RequestBody SugestaoRequestDto sugestaoRequestDto)
+    public SugestaoResponseDto insereSugestao(@Valid @RequestBody SugestaoRequestDto sugestaoRequestDto)
             throws ValidaCampoECaratereException {
         return this.sugestaoService.insereSugestao(sugestaoRequestDto);
     }
@@ -40,8 +45,8 @@ public class SugestaoController {
     }
 
     @DeleteMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteSugestao(@PathVariable Long idSugestao) {
-        this.sugestaoService.deleteSugestao(idSugestao);
+    public MensagemDto deleteSugestao(@PathVariable Long idSugestao) {
+        return this.sugestaoService.deleteSugestao(idSugestao);
     }
 
     @PutMapping(path = "/{idSugestao}", produces = {MediaType.APPLICATION_JSON_VALUE})
