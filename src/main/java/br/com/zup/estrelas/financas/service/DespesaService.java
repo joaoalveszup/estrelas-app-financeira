@@ -172,7 +172,7 @@ public class DespesaService {
         }
 
         for (Despesa despesa : despesasSubsequentes) {
-
+            
             despesa.setValor(atualizaDespesaDto.getValor());
         }
 

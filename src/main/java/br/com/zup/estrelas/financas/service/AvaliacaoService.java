@@ -21,7 +21,7 @@ public class AvaliacaoService {
             "Erro ao buscar a nota! Você digitou uma nota menor que 0 ou maior que 5! Por favor, insira uma nota válida.";
     private static final String ERRO_ID_INCORRETO =
             "Erro! O id-usuário ou id-avaliação está incorreto! Por favor, insira o id correspondente.";
-    private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIDA =
+    private static final String MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA =
             "Erro! Você excedeu o máximo de caractere no comentário ou inseriu uma nota inválida!"
             + " Por favor, insira um comentário ou nota válido ";
     private static final String MSG_ERRO_AVALIACAO_JA_EXISTE_OU_USUARIO_NULL =
@@ -45,7 +45,7 @@ public class AvaliacaoService {
         }
 
         if (!this.validaNotaEVerificaMaxCaractere(criaAvaliacaoDto)) {
-            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIDA);
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
 
         return avaliacaoRepository.save(Avaliacao.fromCriacaoDto(criaAvaliacaoDto, idUsuario));
@@ -90,7 +90,7 @@ public class AvaliacaoService {
                 avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                         .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
         if (!this.validaNotaEVerificaMaxCaractere(criaAvaliacaoDto)) {
-            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIDA);
+            throw new AvaliacaoRegraDeNegocioExeption(MSG_ERRO_CARACTERE_MAX_OU_NOTA_INVALIADA);
         }
 
         avaliacaoBuscada.setComentario(criaAvaliacaoDto.getComentario());
