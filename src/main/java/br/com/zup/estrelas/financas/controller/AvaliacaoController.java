@@ -3,7 +3,9 @@ package br.com.zup.estrelas.financas.controller;
 import br.com.zup.estrelas.financas.dto.MensagemDto;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.AvaliacaoDto;
 import br.com.zup.estrelas.financas.dto.CriaAvaliacaoDto;
@@ -25,9 +28,10 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoService service;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/usuarios/{idUsuario}/avaliacoes")
     public Avaliacao insereAvaliacao(@PathVariable Long idUsuario,
-            @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption {
+            @Valid @RequestBody CriaAvaliacaoDto avaliacao) throws AvaliacaoRegraDeNegocioExeption {
         return this.service.insereAvaliacao(avaliacao, idUsuario);
 
     }
