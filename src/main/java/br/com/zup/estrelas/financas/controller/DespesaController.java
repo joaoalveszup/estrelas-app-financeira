@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
 import br.com.zup.estrelas.financas.exceptions.DespesaOuUsuarioNullException;
@@ -43,9 +44,9 @@ public class DespesaController {
 
     @DeleteMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa)
+    public MensagemDto deletaDespesa(@PathVariable Long idUsuario, @PathVariable Long idDespesa)
             throws DespesaOuUsuarioNullException {
-        this.despesaService.deletaDespesa(idUsuario, idDespesa);
+       return this.despesaService.deletaDespesa(idUsuario, idDespesa);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/despesas/{idDespesa}",

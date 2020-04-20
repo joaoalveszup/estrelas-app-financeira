@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.financas.dto.AtualizaDespesaDto;
 import br.com.zup.estrelas.financas.dto.CriaDespesaDTO;
 import br.com.zup.estrelas.financas.dto.DespesaDTO;
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import br.com.zup.estrelas.financas.entity.Despesa;
 import br.com.zup.estrelas.financas.entity.Usuario;
 import br.com.zup.estrelas.financas.enums.TipoDespesa;
@@ -21,6 +22,7 @@ import br.com.zup.estrelas.financas.repository.UsuarioRepository;
 @Service
 public class DespesaService {
 
+    private static final String MENSAGEM_DELECAO = "Despesa deletada com sucesso!";
     private static final String MENSAGEM_NUMERO_INVALIDO =
             "Erro! Número de recorrência inválido ou despesa é do tipo 'OUTRO'! "
             + "Por favor, insira um número válido de recorrências, ou digite uma despesa diferete do tipo 'OUTRO'.";
@@ -59,7 +61,7 @@ public class DespesaService {
         return DespesaDTO.fromDespesa(despesa);
     }
 
-    public void deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNullException {
+    public MensagemDto deletaDespesa(Long idUsuario, Long idDespesa) throws DespesaOuUsuarioNullException {
 
 
         Despesa despesaDoBanco = repository.findByIdUsuarioAndIdDespesa(idUsuario, idDespesa)
@@ -75,6 +77,7 @@ public class DespesaService {
             this.repository.delete(despesaDoBanco);
 
         }
+        return new MensagemDto(MENSAGEM_DELECAO);
 
 
     }
