@@ -83,7 +83,7 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
-        return new MensagemDto("A <entidade> foi deletada com sucesso!")
+        return new MensagemDto("A <entidade> foi deletada com sucesso!");
     }
 
     public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto,
