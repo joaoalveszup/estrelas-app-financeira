@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.controller;
 
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,9 @@ public class AvaliacaoController {
    
     @DeleteMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deletaAvaliacao(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario)
+    public MensagemDto deletaAvaliacao(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
-        this.service.deletaAvaliacao(idAvaliacao, idUsuario);
+        return this.service.deletaAvaliacao(idAvaliacao, idUsuario);
     }
 
     @PutMapping(path = "/usuarios/{idUsuario}/avaliacoes/{idAvaliacao}",

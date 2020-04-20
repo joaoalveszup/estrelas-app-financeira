@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.financas.service;
 
+import br.com.zup.estrelas.financas.dto.MensagemDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,12 +77,13 @@ public class AvaliacaoService {
     }
 
 
-    public void deletaAvaliacao(Long idAvaliacao, Long idUsuario)
+    public MensagemDto deletaAvaliacao(Long idAvaliacao, Long idUsuario)
             throws AvaliacaoRegraDeNegocioExeption {
         avaliacaoRepository.findByIdUsuarioAndIdAvaliacao(idUsuario, idAvaliacao)
                 .orElseThrow(() -> new AvaliacaoRegraDeNegocioExeption(ERRO_ID_INCORRETO));
         this.avaliacaoRepository.deleteById(idAvaliacao);
 
+        return new MensagemDto("A <entidade> foi deletada com sucesso!")
     }
 
     public Avaliacao alteraAvaliacao(Long idAvaliacao, CriaAvaliacaoDto criaAvaliacaoDto,
