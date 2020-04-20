@@ -2,7 +2,7 @@ package br.com.zup.estrelas.financas.exceptions;
 
 import static java.util.Objects.nonNull;
 
-import br.com.zup.estrelas.financas.dto.MensagemDto;
+import br.com.zup.estrelas.financas.dto.ErroDto;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -25,16 +25,18 @@ public class GlobalExceptionHandler {
         DespesaOuUsuarioNullException.class,
         UsuarioOuObjetivoNuloException.class,
         ValidaCampoECaratereException.class})
-    public @ResponseBody MensagemDto handleErrosDeNegocio(Exception e) {
-        return new MensagemDto(e.getMessage());
+    public @ResponseBody
+    ErroDto handleErrosDeNegocio(Exception e) {
+        return new ErroDto(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public @ResponseBody List<MensagemDto> handleValidationError(MethodArgumentNotValidException e) {
+    public @ResponseBody
+    List<ErroDto> handleValidationError(MethodArgumentNotValidException e) {
 
-        List<MensagemDto> errosDeValidacao = new ArrayList<>();
+        List<ErroDto> errosDeValidacao = new ArrayList<>();
 
         for (ObjectError erro : e.getBindingResult().getAllErrors()) {
 
@@ -43,11 +45,12 @@ public class GlobalExceptionHandler {
 
                 StringBuilder mensagemASerExibida = new StringBuilder();
                 mensagemASerExibida.append("O campo ");
-                mensagemASerExibida.append(baseNomeDoCampo.substring(baseNomeDoCampo.lastIndexOf(".") + IGNORA_POS_PONTO));
+                mensagemASerExibida.append(
+                    baseNomeDoCampo.substring(baseNomeDoCampo.lastIndexOf(".") + IGNORA_POS_PONTO));
                 mensagemASerExibida.append(" ");
                 mensagemASerExibida.append(erro.getDefaultMessage());
 
-                errosDeValidacao.add(new MensagemDto(mensagemASerExibida.toString()));
+                errosDeValidacao.add(new ErroDto(mensagemASerExibida.toString()));
             }
         }
 
